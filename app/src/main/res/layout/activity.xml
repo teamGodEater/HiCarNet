@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/DrawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.ManageActivity">
+
+    <io.codetail.widget.RevealFrameLayout
+        android:id="@+id/MainContain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true" />
+
+    <FrameLayout
+        android:id="@+id/DrawerContain"
+        android:layout_width="306dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
+
+
+</android.support.v4.widget.DrawerLayout>

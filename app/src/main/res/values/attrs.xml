@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundedImageView">
+
+        <attr name="border_width" format="dimension" />
+        <attr name="border_incolor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="RippleBackGroundView">
+        <attr name="is_rounded" format="boolean" />
+        <attr name="text_size" format="dimension" />
+        <attr name="text_color" format="color" />
+        <attr name="text" format="string" />
+
+    </declare-styleable>
+
+</resources>
+

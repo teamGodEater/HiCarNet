@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/constraintLayout"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
+
+    <TextView
+        android:id="@+id/tip"
+        android:gravity="center"
+        android:alpha="0.87"
+        android:textColor="@color/colorBlack"
+        android:textSize="20dp"
+        android:text="Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="172dp"
+        tools:layout_editor_absoluteY="271dp"
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        tools:layout_constraintLeft_creator="0"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        tools:layout_constraintTop_creator="0"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+        tools:layout_constraintRight_creator="0"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        tools:layout_constraintBottom_creator="0" />
+
+
+    <RelativeLayout
+        android:id="@+id/brandContain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="491dp"
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        tools:layout_constraintLeft_creator="0"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+        tools:layout_constraintRight_creator="0"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        android:layout_marginBottom="16dp"
+        tools:layout_constraintBottom_creator="0">
+
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/brandLogo"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/brandLogo"
+            android:text="嘿嘿"
+            android:alpha="0.87"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/brandName"
+            android:textSize="18sp"
+            android:textColor="@color/colorBlack"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/brandLogo"
+            android:layout_below="@+id/brandName"
+            android:text="内测版0.1"
+            android:alpha="0.54"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/brandVersion"
+            android:textSize="12sp"
+            android:textColor="@color/colorBlack"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="46dp" />
+
+    </RelativeLayout>
+
+
+
+
+</android.support.constraint.ConstraintLayout>

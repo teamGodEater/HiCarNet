@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app ="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:splitMotionEvents="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <FrameLayout
+       android:id="@+id/HeadContain"
+       android:background="@color/colorPrimary"
+       android:layout_width="match_parent"
+       android:layout_height="225dp">
+
+      <teamgodeater.hicarnet.Widget.RoundedImageView
+          android:id="@+id/HeadImage"
+          android:layout_gravity="center_horizontal"
+          app:border_incolor="#afffffff"
+          app:border_width="3dp"
+          android:layout_marginTop="55dp"
+          android:src="@drawable/head_image"
+          android:layout_width="65dp"
+          android:layout_height="65dp" />
+
+       <TextView
+           android:id="@+id/Greetings"
+           android:alpha="0.87"
+           android:layout_gravity="center_horizontal"
+           android:layout_marginTop="140dp"
+           android:textColor="@color/colorWhite"
+           android:text="中午好赵日天"
+           android:textSize="16dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+       <TextView
+           android:id="@+id/LocationTip"
+           android:drawableLeft="@drawable/ic_location"
+           android:drawablePadding="12dp"
+           android:layout_marginTop="185dp"
+           android:layout_gravity="center_horizontal"
+           android:textColor="@color/colorWhite"
+           android:alpha="0.87"
+           android:maxWidth="225dp"
+           android:singleLine="true"
+           android:text="海口市 美兰区 海南大学海口市"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+   </FrameLayout>
+
+
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/RecyclerView"
+       android:splitMotionEvents="false"
+       android:background="@color/colorBackground"
+       android:layout_width="match_parent"
+       android:layout_weight="1"
+       android:layout_height="0dp"/>
+
+    <LinearLayout
+        android:splitMotionEvents="false"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <teamgodeater.hicarnet.Widget.RippleBackGroundView
+            android:alpha="0.54"
+            app:text_color="@color/colorBlack"
+            app:text="设置"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <View
+            android:alpha="0.1"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorBlack"
+            android:layout_width="1px"
+            android:layout_height="36dp"/>
+
+        <teamgodeater.hicarnet.Widget.RippleBackGroundView
+            android:alpha="0.54"
+            app:text_color="@color/colorBlack"
+            app:text="退出"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
