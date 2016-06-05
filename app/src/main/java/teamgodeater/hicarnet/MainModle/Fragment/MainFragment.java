@@ -309,6 +309,11 @@ public class MainFragment extends SupportToolbarFragment
         Toast.makeText(Utils.getContext(), "搜索路线 " + title, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onRouteError() {
+        searchView.close();
+    }
+
     //--------------------------------------SearchViewBackClickListener-----------------------------
     @Override
     public void onBackClick() {

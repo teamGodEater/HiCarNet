@@ -65,7 +65,7 @@ public class SearchHelp implements SearchView.OnVoiceClickListener, SearchView.O
     //
     public interface OnSearchRouteListener {
         void onRouteStart(String title);
-
+        void onRouteError();
         void onRouteResult(DrivingRouteResult result);
     }
 
@@ -174,6 +174,9 @@ public class SearchHelp implements SearchView.OnVoiceClickListener, SearchView.O
                 break;
         }
         Toast.makeText(Utils.getContext(), tip, Toast.LENGTH_SHORT).show();
+        if (searchRouteListener != null) {
+            searchRouteListener.onRouteError();
+        }
     }
 
     //-----------------------------------SearchItemClick--------------------------------------
@@ -187,12 +190,14 @@ public class SearchHelp implements SearchView.OnVoiceClickListener, SearchView.O
             SearchHistoryTable table = new SearchHistoryTable(Utils.getContext());
             table.addItem(item);
         }
-        PlanNode planNode = PlanNode.withLocation(new LatLng(item.latitude, item.longitude));
-        routePlanSearchHelp.requestRoutePlanSearch(planNode);
-
         if (searchRouteListener != null) {
             searchRouteListener.onRouteStart(item.key);
         }
+
+        PlanNode planNode = PlanNode.withLocation(new LatLng(item.latitude, item.longitude));
+        routePlanSearchHelp.requestRoutePlanSearch(planNode);
+
+
     }
 
     //--------------------------------------Method--------------------------------------------

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Fragment.DrawerFragment;
 import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
 import teamgodeater.hicarnet.Help.LocationHelp;
+import teamgodeater.hicarnet.Help.UserHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnReceiverObserve;
 import teamgodeater.hicarnet.LaunchMoudle.LaunchFragment;
@@ -55,7 +57,6 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     OnReceiverObserve receiverObserve;
     SDKReceiver mapSdkReceiver;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +71,20 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).commit();
         //mapSdk状态
         registerReceiver();
-        //加载用户数据
-        //加载地图数据
         //加载本地数据
+        loadLocalData();
+        //加载用户数据
+
+    }
+
+    private void loadLocalData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(UserHelp.SHARE_USER_HELP, MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
+        String password = sharedPreferences.getString("password", "");
+        String session = sharedPreferences.getString("session", "");
+        UserHelp.username = username;
+        UserHelp.password = password;
+        UserHelp.Session = session;
     }
 
 
@@ -268,6 +280,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     }
 
     long backPressPrevious = 0;
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
@@ -286,7 +299,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         }
         if (System.currentTimeMillis() - backPressPrevious < 2000) {
             finish();
-        }else {
+        } else {
             Toast.makeText(this, "在按一次退出程序", Toast.LENGTH_SHORT).show();
         }
 
