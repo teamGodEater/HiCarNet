@@ -64,7 +64,6 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
 
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
-
             return arg0 == arg1;
         }
 

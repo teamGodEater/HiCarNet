@@ -1,4 +1,4 @@
-package teamgodeater.hicarnet.MainModle.Help;
+package teamgodeater.hicarnet.MainModle.MapOverlay;
 
 import android.os.Bundle;
 
@@ -27,7 +27,7 @@ public class DrivingRouteOverlay extends OverlayManager {
 
     private DrivingRouteResult mRouteResult = null;
     private OnPolyLineChangeListener lineChangeListener;
-
+    boolean isShowMarket = true;
     /**
      * 构造函数
      *
@@ -37,31 +37,38 @@ public class DrivingRouteOverlay extends OverlayManager {
         super(baiduMap);
     }
 
+
+    public void setShowMarket(boolean showMarket) {
+        isShowMarket = showMarket;
+    }
+
     @Override
     public final List<OverlayOptions> getOverlayOptions() {
         List<DrivingRouteLine> routeLinesList = mRouteResult.getRouteLines();
         List<OverlayOptions> overlayOptions = new ArrayList<>();
 
-        //起点
-        if (routeLinesList.get(0).getStarting() != null) {
-            overlayOptions
-                    .add((new MarkerOptions())
-                            .position(mRouteResult.getRouteLines().get(0).getStarting().getLocation())
-                            .icon(getStartMarker() != null ? getStartMarker() :
-                                    BitmapDescriptorFactory
-                                            .fromAssetWithDpi("Icon_start.png"))
-                            .zIndex(10));
-        }
+        if (isShowMarket) {
+            //起点
+            if (routeLinesList.get(0).getStarting() != null) {
+                overlayOptions
+                        .add((new MarkerOptions())
+                                .position(mRouteResult.getRouteLines().get(0).getStarting().getLocation())
+                                .icon(getStartMarker() != null ? getStartMarker() :
+                                        BitmapDescriptorFactory
+                                                .fromAssetWithDpi("Icon_start.png"))
+                                .zIndex(10));
+            }
 
-        //终点
-        if (mRouteResult.getRouteLines().get(0).getTerminal() != null) {
-            overlayOptions
-                    .add((new MarkerOptions())
-                            .position(mRouteResult.getRouteLines().get(0).getTerminal().getLocation())
-                            .icon(getTerminalMarker() != null ? getTerminalMarker() :
-                                    BitmapDescriptorFactory
-                                            .fromAssetWithDpi("Icon_end.png"))
-                            .zIndex(10));
+            //终点
+            if (mRouteResult.getRouteLines().get(0).getTerminal() != null) {
+                overlayOptions
+                        .add((new MarkerOptions())
+                                .position(mRouteResult.getRouteLines().get(0).getTerminal().getLocation())
+                                .icon(getTerminalMarker() != null ? getTerminalMarker() :
+                                        BitmapDescriptorFactory
+                                                .fromAssetWithDpi("Icon_end.png"))
+                                .zIndex(10));
+            }
         }
 
         for (int i = 0; i < routeLinesList.size(); i++) {

@@ -32,7 +32,6 @@ public class UserHelp {
 
     //---------------------------------------------------------------------------------------------
 
-    public static String SHARE_USER_HELP = "share_user_help";
     public static String username = "";
     public static String password = "";
 
@@ -47,13 +46,28 @@ public class UserHelp {
             public void resultListener(String result, int code, Map<String, List<String>> header) {
                 if (code == 200) {
                     List<String> session = header.get("SESSION");
+
                     if (session != null && session.size() > 0) {
                         Session = session.get(0);
+
+                        if (listener == null) {
+                            return;
+                        }
+
                         listener.succeed("Ok");
                     } else {
+
+                        if (listener == null) {
+                            return;
+                        }
+
                         listener.error(-2);
                     }
                 } else {
+                    if (listener == null) {
+                        return;
+                    }
+
                     listener.error(code);
                 }
             }
@@ -90,11 +104,10 @@ public class UserHelp {
     public void setUserPoint(UserPointData data, RestClient.OnResultListener<String> listener) {
         RestClient restClient = new RestClient();
         restClient
-                .addHeaderParams("point_describe", data.getPoint_describe())
-                .addHeaderParams("latitude", String.valueOf(data.getLatitude()))
-                .addHeaderParams("longitude", String.valueOf(data.getLongitude()))
-                .addHeaderParams("use_time_start", data.getUse_time_start())
-                .addHeaderParams("use_time_end", data.getUse_time_end());
+                .addHeaderParams("home_latitude", String.valueOf(data.getHome_latitude()))
+                .addHeaderParams("home_longitude", String.valueOf(data.getHome_longitude()))
+                .addHeaderParams("company_latitude", String.valueOf(data.getCompany_latitude()))
+                .addHeaderParams("company_longitude", String.valueOf(data.getCompany_longitude()));
         RestClient.loginOperation(RestClient.POST, Session, USER_POINT, restClient, listener);
     }
 
@@ -112,24 +125,23 @@ public class UserHelp {
         RestClient.loginOperation(RestClient.GET, Session, USER_INFO, new RestClient(), listener);
     }
 
+    public void getUserPoint(RestClient.OnResultListener<UserPointData> listener) {
+        RestClient restClient = new RestClient();
+        RestClient.loginOperation(RestClient.GET, Session, USER_POINT, restClient, listener);
+    }
+
     public void getUserCarInfo(String License, RestClient.OnResultListener<List<UserCarInfoData>> listener) {
         RestClient restClient = new RestClient();
-        if (listener != null && !License.equals("")) {
+        if (listener != null && License != null && !License.equals("")) {
             restClient.addUrlParams("license", License);
         }
         RestClient.loginOperation(RestClient.GET, Session, USER_CAR_INFO, restClient, listener);
     }
 
-    public void getUserPoint(RestClient.OnResultListener<List<UserPointData>> listener) {
-        RestClient restClient = new RestClient();
-        RestClient.loginOperation(RestClient.GET, Session, USER_POINT, restClient, listener);
-    }
-
     //--------------------------------------DELETE--------------------------------------------------
 
-    public void delUserPoint(String describe, RestClient.OnResultListener<String> listener) {
+    public void delUserPoint(RestClient.OnResultListener<String> listener) {
         RestClient restClient = new RestClient();
-        restClient.addUrlParams("describe", describe);
         RestClient.loginOperation(RestClient.DELETE, Session, USER_POINT, restClient, listener);
     }
 

@@ -52,8 +52,10 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
     @Override
     public void onBindViewHolder(BaseItem2LineHolder holder, final int position) {
         BaseItem2LineData itemData = list.get(position);
-        holder.icoLeft.setImageResource(itemData.icoLeft);
-        holder.icoLeft.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
+        if (itemData.icoLeft != 0) {
+            holder.icoLeft.setImageResource(itemData.icoLeft);
+            holder.icoLeft.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
+        }
         holder.title.setText(itemData.title);
         holder.tip.setText(itemData.tip);
         if (itemData.icoRight != 0) {
@@ -63,6 +65,12 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
             holder.icoRight.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
         } else {
             holder.rightLayout.setVisibility(View.GONE);
+        }
+
+        if (itemData.isDivider) {
+            holder.divider.setVisibility(View.VISIBLE);
+        }else {
+            holder.divider.setVisibility(View.GONE);
         }
 
         if (position == focusItemIndex) {
@@ -98,6 +106,8 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
         public TextView title;
         @Bind(R.id.tip)
         public TextView tip;
+        @Bind(R.id.divider)
+        public View divider;
         @Bind(R.id.tipRight)
         public TextView tipRight;
         @Bind(R.id.icoRight)

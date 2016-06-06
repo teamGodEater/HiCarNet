@@ -35,9 +35,10 @@ import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Fragment.DrawerFragment;
 import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
 import teamgodeater.hicarnet.Help.LocationHelp;
+import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
 import teamgodeater.hicarnet.Help.UserHelp;
 import teamgodeater.hicarnet.Help.Utils;
-import teamgodeater.hicarnet.Interface.OnReceiverObserve;
+import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
 import teamgodeater.hicarnet.LaunchMoudle.LaunchFragment;
 import teamgodeater.hicarnet.R;
 
@@ -54,7 +55,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
 
 
     BDLocation myLocation;
-    OnReceiverObserve receiverObserve;
+    OnLocReceiverObserve receiverObserve;
     SDKReceiver mapSdkReceiver;
 
     @Override
@@ -73,12 +74,11 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         registerReceiver();
         //加载本地数据
         loadLocalData();
-        //加载用户数据
 
     }
 
     private void loadLocalData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(UserHelp.SHARE_USER_HELP, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesHelp.CLIENT_INFO, MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
         String password = sharedPreferences.getString("password", "");
         String session = sharedPreferences.getString("session", "");
@@ -86,7 +86,6 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         UserHelp.password = password;
         UserHelp.Session = session;
     }
-
 
     @Override
     protected void onResume() {
@@ -124,7 +123,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     /**
      * 添加数据观察者
      */
-    public void setReceiverObserve(OnReceiverObserve observe) {
+    public void setLocReceiverObserve(OnLocReceiverObserve observe) {
         receiverObserve = observe;
     }
 

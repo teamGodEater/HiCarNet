@@ -22,9 +22,9 @@ public class RoutePlanSearchHelp implements OnGetRoutePlanResultListener {
     private final ManageActivity manageActivity;
     private final RoutePlanSearch routePlanSearch;
     private final OnDrivingRouteListener resultListener;
-
     public final static int Error_No_Net = 20001, Error_No_Loc = 20002,
             Error_No_Result = 20003, Error_Cant_Request = 20006;
+    private PlanNode mFrom;
 
     public interface OnDrivingRouteListener {
         void onSucceed(DrivingRouteResult route);
@@ -39,6 +39,11 @@ public class RoutePlanSearchHelp implements OnGetRoutePlanResultListener {
         routePlanSearch.setOnGetRoutePlanResultListener(this);
     }
 
+
+    public void setmFrom(PlanNode mFrom) {
+        this.mFrom = mFrom;
+    }
+
     public void requestRoutePlanSearch(PlanNode to) {
 
         BDLocation myLocation = manageActivity.getMyLocation();
@@ -46,15 +51,21 @@ public class RoutePlanSearchHelp implements OnGetRoutePlanResultListener {
             resultListener.onErrorRoute(Error_No_Net);
             return;
         }
-        if (myLocation == null) {
+
+        if (myLocation == null && mFrom == null) {
             resultListener.onErrorRoute(Error_No_Loc);
             return;
         }
 
-        PlanNode from = PlanNode.withLocation(Utils.getLatLng(myLocation));
+        PlanNode from;
+        if (mFrom == null)
+            from = PlanNode.withLocation(Utils.getLatLng(myLocation));
+        else
+            from = mFrom;
 
         DrivingRoutePlanOption option = new DrivingRoutePlanOption();
         option.trafficPolicy(DrivingRoutePlanOption.DrivingTrafficPolicy.ROUTE_PATH_AND_TRAFFIC);
+
         option.from(from).to(to);
 
         boolean b = routePlanSearch.drivingSearch(option);

@@ -20,11 +20,42 @@ public class UserPointData {
     private String create_data;
     private int id;
     private int user_id;
-    private double latitude;
-    private double longitude;
-    private String point_describe;
-    private String use_time_end;
-    private String use_time_start;
+    private double company_latitude;
+    private double company_longitude;
+    private double home_latitude;
+    private double home_longitude;
+
+    public double getCompany_latitude() {
+        return company_latitude;
+    }
+
+    public void setCompany_latitude(double company_latitude) {
+        this.company_latitude = company_latitude;
+    }
+
+    public double getCompany_longitude() {
+        return company_longitude;
+    }
+
+    public void setCompany_longitude(double company_longitude) {
+        this.company_longitude = company_longitude;
+    }
+
+    public double getHome_latitude() {
+        return home_latitude;
+    }
+
+    public void setHome_latitude(double home_latitude) {
+        this.home_latitude = home_latitude;
+    }
+
+    public double getHome_longitude() {
+        return home_longitude;
+    }
+
+    public void setHome_longitude(double home_longitude) {
+        this.home_longitude = home_longitude;
+    }
 
     public String getCreate_data() {
         return create_data;
@@ -42,45 +73,6 @@ public class UserPointData {
         this.id = id;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getPoint_describe() {
-        return point_describe;
-    }
-
-    public void setPoint_describe(String point_describe) {
-        this.point_describe = point_describe;
-    }
-
-    public String getUse_time_end() {
-        return use_time_end;
-    }
-
-    public void setUse_time_end(String use_time_end) {
-        this.use_time_end = use_time_end;
-    }
-
-    public String getUse_time_start() {
-        return use_time_start;
-    }
-
-    public void setUse_time_start(String use_time_start) {
-        this.use_time_start = use_time_start;
-    }
 
     public int getUser_id() {
         return user_id;

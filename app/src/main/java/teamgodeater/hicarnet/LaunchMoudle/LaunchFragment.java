@@ -3,6 +3,7 @@ package teamgodeater.hicarnet.LaunchMoudle;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,21 +11,33 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import teamgodeater.hicarnet.Data.UserCarInfoData;
+import teamgodeater.hicarnet.Data.UserInfoData;
+import teamgodeater.hicarnet.Data.UserPointData;
 import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
+import teamgodeater.hicarnet.Help.ConditionTask;
+import teamgodeater.hicarnet.Help.UserHelp;
+import teamgodeater.hicarnet.Help.Utils;
+import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
 import teamgodeater.hicarnet.MainModle.Fragment.MainFragment;
+import teamgodeater.hicarnet.MainModle.Help.RoutePlanSearchHelp;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.RestClient.RestClient;
 
 /**
  * Created by G on 2016/5/19 0019.
  */
-public class LaunchFragment extends SupportToolbarFragment {
+public class LaunchFragment extends SupportToolbarFragment implements OnLocReceiverObserve {
 
 
     @Bind(R.id.tip)
@@ -38,6 +51,11 @@ public class LaunchFragment extends SupportToolbarFragment {
     @Bind(R.id.brandContain)
     RelativeLayout brandContain;
 
+    private UserInfoData userInfoData = null;
+    private List<UserCarInfoData> userCarInfoDatas = null;
+    private UserPointData userPointData = null;
+    private DrivingRouteResult resultRoute = null;
+    private ConditionTask routeSearchTask;
 
     @Override
     protected SupportWindowsParams onCreateSupportViewParams() {
@@ -50,7 +68,6 @@ public class LaunchFragment extends SupportToolbarFragment {
         return params;
     }
 
-
     private String getDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
         return format.format(new Date());
@@ -60,33 +77,48 @@ public class LaunchFragment extends SupportToolbarFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        Logger.d("onDestroyView ");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Logger.d("onDestroy ");
+        routeSearchTask.cancle();
+        routeSearchTask = null;
+        if (routePlanSearchHelp != null)
+            routePlanSearchHelp.onDestroy();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Logger.d("onDetach ");
-    }
+    private RoutePlanSearchHelp routePlanSearchHelp = null;
+
+    Runnable searchRoute = new Runnable() {
+        @Override
+        public void run() {
+            routePlanSearchHelp = new RoutePlanSearchHelp(manageActivity, new RoutePlanSearchHelp.OnDrivingRouteListener() {
+                @Override
+                public void onSucceed(DrivingRouteResult route) {
+                    resultRoute = route;
+                }
+
+                @Override
+                public void onErrorRoute(int code) {
+
+                }
+            });
+        }
+    };
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Logger.d("onResume ");
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        routeSearchTask = new ConditionTask(2, searchRoute);
+        manageActivity.setLocReceiverObserve(this);
+        loadRemoteData();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-
         super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this,rootContain);
+        ButterKnife.bind(this, rootContain);
 
         tip.setText(getDate() + "\n让出行更美好");
 
@@ -98,13 +130,78 @@ public class LaunchFragment extends SupportToolbarFragment {
                 if (manageActivity != null) {
                     destroySelf();
                     manageActivity.createMapView();
-                    manageActivity.switchFragment(MainFragment.newInstance(1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ), false);
+                    MainFragment to = new MainFragment();
+                    to.setUserData(userInfoData, userCarInfoDatas, userPointData,resultRoute);
+                    manageActivity.switchFragment(to, false);
                 }
             }
         }, 5000);
 
         Logger.d("create ");
         return rootContain;
+    }
+
+    private void loadRemoteData() {
+        if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
+            return;
+        }
+
+        if (UserHelp.Session == null) {
+            if (!UserHelp.username.equals("") && !UserHelp.password.equals("")) {
+                new UserHelp().login(new RestClient.OnResultListener<String>() {
+                    @Override
+                    public void succeed(String bean) {
+                        loadUserData();
+                    }
+                    @Override
+                    public void error(int code) {
+                    }
+                });
+            }
+        } else {
+            loadUserData();
+        }
+    }
+
+
+    private void loadUserData() {
+        UserHelp userHelp = new UserHelp();
+        userHelp.getUserInfo(new RestClient.OnResultListener<UserInfoData>() {
+            @Override
+            public void succeed(UserInfoData bean) {
+                userInfoData = bean;
+            }
+
+            @Override
+            public void error(int code) {
+
+            }
+        });
+
+        userHelp.getUserCarInfo(null, new RestClient.OnResultListener<List<UserCarInfoData>>() {
+            @Override
+            public void succeed(List<UserCarInfoData> bean) {
+                userCarInfoDatas = bean;
+            }
+
+            @Override
+            public void error(int code) {
+
+            }
+        });
+
+        userHelp.getUserPoint(new RestClient.OnResultListener<UserPointData>() {
+            @Override
+            public void succeed(UserPointData bean) {
+                userPointData = bean;
+                routeSearchTask.excute();
+            }
+
+            @Override
+            public void error(int code) {
+
+            }
+        });
     }
 
     @Override
@@ -128,4 +225,10 @@ public class LaunchFragment extends SupportToolbarFragment {
 
     }
 
+    @Override
+    public void onReceiveLoc(BDLocation loc) {
+        if (manageActivity.getMyLocation() != null) {
+            routeSearchTask.excuteOnce();
+        }
+    }
 }

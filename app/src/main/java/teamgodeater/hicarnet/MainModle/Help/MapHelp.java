@@ -33,7 +33,8 @@ public class MapHelp {
     public MapView mainMapView;
     public final BaiduMap map;
     BDLocation myLoc;
-    private Marker myLocMarker;
+    private Marker myLocMarker = null;
+    private ArrayList<BitmapDescriptor> glfLst = null;
 
     public MapHelp(ManageActivity manageActivity) {
         this.manageActivity = manageActivity;
@@ -126,19 +127,25 @@ public class MapHelp {
 
     public void requestLocMarket() {
         if (myLocMarker == null) {
+            if (glfLst == null)
+                glfLst = getGlfLst();
             OverlayOptions ooD = new MarkerOptions().position(Utils.getLatLng(myLoc))
-                    .icons(getGlfLst()).zIndex(0).period(10);
+                    .icons(glfLst).zIndex(0).period(10);
             myLocMarker = (Marker) (map.addOverlay(ooD));
-        }else{
+        } else {
             myLocMarker.setPosition(Utils.getLatLng(myLoc));
         }
     }
 
-    public void setLocVisiable(boolean visiable) {
-        if (myLocMarker != null) {
-            myLocMarker.setVisible(visiable);
+    public void setLocVisible(boolean visible) {
+        if (visible) {
+            requestLocMarket();
+        } else {
+            myLocMarker.remove();
+            myLocMarker = null;
         }
     }
+
     private ArrayList<BitmapDescriptor> getGlfLst() {
         ArrayList<BitmapDescriptor> gifList = new ArrayList<>();
         gifList.add(BitmapDescriptorFactory.fromResource(R.drawable.loc_0));

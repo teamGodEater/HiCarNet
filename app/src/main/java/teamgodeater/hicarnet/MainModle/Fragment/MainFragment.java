@@ -30,15 +30,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
+import teamgodeater.hicarnet.Data.UserCarInfoData;
+import teamgodeater.hicarnet.Data.UserInfoData;
+import teamgodeater.hicarnet.Data.UserPointData;
 import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
 import teamgodeater.hicarnet.Help.ConditionTask;
 import teamgodeater.hicarnet.Help.Utils;
-import teamgodeater.hicarnet.Interface.OnReceiverObserve;
+import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
 import teamgodeater.hicarnet.MainModle.Help.BottomHelp;
-import teamgodeater.hicarnet.MainModle.Help.DrivingRouteOverlay;
 import teamgodeater.hicarnet.MainModle.Help.MapHelp;
-import teamgodeater.hicarnet.MainModle.Help.RouteTrafficHelp;
+import teamgodeater.hicarnet.MainModle.Help.RouteHelp;
 import teamgodeater.hicarnet.MainModle.Help.SearchHelp;
+import teamgodeater.hicarnet.MainModle.MapOverlay.DrivingRouteOverlay;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 
@@ -46,7 +49,8 @@ import teamgodeater.hicarnet.Widget.RippleBackGroundView;
  * Created by G on 2016/5/20 0020.
  */
 public class MainFragment extends SupportToolbarFragment
-        implements View.OnClickListener, BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapTouchListener, OnReceiverObserve, SearchHelp.OnSearchRouteListener, SearchView.OnBackClickListener, BaseItem2LineAdapter.OnItemClickListener, DrivingRouteOverlay.OnPolyLineChangeListener {
+        implements View.OnClickListener, BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapTouchListener
+        , OnLocReceiverObserve, SearchHelp.OnSearchRouteListener, SearchView.OnBackClickListener {
 
 
     public static final int TYPE_LAUNCHER = 1;
@@ -70,14 +74,10 @@ public class MainFragment extends SupportToolbarFragment
     SearchHelp searchHelp;
     BottomHelp bottomHelp;
     private DrivingRouteOverlay routeOverlay;
-
-    public static MainFragment newInstance(int invokeType) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("invokeType", invokeType);
-        MainFragment mainFragment = new MainFragment();
-        mainFragment.setArguments(bundle);
-        return mainFragment;
-    }
+    private UserInfoData userInfoData;
+    private List<UserCarInfoData> userCarInfoDatas;
+    private UserPointData userPointData;
+    private DrivingRouteResult resultRoute;
 
     //--------------------------------------Parent Implement Begin----------------------------------
 
@@ -112,12 +112,10 @@ public class MainFragment extends SupportToolbarFragment
         searchView.setOnBackClickListener(this);
         //设置bottomHelp
         bottomHelp = new BottomHelp(manageActivity, bottomViewPager, pagerSelect1, pagerSelect2);
+        setFirstBottomPagerDefult();
         //添加地图
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rootContain.addView(manageActivity.getMainMapView(), 0, params);
-//        //拿取bundle参数
-//        int type = getArguments().getInt("invokeType");
-//        Logger.d("type " + type);
         //创建地图管理者
         mapHelp = new MapHelp(manageActivity);
         //隐藏地图控制按钮
@@ -138,6 +136,7 @@ public class MainFragment extends SupportToolbarFragment
         return rootContain;
     }
 
+
     @Override
     protected void onOnceGlobalLayoutListen() {
         Logger.d("onOnceGlobalLayoutListen");
@@ -147,7 +146,7 @@ public class MainFragment extends SupportToolbarFragment
     @Override
     public void onResume() {
         super.onResume();
-        manageActivity.setReceiverObserve(this);
+        manageActivity.setLocReceiverObserve(this);
         manageActivity.onMapResume();
     }
 
@@ -191,7 +190,7 @@ public class MainFragment extends SupportToolbarFragment
             }
             boolean zoomLocResult = mapHelp.zoomToMyLoc(getMapCenterPoint());
             if (!zoomLocResult) {
-                Toast.makeText(Utils.getContext(),"定位失败 请检查你的网络和Gps设置后重试",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Utils.getContext(), "定位失败 请检查你的网络和Gps设置后重试", Toast.LENGTH_SHORT).show();
             }
             Logger.d("zoomLocResult  " + zoomLocResult);
         }
@@ -247,7 +246,7 @@ public class MainFragment extends SupportToolbarFragment
 
     @Override
     public void onRouteResult(DrivingRouteResult result) {
-        if (!RouteTrafficHelp.isLegalRoute(result)) {
+        if (!RouteHelp.isLegalRoute(result)) {
             Toast.makeText(Utils.getContext(), "错误: 获取结果无效", Toast.LENGTH_SHORT).show();
             searchView.close();
             return;
@@ -257,7 +256,7 @@ public class MainFragment extends SupportToolbarFragment
         for (DrivingRouteLine line : result.getRouteLines()) {
             BaseItem2LineData item = new BaseItem2LineData();
             item.icoLeft = R.drawable.ic_location;
-            item.title = RouteTrafficHelp.getTrafficSuggest(line);
+            item.title = RouteHelp.getTrafficSuggest(line);
             item.tipRight = "查看";
             item.icoRight = R.drawable.ic_keyboard_arrow_right;
             String dis;
@@ -285,21 +284,38 @@ public class MainFragment extends SupportToolbarFragment
         }
 
         BaseItem2LineAdapter adapter = new BaseItem2LineAdapter(list);
-        adapter.setOnClickListener(this);
+        adapter.setOnClickListener(new BaseItem2LineAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(BaseItem2LineData data, int position) {
+                if (routeOverlay != null) {
+                    routeOverlay.changeFocusPolyLine(position);
+                    RecyclerView.Adapter rvAdapter = bottomHelp.getRvAdapter(1);
+                    if (rvAdapter instanceof BaseItem2LineAdapter) {
+                        ((BaseItem2LineAdapter) rvAdapter).setFocusItem(position);
+                        routeOverlay.zoomToSpan();
+                    }
+                }
+            }
+        });
         bottomHelp.setRvAdapter(1, adapter);
-        mapHelp.setLocVisiable(false);
+        mapHelp.setLocVisible(false);
 
-        if (routeOverlay == null) {
-            routeOverlay = new DrivingRouteOverlay(mapHelp.map);
-            routeOverlay.setZoomWH(rootContain.getWidth() - Utils.dp2Px(32)
-                    , bottomViewPager.getTop() - searchView.getBottom());
-            mapHelp.map.setOnPolylineClickListener(routeOverlay);
-        }
+        existRouteOverlay();
+        routeOverlay.setShowMarket(true);
         routeOverlay.setData(result);
-        routeOverlay.setOnPolyLineChangeListener(this);
+        routeOverlay.setOnPolyLineChangeListener(new DrivingRouteOverlay.OnPolyLineChangeListener() {
+            @Override
+            public void onChangePolyLine(int index) {
+                Logger.d("onChangePolyLine index " + index);
+                RecyclerView.Adapter rvAdapter = bottomHelp.getRvAdapter(1);
+                if (rvAdapter instanceof BaseItem2LineAdapter) {
+                    ((BaseItem2LineAdapter) rvAdapter).setFocusItem(index);
+                    routeOverlay.zoomToSpan();
+                }
+            }
+        });
         routeOverlay.addToMap();
         routeOverlay.zoomToSpan();
-
     }
 
     @Override
@@ -322,40 +338,115 @@ public class MainFragment extends SupportToolbarFragment
             routeOverlay.removeFromMap();
         }
         bottomHelp.setRvAdapter(1, null);
-        mapHelp.setLocVisiable(true);
+        mapHelp.setLocVisible(true);
         mapHelp.zoomToMyLoc(getMapCenterPoint());
     }
 
-    //------------------------------------RoutePlanRvItemClickListener------------------------------
-
-    @Override
-    public void onClick(BaseItem2LineData data, int position) {
-        if (routeOverlay != null) {
-            routeOverlay.changeFocusPolyLine(position);
-            RecyclerView.Adapter rvAdapter = bottomHelp.getRvAdapter(1);
-            if (rvAdapter instanceof BaseItem2LineAdapter) {
-                ((BaseItem2LineAdapter) rvAdapter).setFocusItem(position);
-                routeOverlay.zoomToSpan();
-            }
-        }
-    }
-
-    //---------------------------------RoutePolyLineChangeListener----------------------------------
-
-    @Override
-    public void onChangePolyLine(int index) {
-        Logger.d("onChangePolyLine index " + index);
-        RecyclerView.Adapter rvAdapter = bottomHelp.getRvAdapter(1);
-        if (rvAdapter instanceof BaseItem2LineAdapter) {
-            ((BaseItem2LineAdapter) rvAdapter).setFocusItem(index);
-            routeOverlay.zoomToSpan();
-        }
-    }
 
     //---------------------------------------Implements Eed-----------------------------------------
 
 
     //----------------------------------------Method Begin------------------------------------------
+
+
+    private void setFirstBottomPagerDefult() {
+        List<BaseItem2LineData> datas = new ArrayList<>();
+
+        BaseItem2LineData trafficData = null;
+        trafficData = getFBPTrafficData();
+        if (trafficData != null) {
+            datas.add(trafficData);
+        }
+
+
+        BaseItem2LineData carData = null;
+
+        getFBPCarInfoData();
+
+    }
+
+    public BaseItem2LineData getFBPCarInfoData() {
+        BaseItem2LineData data = null;
+        if (userCarInfoDatas == null) {
+            // 获取数据失败
+
+        } else if (userCarInfoDatas.size() == 0) {
+            //没有设置车辆信息
+
+        }else {
+            //成功获取
+
+        }
+        return data;
+    }
+
+    private BaseItem2LineData getFBPTrafficData() {
+        BaseItem2LineData trafficData = null;
+
+        if (resultRoute == null && userPointData == null) {
+            //获取信息失败
+        } else if (userCarInfoDatas.size() == 0) {
+            //没有设置
+
+        }else {
+            //成功获取
+
+        }
+
+        if (RouteHelp.isLegalRoute(resultRoute)) {
+            int maxTraffic = 0;
+
+            for (DrivingRouteLine line : resultRoute.getRouteLines()) {
+                int trafficTime = RouteHelp.getTrafficDis(line);
+                if (trafficTime > maxTraffic) {
+                    maxTraffic = trafficTime;
+                }
+            }
+
+            if (maxTraffic > 10) {
+                trafficData = new BaseItem2LineData();
+                trafficData.icoLeft = R.drawable.ic_traffic;
+                trafficData.title = "家 - 公司 出现拥堵";
+                String dis = "";
+                if (maxTraffic < 1000) {
+                    dis = maxTraffic + " m";
+                } else {
+                    DecimalFormat format = new DecimalFormat("#.0");
+                    dis = format.format((maxTraffic / 1000f)) + " Km";
+                }
+                trafficData.tip = "请尽量避免,拥堵 " + dis;
+                trafficData.icoRight = R.drawable.ic_keyboard_arrow_right;
+                trafficData.tipRight = "规划新路线";
+                trafficData.isDivider = true;
+                trafficData.tag = "获取成功";
+            }
+
+        } else if (userPointData == null || userPointData.getHome_latitude() == 0) {
+            trafficData = new BaseItem2LineData();
+            trafficData.icoLeft = R.drawable.ic_traffic;
+            trafficData.title = "让我更懂你";
+            trafficData.tip = "设置常用路线 避免拥堵";
+            trafficData.tipRight = "去设置";
+            trafficData.icoRight = R.drawable.ic_keyboard_arrow_right;
+            trafficData.isDivider = true;
+            trafficData.tag = "没有设置";
+
+        } else if (resultRoute == null) {
+
+            trafficData = new BaseItem2LineData();
+            trafficData.icoLeft = R.drawable.ic_traffic;
+            trafficData.title = "获取路况数据失败";
+            trafficData.tip = "点击刷新";
+            trafficData.tipRight = "刷新";
+            trafficData.icoRight = R.drawable.ic_keyboard_arrow_right;
+            trafficData.isDivider = true;
+            trafficData.tag = "获取失败";
+
+        }
+        return trafficData;
+    }
+
+
 
     private void createFirstLocTask() {
         fristLocTask = new ConditionTask(3, new Runnable() {
@@ -372,6 +463,17 @@ public class MainFragment extends SupportToolbarFragment
         Logger.d(rootContain.getHeight() + "  " + bottomViewPager.getTop());
         return new Point(rootContain.getWidth() / 2
                 , searchView.getBottom() + (bottomViewPager.getTop() - searchView.getBottom()) / 2);
+    }
+
+    private void existRouteOverlay() {
+        if (routeOverlay == null) {
+            routeOverlay = new DrivingRouteOverlay(mapHelp.map);
+            routeOverlay.setZoomWH(rootContain.getWidth() - Utils.dp2Px(32)
+                    , bottomViewPager.getTop() - searchView.getBottom());
+            mapHelp.map.setOnPolylineClickListener(routeOverlay);
+        } else {
+            routeOverlay.removeFromMap();
+        }
     }
 
     /**
@@ -399,6 +501,16 @@ public class MainFragment extends SupportToolbarFragment
     }
 
 
+    public void setUserData(UserInfoData userInfoData
+            , List<UserCarInfoData> userCarInfoDatas, UserPointData userPointData, DrivingRouteResult resultRoute) {
+        this.userInfoData = userInfoData;
+        this.userCarInfoDatas = userCarInfoDatas;
+        this.userPointData = userPointData;
+        this.resultRoute = resultRoute;
+    }
+
+
     //----------------------------------------Method End------------------------------------------
+
 
 }

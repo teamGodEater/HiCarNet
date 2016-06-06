@@ -5,7 +5,6 @@
     <solid android:color="@color/colorBackground"></solid>
 
     <!-- 矩形的圆角半径 -->
-    <corners android:topLeftRadius="3dp" />
-    <corners android:topRightRadius="3dp" />
+    <corners android:topLeftRadius="4dp" android:topRightRadius="4dp" />
 
 </shape>

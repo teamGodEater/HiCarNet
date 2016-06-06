@@ -10,16 +10,9 @@ import java.util.List;
  * Created by G on 2016/5/31 0031.
  */
 
-public class RouteTrafficHelp {
+public class RouteHelp {
     public static String getTrafficSuggest(DrivingRouteLine line) {
-        List<DrivingRouteLine.DrivingStep> allStep = line.getAllStep();
-
-        int trafficSlowly = 0;
-        for (DrivingRouteLine.DrivingStep step : allStep) {
-            if (step.getTrafficList() != null && step.getTrafficList()[0] >= 2) {
-                trafficSlowly += step.getDistance();
-            }
-        }
+        int trafficSlowly = getTrafficDis(line);
 
         if (trafficSlowly <= 5) {
             return "畅通路线";
@@ -34,6 +27,17 @@ public class RouteTrafficHelp {
             return "拥堵 " + dis;
         }
 
+    }
+
+    public static int getTrafficDis(DrivingRouteLine line){
+        List<DrivingRouteLine.DrivingStep> allStep = line.getAllStep();
+        int trafficSlowly = 0;
+        for (DrivingRouteLine.DrivingStep step : allStep) {
+            if (step.getTrafficList() != null && step.getTrafficList()[0] >= 2) {
+                trafficSlowly += step.getDistance();
+            }
+        }
+        return trafficSlowly;
     }
 
     public static boolean isLegalRoute(DrivingRouteResult routeLine) {

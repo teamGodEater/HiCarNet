@@ -7,6 +7,7 @@ package teamgodeater.hicarnet.Help;
 public class ConditionTask {
     int times;
     Runnable runnable;
+    boolean isCancle = false;
 
     public ConditionTask(int t, Runnable r) {
         times = t;
@@ -15,7 +16,7 @@ public class ConditionTask {
 
     public void excute() {
         times--;
-        if (times == 0) {
+        if (times == 0 && !isCancle) {
             runnable.run();
         }
     }
@@ -25,10 +26,13 @@ public class ConditionTask {
         if (isFrist) {
             times--;
             isFrist = false;
-            if (times == 0) {
+            if (times == 0 && !isCancle) {
                 runnable.run();
             }
         }
     }
 
+    public void cancle() {
+        isCancle = true;
+    }
 }

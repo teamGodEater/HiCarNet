@@ -1,4 +1,4 @@
-package teamgodeater.hicarnet.MainModle.Help;
+package teamgodeater.hicarnet.MainModle.MapOverlay;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMap.OnPolylineClickListener;
@@ -90,15 +90,16 @@ public abstract class OverlayManager implements OnMarkerClickListener, OnPolylin
      * 将所有Overlay 从 地图上消除
      */
     public final void removeFromMap() {
-        if (mBaiduMap == null) {
+        if (mBaiduMap == null || mOverlayList == null || mOverlayList.size() <= 0) {
             return;
         }
+
         for (Overlay marker : mOverlayList) {
             marker.remove();
         }
+
         mOverlayOptionList.clear();
         mOverlayList.clear();
-
     }
 
     /**
@@ -114,7 +115,6 @@ public abstract class OverlayManager implements OnMarkerClickListener, OnPolylin
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Overlay overlay : mOverlayList) {
-            // polyline 中的点可能太多，只按marker 缩放
             if (overlay instanceof Polyline) {
                 Polyline polyline = (Polyline) overlay;
                 if (polyline.isFocus()) {

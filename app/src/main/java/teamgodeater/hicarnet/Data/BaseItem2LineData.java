@@ -10,5 +10,7 @@ public class BaseItem2LineData {
     public String title;
     public String tip;
     public String tipRight;
+    public String tag = "";
+    public boolean isDivider =  false;
     public boolean isClickAble = true;
 }

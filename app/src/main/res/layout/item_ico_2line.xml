@@ -70,6 +70,15 @@
         </LinearLayout>
     </LinearLayout>
 
+    <View
+        android:layout_marginLeft="72dp"
+        android:layout_gravity="bottom"
+        android:id="@+id/divider"
+        android:background="@color/colorBlack"
+        android:alpha="0.2"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
+
     <teamgodeater.hicarnet.Widget.RippleBackGroundView
         android:id="@+id/backGround"
         app:is_rounded="false"
