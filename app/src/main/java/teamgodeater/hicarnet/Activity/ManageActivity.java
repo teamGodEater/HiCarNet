@@ -35,11 +35,11 @@ import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Fragment.DrawerFragment;
 import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
 import teamgodeater.hicarnet.Help.LocationHelp;
+import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
-import teamgodeater.hicarnet.Help.UserHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
-import teamgodeater.hicarnet.LaunchMoudle.LaunchFragment;
+import teamgodeater.hicarnet.LoginModle.Fragment.LoginFragment;
 import teamgodeater.hicarnet.R;
 
 public class ManageActivity extends AppCompatActivity implements BDLocationListener {
@@ -68,7 +68,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         setContentView(R.layout.activity);
         ButterKnife.bind(this);
         FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-        beginTransaction.replace(R.id.MainContain, new LaunchFragment());
+        beginTransaction.replace(R.id.MainContain, new LoginFragment());
         beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).commit();
         //mapSdk状态
         registerReceiver();
@@ -79,12 +79,12 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
 
     private void loadLocalData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesHelp.CLIENT_INFO, MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "");
-        String password = sharedPreferences.getString("password", "");
-        String session = sharedPreferences.getString("session", "");
-        UserHelp.username = username;
-        UserHelp.password = password;
-        UserHelp.Session = session;
+        String username = sharedPreferences.getString(SharedPreferencesHelp.CLIENT_INFO_USERNAME, "admin");
+        String password = sharedPreferences.getString(SharedPreferencesHelp.CLIENT_INFO_PASSWORD, "root");
+        String session = sharedPreferences.getString(SharedPreferencesHelp.CLIENT_INFO_SESSION, "");
+        RestClientHelp.username = username;
+        RestClientHelp.password = password;
+        RestClientHelp.Session = session;
     }
 
     @Override

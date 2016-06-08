@@ -7,55 +7,34 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import teamgodeater.hicarnet.Data.UserCarInfoData;
-import teamgodeater.hicarnet.Data.UserInfoData;
-import teamgodeater.hicarnet.Data.UserPointData;
 import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
-import teamgodeater.hicarnet.Help.ConditionTask;
-import teamgodeater.hicarnet.Help.UserHelp;
+import teamgodeater.hicarnet.Help.RestClientHelp;
+import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
-import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
 import teamgodeater.hicarnet.MainModle.Fragment.MainFragment;
-import teamgodeater.hicarnet.MainModle.Help.RoutePlanSearchHelp;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.RestClient.RestClient;
 
 /**
  * Created by G on 2016/5/19 0019.
  */
-public class LaunchFragment extends SupportToolbarFragment implements OnLocReceiverObserve {
+public class LaunchFragment extends SupportToolbarFragment {
 
 
     @Bind(R.id.tip)
     TextView tip;
-    @Bind(R.id.brandLogo)
-    ImageView brandLogo;
-    @Bind(R.id.brandName)
-    TextView brandName;
-    @Bind(R.id.brandVersion)
-    TextView brandVersion;
     @Bind(R.id.brandContain)
     RelativeLayout brandContain;
-
-    private UserInfoData userInfoData = null;
-    private List<UserCarInfoData> userCarInfoDatas = null;
-    private UserPointData userPointData = null;
-    private DrivingRouteResult resultRoute = null;
-    private ConditionTask routeSearchTask;
 
     @Override
     protected SupportWindowsParams onCreateSupportViewParams() {
@@ -80,38 +59,8 @@ public class LaunchFragment extends SupportToolbarFragment implements OnLocRecei
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        routeSearchTask.cancle();
-        routeSearchTask = null;
-        if (routePlanSearchHelp != null)
-            routePlanSearchHelp.onDestroy();
-    }
-
-    private RoutePlanSearchHelp routePlanSearchHelp = null;
-
-    Runnable searchRoute = new Runnable() {
-        @Override
-        public void run() {
-            routePlanSearchHelp = new RoutePlanSearchHelp(manageActivity, new RoutePlanSearchHelp.OnDrivingRouteListener() {
-                @Override
-                public void onSucceed(DrivingRouteResult route) {
-                    resultRoute = route;
-                }
-
-                @Override
-                public void onErrorRoute(int code) {
-
-                }
-            });
-        }
-    };
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        routeSearchTask = new ConditionTask(2, searchRoute);
-        manageActivity.setLocReceiverObserve(this);
         loadRemoteData();
     }
 
@@ -131,7 +80,6 @@ public class LaunchFragment extends SupportToolbarFragment implements OnLocRecei
                     destroySelf();
                     manageActivity.createMapView();
                     MainFragment to = new MainFragment();
-                    to.setUserData(userInfoData, userCarInfoDatas, userPointData,resultRoute);
                     manageActivity.switchFragment(to, false);
                 }
             }
@@ -146,9 +94,9 @@ public class LaunchFragment extends SupportToolbarFragment implements OnLocRecei
             return;
         }
 
-        if (UserHelp.Session == null) {
-            if (!UserHelp.username.equals("") && !UserHelp.password.equals("")) {
-                new UserHelp().login(new RestClient.OnResultListener<String>() {
+        if (RestClientHelp.Session.equals("")) {
+            if (!RestClientHelp.username.equals("") && !RestClientHelp.password.equals("")) {
+                new RestClientHelp().login(new RestClient.OnResultListener<String>() {
                     @Override
                     public void succeed(String bean) {
                         loadUserData();
@@ -165,43 +113,9 @@ public class LaunchFragment extends SupportToolbarFragment implements OnLocRecei
 
 
     private void loadUserData() {
-        UserHelp userHelp = new UserHelp();
-        userHelp.getUserInfo(new RestClient.OnResultListener<UserInfoData>() {
-            @Override
-            public void succeed(UserInfoData bean) {
-                userInfoData = bean;
-            }
-
-            @Override
-            public void error(int code) {
-
-            }
-        });
-
-        userHelp.getUserCarInfo(null, new RestClient.OnResultListener<List<UserCarInfoData>>() {
-            @Override
-            public void succeed(List<UserCarInfoData> bean) {
-                userCarInfoDatas = bean;
-            }
-
-            @Override
-            public void error(int code) {
-
-            }
-        });
-
-        userHelp.getUserPoint(new RestClient.OnResultListener<UserPointData>() {
-            @Override
-            public void succeed(UserPointData bean) {
-                userPointData = bean;
-                routeSearchTask.excute();
-            }
-
-            @Override
-            public void error(int code) {
-
-            }
-        });
+        UserDataHelp.getUserPointData(null);
+        UserDataHelp.getUserCarInfoDatas(null);
+        UserDataHelp.getUserInfoData(null);
     }
 
     @Override
@@ -225,10 +139,4 @@ public class LaunchFragment extends SupportToolbarFragment implements OnLocRecei
 
     }
 
-    @Override
-    public void onReceiveLoc(BDLocation loc) {
-        if (manageActivity.getMyLocation() != null) {
-            routeSearchTask.excuteOnce();
-        }
-    }
 }

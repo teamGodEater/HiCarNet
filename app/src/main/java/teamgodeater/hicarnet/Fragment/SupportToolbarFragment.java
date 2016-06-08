@@ -273,7 +273,6 @@ public abstract class SupportToolbarFragment extends Fragment {
         } else {
             View view = tGetSimpleView(Utils.getDrawableWithColorFromRes(R.drawable.ic_menu, Color.WHITE), 0.87f);
             tAddLeftContainView(view, "drawer");
-
         }
 
     }

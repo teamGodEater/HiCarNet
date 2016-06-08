@@ -1,5 +1,7 @@
 package teamgodeater.hicarnet.Data;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by G on 2016/5/29 0029.
  */
@@ -11,6 +13,7 @@ public class BaseItem2LineData {
     public String tip;
     public String tipRight;
     public String tag = "";
+    public Bitmap icoLeftBitmap = null ;
     public boolean isDivider =  false;
     public boolean isClickAble = true;
 }

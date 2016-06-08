@@ -34,7 +34,8 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name="teamgodeater.hicarnet.Activity.ManageActivity">
+        <activity android:name="teamgodeater.hicarnet.Activity.ManageActivity"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

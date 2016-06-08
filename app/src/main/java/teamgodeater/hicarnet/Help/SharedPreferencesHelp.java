@@ -5,6 +5,10 @@ package teamgodeater.hicarnet.Help;
  */
 
 public class SharedPreferencesHelp {
-    public static final String CLIENT_INFO = "client_info";
-    public static final String USER_SET = "user_setting";
+    public static final String CLIENT_INFO = "CLIENT_INFO";
+    public static final String CLIENT_INFO_USERNAME = "CLIENT_INFO_USERNAME";
+    public static final String CLIENT_INFO_PASSWORD = "CLIENT_INFO_PASSWORD";
+    public static final String CLIENT_INFO_SESSION = "CLIENT_INFO_SESSION";
+    public static final String USER_SET = "USER_SET";
+    public static final String USER_SET_DEFAULT_CAT = "USER_SET_DEFAULT_CAT";
 }

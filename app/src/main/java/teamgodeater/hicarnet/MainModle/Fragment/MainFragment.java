@@ -30,11 +30,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
-import teamgodeater.hicarnet.Data.UserCarInfoData;
-import teamgodeater.hicarnet.Data.UserInfoData;
-import teamgodeater.hicarnet.Data.UserPointData;
 import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
 import teamgodeater.hicarnet.Help.ConditionTask;
+import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
 import teamgodeater.hicarnet.MainModle.Help.BottomHelp;
@@ -74,10 +72,6 @@ public class MainFragment extends SupportToolbarFragment
     SearchHelp searchHelp;
     BottomHelp bottomHelp;
     private DrivingRouteOverlay routeOverlay;
-    private UserInfoData userInfoData;
-    private List<UserCarInfoData> userCarInfoDatas;
-    private UserPointData userPointData;
-    private DrivingRouteResult resultRoute;
 
     //--------------------------------------Parent Implement Begin----------------------------------
 
@@ -112,7 +106,7 @@ public class MainFragment extends SupportToolbarFragment
         searchView.setOnBackClickListener(this);
         //设置bottomHelp
         bottomHelp = new BottomHelp(manageActivity, bottomViewPager, pagerSelect1, pagerSelect2);
-        setFirstBottomPagerDefult();
+        setFirstBottomPagerDefault();
         //添加地图
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rootContain.addView(manageActivity.getMainMapView(), 0, params);
@@ -349,103 +343,78 @@ public class MainFragment extends SupportToolbarFragment
     //----------------------------------------Method Begin------------------------------------------
 
 
-    private void setFirstBottomPagerDefult() {
+    private void setFirstBottomPagerDefault() {
         List<BaseItem2LineData> datas = new ArrayList<>();
 
         BaseItem2LineData trafficData = null;
-        trafficData = getFBPTrafficData();
+        trafficData = bottomHelp.getFBPTrafficData();
         if (trafficData != null) {
             datas.add(trafficData);
         }
 
+        List<BaseItem2LineData> carDatas = null;
+        carDatas = bottomHelp.getFBPCarInfoData();
+        datas.addAll(carDatas);
 
-        BaseItem2LineData carData = null;
+        BaseItem2LineAdapter baseItem2LineAdapter = new BaseItem2LineAdapter(datas);
+        baseItem2LineAdapter.setOnClickListener(new BaseItem2LineAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(BaseItem2LineData data, int position) {
+                //点击回调
+                String tag = data.tag;
+                switch (tag) {
+                    case "获取车辆数据失败":
+                        if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
+                            Toast.makeText(getActivity(),"你好像没有打开网络哦",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Toast.makeText(getActivity(),"加载中...",Toast.LENGTH_SHORT).show();
+                        UserDataHelp.getUserCarInfoDatas(new UserDataHelp.OnDoneListener() {
+                            @Override
+                            public void onDone(int code) {
+                                if (code == 401) {
 
-        getFBPCarInfoData();
+                                }else {
+                                    setFirstBottomPagerDefault();
+                                }
+                            }
+                        });
+                        break;
+                    case "获取路况数据失败":
+                        if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
+                            Toast.makeText(getActivity(),"你好像没有打开网络哦",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Toast.makeText(getActivity(),"加载中...",Toast.LENGTH_SHORT).show();
+                        UserDataHelp.getUserPointData(new UserDataHelp.OnDoneListener() {
+                            @Override
+                            public void onDone(int code) {
+                                if (code == 401) {
 
-    }
-
-    public BaseItem2LineData getFBPCarInfoData() {
-        BaseItem2LineData data = null;
-        if (userCarInfoDatas == null) {
-            // 获取数据失败
-
-        } else if (userCarInfoDatas.size() == 0) {
-            //没有设置车辆信息
-
-        }else {
-            //成功获取
-
-        }
-        return data;
-    }
-
-    private BaseItem2LineData getFBPTrafficData() {
-        BaseItem2LineData trafficData = null;
-
-        if (resultRoute == null && userPointData == null) {
-            //获取信息失败
-        } else if (userCarInfoDatas.size() == 0) {
-            //没有设置
-
-        }else {
-            //成功获取
-
-        }
-
-        if (RouteHelp.isLegalRoute(resultRoute)) {
-            int maxTraffic = 0;
-
-            for (DrivingRouteLine line : resultRoute.getRouteLines()) {
-                int trafficTime = RouteHelp.getTrafficDis(line);
-                if (trafficTime > maxTraffic) {
-                    maxTraffic = trafficTime;
+                                }else {
+                                    setFirstBottomPagerDefault();
+                                }
+                            }
+                        });
+                        break;
+                    case "没有设置车辆":
+                        break;
+                    case "管理车辆":
+                        break;
+                    case "违章查询":
+                        break;
+                    case "附近的4S店":
+                        break;
+                    case "没有设置路况":
+                        break;
+                    case "规划新路线":
+                        break;
                 }
             }
+        });
+        bottomHelp.setRvAdapter(0, baseItem2LineAdapter);
 
-            if (maxTraffic > 10) {
-                trafficData = new BaseItem2LineData();
-                trafficData.icoLeft = R.drawable.ic_traffic;
-                trafficData.title = "家 - 公司 出现拥堵";
-                String dis = "";
-                if (maxTraffic < 1000) {
-                    dis = maxTraffic + " m";
-                } else {
-                    DecimalFormat format = new DecimalFormat("#.0");
-                    dis = format.format((maxTraffic / 1000f)) + " Km";
-                }
-                trafficData.tip = "请尽量避免,拥堵 " + dis;
-                trafficData.icoRight = R.drawable.ic_keyboard_arrow_right;
-                trafficData.tipRight = "规划新路线";
-                trafficData.isDivider = true;
-                trafficData.tag = "获取成功";
-            }
-
-        } else if (userPointData == null || userPointData.getHome_latitude() == 0) {
-            trafficData = new BaseItem2LineData();
-            trafficData.icoLeft = R.drawable.ic_traffic;
-            trafficData.title = "让我更懂你";
-            trafficData.tip = "设置常用路线 避免拥堵";
-            trafficData.tipRight = "去设置";
-            trafficData.icoRight = R.drawable.ic_keyboard_arrow_right;
-            trafficData.isDivider = true;
-            trafficData.tag = "没有设置";
-
-        } else if (resultRoute == null) {
-
-            trafficData = new BaseItem2LineData();
-            trafficData.icoLeft = R.drawable.ic_traffic;
-            trafficData.title = "获取路况数据失败";
-            trafficData.tip = "点击刷新";
-            trafficData.tipRight = "刷新";
-            trafficData.icoRight = R.drawable.ic_keyboard_arrow_right;
-            trafficData.isDivider = true;
-            trafficData.tag = "获取失败";
-
-        }
-        return trafficData;
     }
-
 
 
     private void createFirstLocTask() {
@@ -499,16 +468,6 @@ public class MainFragment extends SupportToolbarFragment
         zoomLocButton.setVisibility(View.VISIBLE);
         mapHelp.mainMapView.showZoomControls(true);
     }
-
-
-    public void setUserData(UserInfoData userInfoData
-            , List<UserCarInfoData> userCarInfoDatas, UserPointData userPointData, DrivingRouteResult resultRoute) {
-        this.userInfoData = userInfoData;
-        this.userCarInfoDatas = userCarInfoDatas;
-        this.userPointData = userPointData;
-        this.resultRoute = resultRoute;
-    }
-
 
     //----------------------------------------Method End------------------------------------------
 

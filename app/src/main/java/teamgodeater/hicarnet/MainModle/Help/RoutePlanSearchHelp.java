@@ -25,6 +25,11 @@ public class RoutePlanSearchHelp implements OnGetRoutePlanResultListener {
     public final static int Error_No_Net = 20001, Error_No_Loc = 20002,
             Error_No_Result = 20003, Error_Cant_Request = 20006;
     private PlanNode mFrom;
+    private boolean isOnlyExecuteOnce = false;
+
+    public void setOnlyExecuteOnce(boolean onlyExecuteOnce) {
+        isOnlyExecuteOnce = onlyExecuteOnce;
+    }
 
     public interface OnDrivingRouteListener {
         void onSucceed(DrivingRouteResult route);
@@ -39,8 +44,7 @@ public class RoutePlanSearchHelp implements OnGetRoutePlanResultListener {
         routePlanSearch.setOnGetRoutePlanResultListener(this);
     }
 
-
-    public void setmFrom(PlanNode mFrom) {
+    public void setFrom(PlanNode mFrom) {
         this.mFrom = mFrom;
     }
 
@@ -97,6 +101,9 @@ public class RoutePlanSearchHelp implements OnGetRoutePlanResultListener {
             resultListener.onErrorRoute(Error_No_Result);
         } else {
             resultListener.onSucceed(drivingRouteResult);
+        }
+        if (isOnlyExecuteOnce) {
+            onDestroy();
         }
     }
 

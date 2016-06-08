@@ -1,0 +1,7 @@
+<!-- drawable/edittext_shape.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/shap_edittext_bg_nomal" android:state_focused="false"/>
+    <item android:drawable="@drawable/shape_edittext_bg_focus" android:state_focused="true"/>
+
+</selector>

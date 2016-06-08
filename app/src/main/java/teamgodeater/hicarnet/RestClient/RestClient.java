@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -16,6 +17,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import teamgodeater.hicarnet.Help.RestClientHelp;
+
+import static teamgodeater.hicarnet.Help.RestClientHelp.Session;
 
 public class RestClient implements Runnable {
 
@@ -29,6 +34,7 @@ public class RestClient implements Runnable {
     private String url;
     private String method;
     private OnServiceResultListener listener;
+    public boolean isFirst = true;
 
     private Map<String, String> urlParams = null;
     private Map<String, String> headerParams = null;
@@ -80,13 +86,13 @@ public class RestClient implements Runnable {
     }
 
     public interface OnServiceResultListener {
-        void resultListener(String result, int code, Map<String, List<String>> header);
+        void resultListener(byte[] result, int code, Map<String, List<String>> header);
     }
 
     @Override
     public void run() {
         HttpURLConnection httpClient = null;
-        String result = "";
+        InputStream result = null;
         Map<String, List<String>> headerFields = null;
         int responseCode = -1;
         try {
@@ -94,19 +100,42 @@ public class RestClient implements Runnable {
             responseCode = httpClient.getResponseCode();
             headerFields = httpClient.getHeaderFields();
             if (responseCode != 200) {
-                result = InputStreamTOString(httpClient.getErrorStream());
+                result = httpClient.getErrorStream();
             } else {
-                result = InputStreamTOString(httpClient.getInputStream());
+                result = httpClient.getInputStream();
             }
-
         } catch (Exception e) {
-            this.sendMessage("fail", -1, headerFields);
-        } finally {
+            this.sendMessage(null, -1, headerFields);
             if (httpClient != null)
                 httpClient.disconnect();
+            return;
         }
-        sendMessage(result, responseCode, headerFields);
+
+
+        final int BUFFER_SIZE = 1024;
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] data = new byte[BUFFER_SIZE];
+        int count;
+        try {
+            while ((count = result.read(data, 0, BUFFER_SIZE)) != -1)
+                outStream.write(data, 0, count);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        sendMessage(outStream.toByteArray(), responseCode, headerFields);
         ConnectionManager.getInstance().didComplete(this);
+
+        try {
+            outStream.close();
+            result.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (httpClient != null)
+            httpClient.disconnect();
     }
 
     private static final Handler handler = new Handler() {
@@ -128,10 +157,10 @@ public class RestClient implements Runnable {
         public OnServiceResultListener listener;
         public Map<String, List<String>> header;
         public int code;
-        public String result;
+        public byte[] result;
     }
 
-    private void sendMessage(String result, int code, Map<String, List<String>> header) {
+    private void sendMessage(byte[] result, int code, Map<String, List<String>> header) {
         HandleData handleData = new HandleData();
         handleData.code = code;
         handleData.result = result;
@@ -176,32 +205,29 @@ public class RestClient implements Runnable {
             }
         }
         httpURLConnection.setRequestMethod(method);
-        httpURLConnection.setConnectTimeout(5000);
-        httpURLConnection.setReadTimeout(5000);
+        httpURLConnection.setConnectTimeout(10000);
+        httpURLConnection.setReadTimeout(10000);
 
 
         return httpURLConnection;
     }
 
-
-    private static String InputStreamTOString(InputStream in) throws Exception {
-        final int BUFFER_SIZE = 1024;
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] data = new byte[BUFFER_SIZE];
-        int count;
-        while ((count = in.read(data, 0, BUFFER_SIZE)) != -1)
-            outStream.write(data, 0, count);
-        return new String(outStream.toByteArray(), "UTF-8");
+    public static String byteToString(byte[] bytes) {
+        try {
+            return new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
-
-    public static <T> void loginOperation(String method, String Session, String sendUrl, final RestClient rest, final OnResultListener<T> listener) {
+    public static <T> void loginOperation(final String method, final String sendUrl, final RestClient rest, final OnResultListener<T> listener) {
         if (Session != null && !Session.equals(""))
             rest.addHeaderParams("Session", Session);
 
         rest.create(method, sendUrl, new OnServiceResultListener() {
             @Override
-            public void resultListener(String result, int code, Map<String, List<String>> header) {
+            public void resultListener(byte[] result, int code, Map<String, List<String>> header) {
                 if (listener == null) {
                     return;
                 }
@@ -209,25 +235,46 @@ public class RestClient implements Runnable {
                 if (code == 200) {
                     Type type = getInterfacetype(listener.getClass());
                     if (type != null) {
+
                         if (type.equals(String.class)) {
-                            listener.succeed((T) result);
+                            listener.succeed((T) byteToString(result));
                             return;
                         }
 
-                        T userInfoData = null;
+                        T userInfoData;
                         try {
-                            userInfoData = (T) new Gson().fromJson(result, type);
+                            userInfoData = (T) new Gson().fromJson(byteToString(result), type);
+
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
                             listener.error(-2);
                             return;
                         }
+
                         listener.succeed(userInfoData);
+
                     } else {
                         //类型错误
                         listener.error(-2);
                     }
                 } else {
+                    if (code == 401
+                            && rest.isFirst
+                            && !RestClientHelp.username.equals("")
+                            && !RestClientHelp.password.equals("")) {
+                        rest.isFirst = false;
+                        new RestClientHelp().login(new OnResultListener<String>() {
+                            @Override
+                            public void succeed(String bean) {
+                                loginOperation(method, sendUrl, rest, listener);
+                            }
+                            @Override
+                            public void error(int code) {
+                                listener.error(401);
+                            }
+                        });
+                        return;
+                    }
                     listener.error(code);
                 }
             }
@@ -246,6 +293,7 @@ public class RestClient implements Runnable {
         }
         return null;
     }
+
 
     public interface OnResultListener<T> {
         void succeed(T bean);

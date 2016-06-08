@@ -1,5 +1,7 @@
 package teamgodeater.hicarnet.Data;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by G on 2016/6/5 0005.
  */
@@ -18,7 +20,6 @@ public class UserCarInfoData {
      * mileage : 124
      * model : 12
      * petrol_gage : 124
-     * sign : 12312
      * sign_ico : 214
      * transmission_performance : 124
      * user_id : 1
@@ -30,7 +31,7 @@ public class UserCarInfoData {
     private int engine_performance;
     private int id;
     private String level;
-    private String license_num;
+    private String license_num = "";
     private int light_performance;
     private int mileage;
     private String model;
@@ -38,6 +39,15 @@ public class UserCarInfoData {
     private String sign_ico;
     private int transmission_performance;
     private int user_id;
+    private transient Bitmap signBitmap;
+
+    public Bitmap getSignBitmap() {
+        return signBitmap;
+    }
+
+    public void setSignBitmap(Bitmap signBitmap) {
+        this.signBitmap = signBitmap;
+    }
 
     public String getBrand() {
         return brand;

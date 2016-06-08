@@ -52,9 +52,11 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
     @Override
     public void onBindViewHolder(BaseItem2LineHolder holder, final int position) {
         BaseItem2LineData itemData = list.get(position);
-        if (itemData.icoLeft != 0) {
+        if (itemData.icoLeftBitmap == null) {
             holder.icoLeft.setImageResource(itemData.icoLeft);
             holder.icoLeft.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
+        }else {
+            holder.icoLeft.setImageBitmap(itemData.icoLeftBitmap);
         }
         holder.title.setText(itemData.title);
         holder.tip.setText(itemData.tip);
