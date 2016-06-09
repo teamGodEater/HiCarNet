@@ -30,10 +30,11 @@ public class RestClientHelp {
 
     //---------------------------------------------------------------------------------------------
 
-    private static final int HTTP_NOT_FOUND = 404;
-    private static final int HTTP_UNAUTHORIZED = 401;
-    private static final int HTTP_NOT_ACCEPTABLE = 406;
-    private static final int HTTP_JSON_ERROR = -2;
+    public static final int HTTP_NOT_FOUND = 404;
+    public static final int HTTP_UNAUTHORIZED = 401;
+    public static final int HTTP_NOT_ACCEPTABLE = 406;
+    public static final int HTTP_FOUND = 302;
+    public static final int HTTP_JSON_ERROR = -2;
 
     //---------------------------------------------------------------------------------------------
 

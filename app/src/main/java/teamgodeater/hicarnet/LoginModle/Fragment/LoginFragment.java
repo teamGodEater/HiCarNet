@@ -28,10 +28,12 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
+import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Help.DurationTask;
 import teamgodeater.hicarnet.Help.RestClientHelp;
+import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.RegistModle.Fragment.RegistFragment;
 import teamgodeater.hicarnet.RestClient.RestClient;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 import teamgodeater.hicarnet.Widget.RoundedImageView;
@@ -41,16 +43,16 @@ import teamgodeater.hicarnet.Widget.RoundedImageView;
  * Created by G on 2016/6/8 0008.
  */
 
-public class LoginFragment extends SupportToolbarFragment {
+public class LoginFragment extends BaseFragment {
     @Bind(R.id.headImage)
     RoundedImageView headImage;
     @Bind(R.id.username)
     EditText username;
     @Bind(R.id.password)
     EditText password;
-    @Bind(R.id.login)
+    @Bind(R.id.nextStep)
     RippleBackGroundView login;
-    @Bind(R.id.regist)
+    @Bind(R.id.cancel)
     RippleBackGroundView regist;
     @Bind(R.id.cleanUsername)
     ImageView cleanUsername;
@@ -71,13 +73,14 @@ public class LoginFragment extends SupportToolbarFragment {
     protected SupportWindowsParams onCreateSupportViewParams() {
         SupportWindowsParams params = new SupportWindowsParams();
         params.rootLayoutId = R.layout.frgm_login;
+        params.primaryColor = Utils.getColorFromRes(R.color.colorPrimary);
         return params;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
+        ButterKnife.bind(this, rootContain);
         tSetDefaultView(true, "登陆");
         setColorFilter();
         setListener();
@@ -180,7 +183,8 @@ public class LoginFragment extends SupportToolbarFragment {
         regist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                manageActivity.switchFragment(new RegistFragment());
+                hideSelfDelay(500);
+                manageActivity.switchFragment(new RegistFragment());
             }
         });
 
@@ -196,6 +200,8 @@ public class LoginFragment extends SupportToolbarFragment {
         rootContain.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                if (password == null)
+                    return;
                 int usableHeightNow = computeUsableHeight();
                 int focusBottom = password.getBottom() - 36;
 

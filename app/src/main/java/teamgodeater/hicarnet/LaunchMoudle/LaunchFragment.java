@@ -17,7 +17,7 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
+import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
@@ -28,7 +28,7 @@ import teamgodeater.hicarnet.RestClient.RestClient;
 /**
  * Created by G on 2016/5/19 0019.
  */
-public class LaunchFragment extends SupportToolbarFragment {
+public class LaunchFragment extends BaseFragment {
 
 
     @Bind(R.id.tip)
@@ -80,7 +80,7 @@ public class LaunchFragment extends SupportToolbarFragment {
                     destroySelf();
                     manageActivity.createMapView();
                     MainFragment to = new MainFragment();
-                    manageActivity.switchFragment(to, false);
+                    manageActivity.switchFragment(to);
                 }
             }
         }, 5000);

@@ -116,11 +116,13 @@ public class RestClient implements Runnable {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         byte[] data = new byte[BUFFER_SIZE];
         int count;
-        try {
-            while ((count = result.read(data, 0, BUFFER_SIZE)) != -1)
-                outStream.write(data, 0, count);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (result != null) {
+            try {
+                while ((count = result.read(data, 0, BUFFER_SIZE)) != -1)
+                    outStream.write(data, 0, count);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         sendMessage(outStream.toByteArray(), responseCode, headerFields);
@@ -128,7 +130,8 @@ public class RestClient implements Runnable {
 
         try {
             outStream.close();
-            result.close();
+            if (result != null)
+                result.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -268,6 +271,7 @@ public class RestClient implements Runnable {
                             public void succeed(String bean) {
                                 loginOperation(method, sendUrl, rest, listener);
                             }
+
                             @Override
                             public void error(int code) {
                                 listener.error(401);

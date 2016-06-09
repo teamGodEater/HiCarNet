@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.List;
+
 import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
@@ -28,7 +31,7 @@ import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 /**
  * Created by G on 2016/5/19 0019.
  */
-public abstract class SupportToolbarFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     //ToolBar高度
     final int TOOLBAR_HEIGHT = 50;
@@ -41,6 +44,7 @@ public abstract class SupportToolbarFragment extends Fragment {
     protected LinearLayout tMidContain;
     protected LinearLayout tRightContain;
     protected ManageActivity manageActivity;
+    protected ViewGroup parentView;
 
 
     private SupportWindowsParams windowsParams;
@@ -55,16 +59,21 @@ public abstract class SupportToolbarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         int statusBarHeight = manageActivity.getStatuBarHeight();
-        if (windowsParams.isHasToolBar) {
-            createToolBar(inflater, container, statusBarHeight);
-        }
+
+        parentView = new FrameLayout(container.getContext());
+        parentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
         if (windowsParams.rootLayoutId != -1) {
-            createRootView(inflater, container, statusBarHeight);
+            createRootView(inflater, parentView, statusBarHeight);
         }
+        if (windowsParams.isHasToolBar) {
+            createToolBar(inflater, parentView, statusBarHeight);
+        }
+
 
         manageActivity.setStatusBarAlpha(windowsParams.statusAlpha);
         setPrimaryColor(windowsParams.primaryColor);
-        return rootContain;
+        return parentView;
     }
 
     protected void createRootView(LayoutInflater inflater, @Nullable ViewGroup container, int statusBarHeight) {
@@ -75,17 +84,18 @@ public abstract class SupportToolbarFragment extends Fragment {
             rootContain.setPadding(0, statusBarHeight + Utils.dp2Px(TOOLBAR_HEIGHT), 0, 0);
         }
 
-       final ViewTreeObserver.OnGlobalLayoutListener global = new ViewTreeObserver.OnGlobalLayoutListener() {
-           @Override
-           public void onGlobalLayout() {
-               onOnceGlobalLayoutListen();
-               rootContain.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-           }
-       };
+        final ViewTreeObserver.OnGlobalLayoutListener global = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                onOnceGlobalLayoutListen();
+                rootContain.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        };
 
         rootContain.getViewTreeObserver().addOnGlobalLayoutListener(global);
-
+        container.addView(rootContain);
     }
+
 
     protected void createToolBar(LayoutInflater inflater, @Nullable ViewGroup container, int statusBarHeight) {
         //toolbar 创建
@@ -94,7 +104,7 @@ public abstract class SupportToolbarFragment extends Fragment {
         tMidContain = (LinearLayout) toolbarContain.findViewById(R.id.MidContain);
         tRightContain = (LinearLayout) toolbarContain.findViewById(R.id.RightContain);
         //toolbar 大小位置
-        toolbarContain.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        toolbarContain.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 Utils.dp2Px(TOOLBAR_HEIGHT) + statusBarHeight));
 
         toolbarContain.setPadding(0, statusBarHeight, 0, 0);
@@ -288,11 +298,38 @@ public abstract class SupportToolbarFragment extends Fragment {
         public int primaryColor = Utils.getColorFromRes(R.color.colorPrimary);
     }
 
-    public void destroySelf() {
-        getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+    public void hideSelfDelay(long delay) {
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideSelf();
+            }
+        }, delay);
     }
 
-    public boolean isInterceptBack() {
+    public void hideSelf() {
+        getFragmentManager().beginTransaction().hide(BaseFragment.this).commitAllowingStateLoss();
+    }
+
+    public void destroySelf() {
+        List<Fragment> fragments = getFragmentManager().getFragments();
+        getFragmentManager().beginTransaction().remove(this).show(fragments.get(fragments.size() - 2)).commitAllowingStateLoss();
+    }
+
+    public void destroySelfDelay(long delay) {
+        List<Fragment> fragments = getFragmentManager().getFragments();
+        getFragmentManager().beginTransaction().show(fragments.get(fragments.size() - 2)).commitAllowingStateLoss();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getFragmentManager().beginTransaction().remove(BaseFragment.this).commitAllowingStateLoss();
+            }
+        }, delay);
+    }
+
+    public boolean onInterceptBack() {
         return false;
     }
 }

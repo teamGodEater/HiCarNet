@@ -30,7 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
-import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
+import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Help.ConditionTask;
 import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
@@ -46,7 +46,7 @@ import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 /**
  * Created by G on 2016/5/20 0020.
  */
-public class MainFragment extends SupportToolbarFragment
+public class MainFragment extends BaseFragment
         implements View.OnClickListener, BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapTouchListener
         , OnLocReceiverObserve, SearchHelp.OnSearchRouteListener, SearchView.OnBackClickListener {
 
@@ -165,7 +165,7 @@ public class MainFragment extends SupportToolbarFragment
     }
 
     @Override
-    public boolean isInterceptBack() {
+    public boolean onInterceptBack() {
         return searchHelp.isInterceptBack();
     }
 

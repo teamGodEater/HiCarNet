@@ -33,7 +33,7 @@ import com.orhanobut.logger.Logger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Fragment.DrawerFragment;
-import teamgodeater.hicarnet.Fragment.SupportToolbarFragment;
+import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Help.LocationHelp;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
@@ -68,8 +68,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         setContentView(R.layout.activity);
         ButterKnife.bind(this);
         FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-        beginTransaction.replace(R.id.MainContain, new LoginFragment());
-        beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).commit();
+        beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).replace(R.id.MainContain, new LoginFragment()).commit();
         //mapSdk状态
         registerReceiver();
         //加载本地数据
@@ -266,15 +265,9 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         }
     }
 
-    public void switchFragment(Fragment to) {
-        switchFragment(to, true);
-    }
 
-    public void switchFragment(Fragment to, boolean addBack) {
+    public void switchFragment(Fragment to) {
         FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-        if (addBack) {
-            beginTransaction.addToBackStack(null);
-        }
         beginTransaction.add(R.id.MainContain, to).commitAllowingStateLoss();
     }
 
@@ -288,11 +281,11 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         }
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         Fragment currentFragment = supportFragmentManager.findFragmentById(R.id.MainContain);
-        if (currentFragment instanceof SupportToolbarFragment
-                && ((SupportToolbarFragment) currentFragment).isInterceptBack()) {
+        if (currentFragment instanceof BaseFragment
+                && ((BaseFragment) currentFragment).onInterceptBack()) {
             return;
         }
-        if (supportFragmentManager.getBackStackEntryCount() > 1) {
+        if (supportFragmentManager.getBackStackEntryCount() >= 1) {
             supportFragmentManager.popBackStackImmediate();
             return;
         }
