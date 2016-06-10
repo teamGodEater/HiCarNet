@@ -312,14 +312,46 @@ public abstract class BaseFragment extends Fragment {
         getFragmentManager().beginTransaction().hide(BaseFragment.this).commitAllowingStateLoss();
     }
 
-    public void destroySelf() {
+    public void destroySelfShowBefore() {
         List<Fragment> fragments = getFragmentManager().getFragments();
-        getFragmentManager().beginTransaction().remove(this).show(fragments.get(fragments.size() - 2)).commitAllowingStateLoss();
+        int size = fragments.size();
+        Fragment showFragment = null;
+        for (int i = size -2 ;i >= 0 ;i--) {
+            showFragment = fragments.get(i);
+            if (showFragment != null)
+                break;
+        }
+
+        if (showFragment == null)
+            return;
+
+        getFragmentManager().beginTransaction().remove(this).show(showFragment).commitAllowingStateLoss();
     }
 
-    public void destroySelfDelay(long delay) {
+    public void destroySelfShowBefre(long delay) {
         List<Fragment> fragments = getFragmentManager().getFragments();
-        getFragmentManager().beginTransaction().show(fragments.get(fragments.size() - 2)).commitAllowingStateLoss();
+        int size = fragments.size();
+        Fragment showFragment = null;
+        for (int i = size -2 ;i >= 0 ;i--) {
+            showFragment = fragments.get(i);
+            if (showFragment != null)
+                break;
+        }
+
+        if (showFragment == null)
+            return;
+
+        getFragmentManager().beginTransaction().show(showFragment).commitAllowingStateLoss();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getFragmentManager().beginTransaction().remove(BaseFragment.this).commitAllowingStateLoss();
+            }
+        }, delay);
+    }
+
+    public void destroySelf(long delay) {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

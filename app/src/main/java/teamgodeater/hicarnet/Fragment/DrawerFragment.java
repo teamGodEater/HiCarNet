@@ -24,7 +24,7 @@ import teamgodeater.hicarnet.Widget.RoundedImageView;
 public class DrawerFragment extends Fragment {
 
 
-    @Bind(R.id.HeadImage)
+    @Bind(R.id.headImage)
     RoundedImageView headImage;
     @Bind(R.id.Greetings)
     TextView greetings;

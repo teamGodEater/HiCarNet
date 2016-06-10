@@ -1,0 +1,170 @@
+[
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_launcher.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_top_right.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_corner_top_right.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_fail.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_fail.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_history_normal.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_history_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_flashlight_normal.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_flashlight_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_bottom_right.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_corner_bottom_right.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_photo_normal.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_photo_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_fail.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_fail.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_bottom_left.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_corner_bottom_left.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_bottom_left.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_corner_bottom_left.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_top_left.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_corner_top_left.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_laser.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_laser.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_photo_pressed.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_photo_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_photo_normal.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_photo_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_photo_pressed.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_photo_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_bottom_left.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_corner_bottom_left.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_photo_normal.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_photo_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_bottom_right.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_corner_bottom_right.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_fail.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_fail.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_flashlight_normal.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_flashlight_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_history_pressed.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_history_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_launcher.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_top_left.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_corner_top_left.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_history_pressed.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_history_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\thumb_unfocus.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\thumb_unfocus.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_history_normal.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_history_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_photo_pressed.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_photo_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_top_right.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_corner_top_right.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_top_left.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_corner_top_left.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_flashlight_pressed.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_flashlight_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_history_normal.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_history_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_launcher.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_history_pressed.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_history_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_laser.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_laser.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_flashlight_pressed.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_flashlight_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\thumb_unfocus.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\thumb_unfocus.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_bottom_right.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_corner_bottom_right.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\thumb_unfocus.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\thumb_unfocus.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_flashlight_pressed.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_flashlight_pressed.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_laser.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_laser.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_top_right.png",
+        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\drawable-hdpi\\scan_corner_top_right.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_flashlight_normal.png",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_flashlight_normal.png"
+    }
+]

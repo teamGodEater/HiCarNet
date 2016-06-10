@@ -77,7 +77,7 @@ public class LaunchFragment extends BaseFragment {
             public void run() {
                 Logger.d("load Over");
                 if (manageActivity != null) {
-                    destroySelf();
+                    destroySelfShowBefore();
                     manageActivity.createMapView();
                     MainFragment to = new MainFragment();
                     manageActivity.switchFragment(to);

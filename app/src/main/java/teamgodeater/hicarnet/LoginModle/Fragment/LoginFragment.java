@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,7 +45,7 @@ import teamgodeater.hicarnet.Widget.RoundedImageView;
  */
 
 public class LoginFragment extends BaseFragment {
-    @Bind(R.id.headImage)
+    @Bind(R.id.brandLogo)
     RoundedImageView headImage;
     @Bind(R.id.username)
     EditText username;
@@ -87,6 +88,12 @@ public class LoginFragment extends BaseFragment {
         username.setText("");
         password.setText("");
         return rootView;
+    }
+
+    @Override
+    public boolean onInterceptBack() {
+        destroySelf(0L);
+        return true;
     }
 
     private void setListener() {
@@ -136,7 +143,7 @@ public class LoginFragment extends BaseFragment {
         password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == KeyEvent.KEYCODE_ENTER) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     doLogin();
                     return true;
                 }
@@ -175,7 +182,6 @@ public class LoginFragment extends BaseFragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideSoftInput(null);
                 doLogin();
             }
         });
@@ -243,6 +249,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void doLogin() {
+        hideSoftInput(null);
         String user = username.getText().toString();
         String passwd = password.getText().toString();
 
@@ -262,7 +269,7 @@ public class LoginFragment extends BaseFragment {
                 if (code == -1)
                     Toast.makeText(getActivity(), "好像没有网络哦!请检查你的网络", Toast.LENGTH_SHORT).show();
                 else if (code == 200) {
-                    destroySelf();
+                    destroySelfShowBefore();
                 } else if (code == 404)
                     Toast.makeText(getActivity(), "没有找到该用户", Toast.LENGTH_SHORT).show();
                 else if (code == 422)

@@ -1,1 +1,1 @@
-include ':app', ':searchview', ':speechrecognitionview'
+include ':app', ':searchview', ':speechrecognitionview', ':Scanner'

@@ -32,8 +32,8 @@ import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import teamgodeater.hicarnet.Fragment.DrawerFragment;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
+import teamgodeater.hicarnet.Fragment.DrawerFragment;
 import teamgodeater.hicarnet.Help.LocationHelp;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;

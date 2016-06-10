@@ -55,30 +55,26 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
         if (itemData.icoLeftBitmap == null) {
             holder.icoLeft.setImageResource(itemData.icoLeft);
             holder.icoLeft.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
-        }else {
+        } else {
             holder.icoLeft.setImageBitmap(itemData.icoLeftBitmap);
         }
         holder.title.setText(itemData.title);
         holder.tip.setText(itemData.tip);
-        if (itemData.icoRight != 0) {
-            holder.rightLayout.setVisibility(View.VISIBLE);
-            holder.tipRight.setText(itemData.tipRight);
-            holder.icoRight.setImageResource(itemData.icoRight);
-            holder.icoRight.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
-        } else {
-            holder.rightLayout.setVisibility(View.GONE);
-        }
+
+        holder.tipRight.setText(itemData.tipRight);
+        holder.icoRight.setImageResource(itemData.icoRight);
+        holder.icoRight.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
 
         if (itemData.isDivider) {
             holder.divider.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.divider.setVisibility(View.GONE);
         }
 
         if (position == focusItemIndex) {
             holder.backGround.setClickable(false);
-            holder.backGround.setBackgroundColor(Color.argb(10,0,0,0));
-        }else {
+            holder.backGround.setBackgroundColor(Color.argb(10, 0, 0, 0));
+        } else {
             holder.backGround.setBackground(null);
             if (itemData.isClickAble) {
                 holder.backGround.setClickable(true);

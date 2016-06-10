@@ -26,12 +26,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
+import teamgodeater.hicarnet.CarManageModle.Fragment.CarManageFragment;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.RestClient.RestClient;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
+import teamgodeater.hicarnet.Widget.RoundedImageView;
 
 /**
  * Created by G on 2016/6/8 0008.
@@ -62,6 +64,8 @@ public class RegistFragment extends BaseFragment {
     RotateLoading rotateLoading;
     @Bind(R.id.focus)
     View focus;
+    @Bind(R.id.headImage)
+    RoundedImageView headImage;
     private boolean isPasswordVisible = false;
 
     @NonNull
@@ -170,7 +174,7 @@ public class RegistFragment extends BaseFragment {
         password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == KeyEvent.KEYCODE_ENTER) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     doRegist();
                     return true;
                 }
@@ -181,7 +185,7 @@ public class RegistFragment extends BaseFragment {
         passwordConfirm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == KeyEvent.KEYCODE_ENTER) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     doRegist();
                     return true;
                 }
@@ -236,7 +240,7 @@ public class RegistFragment extends BaseFragment {
         rootContain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (! (v instanceof EditText))
+                if (!(v instanceof EditText))
                     hideSoftInput(v);
             }
         });
@@ -272,8 +276,8 @@ public class RegistFragment extends BaseFragment {
             restClientHelp.regist(user, passwd, new RestClient.OnResultListener<String>() {
                 @Override
                 public void succeed(String bean) {
-                    setRotateLoading(false);
-
+                    Toast.makeText(getContext(), "注册成功", Toast.LENGTH_SHORT).show();
+                    succeedRegist();
                 }
 
                 @Override
@@ -292,6 +296,33 @@ public class RegistFragment extends BaseFragment {
         } else {
             Toast.makeText(getContext(), "你两次输入的密码不一样啊!点击小眼睛使密码可见?", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void succeedRegist() {
+        final int[] count = {0};
+        RestClientHelp.username = username.getText().toString();
+        RestClientHelp.password = password.getText().toString();
+        final RestClientHelp restClientHelp = new RestClientHelp();
+        restClientHelp.login(new RestClient.OnResultListener<String>() {
+            @Override
+            public void succeed(String bean) {
+                setRotateLoading(false);
+                CarManageFragment carManageFragment = new CarManageFragment();
+                manageActivity.switchFragment(carManageFragment);
+                destroySelf(350);
+            }
+
+            @Override
+            public void error(int code) {
+                count[0]++;
+                if (count[0] <= 3) {
+                    restClientHelp.login(this);
+                } else {
+                    setRotateLoading(false);
+                    Toast.makeText(getContext(), "服务器发生了一个错误,请一会再尝试登陆", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void setRotateLoading(boolean start) {
@@ -313,7 +344,7 @@ public class RegistFragment extends BaseFragment {
         circularReveal.setInterpolator(new AccelerateInterpolator());
         circularReveal.setDuration(350);
         circularReveal.start();
-        destroySelfDelay(300);
+        destroySelfShowBefre(300);
     }
 
     @Override
@@ -354,6 +385,7 @@ public class RegistFragment extends BaseFragment {
         cleanPassword.getDrawable().setColorFilter(getResources().getColor(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
         visiblePassword.getDrawable().setColorFilter(getResources().getColor(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
         cleanPasswordConfirm.getDrawable().setColorFilter(getResources().getColor(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
+        headImage.getDrawable().setColorFilter(getResources().getColor(R.color.colorWhite87), PorterDuff.Mode.SRC_IN);
     }
 
 }
