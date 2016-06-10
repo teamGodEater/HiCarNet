@@ -63,11 +63,12 @@ public abstract class BaseFragment extends Fragment {
         parentView = new FrameLayout(container.getContext());
         parentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        if (windowsParams.rootLayoutId != -1) {
-            createRootView(inflater, parentView, statusBarHeight);
-        }
         if (windowsParams.isHasToolBar) {
             createToolBar(inflater, parentView, statusBarHeight);
+        }
+
+        if (windowsParams.rootLayoutId != -1) {
+            createRootView(inflater, parentView, statusBarHeight);
         }
 
 
@@ -81,7 +82,10 @@ public abstract class BaseFragment extends Fragment {
         rootContain = (ViewGroup) inflater.inflate(windowsParams.rootLayoutId, container, false);
         //rootView 是否在toolbar下面
         if (windowsParams.isNoFullScreen) {
-            rootContain.setPadding(0, statusBarHeight + Utils.dp2Px(TOOLBAR_HEIGHT), 0, 0);
+            if (toolbarContain == null)
+                rootContain.setPadding(0, statusBarHeight, 0, 0);
+            else
+                rootContain.setPadding(0, statusBarHeight + Utils.dp2Px(TOOLBAR_HEIGHT), 0, 0);
         }
 
         final ViewTreeObserver.OnGlobalLayoutListener global = new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -316,7 +320,7 @@ public abstract class BaseFragment extends Fragment {
         List<Fragment> fragments = getFragmentManager().getFragments();
         int size = fragments.size();
         Fragment showFragment = null;
-        for (int i = size -2 ;i >= 0 ;i--) {
+        for (int i = size - 2; i >= 0; i--) {
             showFragment = fragments.get(i);
             if (showFragment != null)
                 break;
@@ -332,7 +336,7 @@ public abstract class BaseFragment extends Fragment {
         List<Fragment> fragments = getFragmentManager().getFragments();
         int size = fragments.size();
         Fragment showFragment = null;
-        for (int i = size -2 ;i >= 0 ;i--) {
+        for (int i = size - 2; i >= 0; i--) {
             showFragment = fragments.get(i);
             if (showFragment != null)
                 break;

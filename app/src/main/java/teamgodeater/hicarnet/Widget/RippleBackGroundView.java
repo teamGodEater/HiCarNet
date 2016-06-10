@@ -149,7 +149,7 @@ public class RippleBackGroundView extends RoundedImageView {
             animator.start();
 
         }
-        if (event.getAction() == MotionEvent.ACTION_MOVE && isTouch) {
+       else  if (event.getAction() == MotionEvent.ACTION_MOVE && isTouch) {
             if (!rect.contains(getLeft() + (int) event.getX(), getTop() + (int) event.getY())) {
                 animator.cancel();
                 isTouch = false;
@@ -157,8 +157,11 @@ public class RippleBackGroundView extends RoundedImageView {
             }
             downX = event.getX();
             DownY = event.getY();
-        }
-        if (isTouch && (event.getAction() == MotionEvent.ACTION_CANCEL || event.getAction() == MotionEvent.ACTION_UP)) {
+        } else if (isTouch && event.getAction() == MotionEvent.ACTION_CANCEL) {
+            animator.cancel();
+            isTouch = false;
+            setRadius(0);
+        } else if (isTouch && event.getAction() == MotionEvent.ACTION_UP) {
             animator.cancel();
             setRadius(0);
             animator = ObjectAnimator.ofFloat(this, "radius", maxRadius / 10f, maxRadius / 3f);
@@ -213,7 +216,6 @@ public class RippleBackGroundView extends RoundedImageView {
             canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, maxRadius, paint);
             canvas.drawCircle(downX, DownY, radius, paint);
         }
-//        if (radius > maxRadius / 3f) {
-//        }
+
     }
 }

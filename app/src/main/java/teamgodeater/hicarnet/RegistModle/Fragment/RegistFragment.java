@@ -1,7 +1,11 @@
 package teamgodeater.hicarnet.RegistModle.Fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -34,6 +38,8 @@ import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.RestClient.RestClient;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 import teamgodeater.hicarnet.Widget.RoundedImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by G on 2016/6/8 0008.
@@ -244,6 +250,57 @@ public class RegistFragment extends BaseFragment {
                     hideSoftInput(v);
             }
         });
+
+        headImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); // "android.intent.action.GET_CONTENT"
+                innerIntent.setType("image/*");
+                Intent wrapperIntent = Intent.createChooser(innerIntent,
+                        "选择头像图片");
+                startActivityForResult(wrapperIntent, REQUEST_CODE_PHOTO_SELECT_REQUEST_CODE);
+            }
+        });
+    }
+
+    private static final int REQUEST_CODE_PHOTO_CUT_REQUEST_CODE = 224;
+    private static final int REQUEST_CODE_PHOTO_SELECT_REQUEST_CODE = 225;
+
+    //打开截图界面
+    private void startPhotoZoom(Uri uri, int size) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop为true是设置在开启的intent中设置显示的view可以剪裁
+        intent.putExtra("crop", true);
+
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+
+        // outputX,outputY 是剪裁图片的宽高
+        intent.putExtra("outputX", size);
+        intent.putExtra("outputY", size);
+        intent.putExtra("return-data", true);
+        try {
+            startActivityForResult(intent, REQUEST_CODE_PHOTO_CUT_REQUEST_CODE);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if  (resultCode != RESULT_OK)
+            return;
+
+        if (requestCode == REQUEST_CODE_PHOTO_SELECT_REQUEST_CODE) {
+            startPhotoZoom(data.getData(),160);
+        } else if (requestCode == REQUEST_CODE_PHOTO_CUT_REQUEST_CODE) {
+            Bitmap bitmap = data.getExtras().getParcelable("data");
+            headImage.setPadding(0,0,0,0);
+            headImage.setImageBitmap(bitmap);
+        }
+
     }
 
     private void reversePasswordVisible() {

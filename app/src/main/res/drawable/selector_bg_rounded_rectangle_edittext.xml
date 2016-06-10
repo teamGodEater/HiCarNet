@@ -1,0 +1,7 @@
+<!-- drawable/edittext_shape.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/shape_editext_rounded_rectangle_nomal" android:state_focused="false"/>
+    <item android:drawable="@drawable/shape_editext_rounded_rectangle_focus" android:state_focused="true"/>
+
+</selector>

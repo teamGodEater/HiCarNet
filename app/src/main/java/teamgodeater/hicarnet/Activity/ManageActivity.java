@@ -39,8 +39,8 @@ import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
-import teamgodeater.hicarnet.LoginModle.Fragment.LoginFragment;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.WeizhangModle.Fragment.WeizhangFragment;
 
 public class ManageActivity extends AppCompatActivity implements BDLocationListener {
 
@@ -68,7 +68,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         setContentView(R.layout.activity);
         ButterKnife.bind(this);
         FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-        beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).replace(R.id.MainContain, new LoginFragment()).commit();
+        beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).replace(R.id.MainContain, new WeizhangFragment()).commit();
         //mapSdk状态
         registerReceiver();
         //加载本地数据

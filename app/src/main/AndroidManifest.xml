@@ -34,6 +34,9 @@
             android:enabled="true"
             android:process=":remote" />
 
+        <service
+            android:name="com.cheshouye.api.client.WeizhangIntentService"/>
+
         <activity android:name="teamgodeater.hicarnet.Activity.ManageActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

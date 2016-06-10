@@ -57,4 +57,5 @@ dependencies {
     compile project(':speechrecognitionview')
     compile project(':searchview')
     compile project(':Scanner')
+    compile files('libs/weizhang_sdk.jar')
 }
