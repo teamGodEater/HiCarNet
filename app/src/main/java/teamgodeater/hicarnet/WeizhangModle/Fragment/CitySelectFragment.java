@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
 import com.cheshouye.api.client.WeizhangClient;
 import com.cheshouye.api.client.json.CityInfoJson;
 import com.cheshouye.api.client.json.ProvinceInfoJson;
@@ -53,6 +55,7 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
     private List<ProvinceInfoJson> currentProvince = new ArrayList<>();
     private List<CityInfoJson> currentCitys = new ArrayList<>();
     private int position;
+    private OnGetCityIdListener listener;
 
 
     @NonNull
@@ -71,9 +74,26 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
         ButterKnife.bind(this, rootContain);
         setColorFilter();
         allProvince = WeizhangClient.getAllProvince();
+        setView();
         setRv();
         setListener();
         return rootView;
+    }
+
+    public interface OnGetCityIdListener {
+        void onGetCityId(int id);
+    }
+
+    public void setOnGetCityIdListener(OnGetCityIdListener listener) {
+        this.listener = listener;
+    }
+
+    private void setView() {
+        CityInfoJson locationCityInfo = getLocationCityInfo();
+        if (locationCityInfo != null) {
+            location.setText(locationCityInfo.getCar_head() + " - " + locationCityInfo.getCity_name());
+            location.setTag(locationCityInfo.getCity_id());
+        }
     }
 
     private void setListener() {
@@ -81,6 +101,10 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
             @Override
             public void onClick(View v) {
                 hideSoftInput();
+                if (searchLevel == 0){
+                    finish();
+                    return;
+                }
                 searchLevel--;
                 search.setText("");
             }
@@ -93,10 +117,13 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
             }
         });
 
-        recyclerView.setOnClickListener(new View.OnClickListener() {
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                hideSoftInput();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    hideSoftInput();
+                }
+                return false;
             }
         });
 
@@ -104,6 +131,9 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
             @Override
             public void onClick(View v) {
                 hideSoftInput();
+                if (listener != null)
+                    listener.onGetCityId((Integer) v.getTag());
+                finish();
             }
         });
 
@@ -123,8 +153,12 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
 
             }
         });
+
     }
 
+    private void finish() {
+        destroySelfShowBefore();
+    }
 
     private void hideSoftInput() {
         View v;
@@ -165,12 +199,12 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
             citys = WeizhangClient.getCitys(provinceInfoJson.getProvinceId());
             currentCitys.clear();
             if (str.equals("")) {
-                currentCitys.addAll(citys) ;
+                currentCitys.addAll(citys);
                 for (CityInfoJson city : citys) {
                     String s = city.getCar_head() + "   -   " + city.getCity_name();
                     dataList.add(s);
                 }
-            }else {
+            } else {
                 for (CityInfoJson city : citys) {
                     String s = city.getCar_head() + "   -   " + city.getCity_name();
                     if (s.lastIndexOf(str) != -1) {
@@ -203,14 +237,40 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
             searchLevel++;
             search.setText("");
         } else if (searchLevel == 1) {
-            Toast.makeText(getActivity(), "2级子目录 " + currentCitys.get(position).getCar_head(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "2级子目录 " + currentCitys.get(position).getCity_id(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public CityInfoJson getLocationCityInfo() {
+        BDLocation myLocation = manageActivity.getMyLocation();
+        if (myLocation == null || myLocation.getCity() == null || myLocation.getCity().equals("")
+                || myLocation.getProvince() == null || myLocation.getProvince().equals(""))
+            return null;
+        List<ProvinceInfoJson> allProvince = WeizhangClient.getAllProvince();
+        String locProvince = myLocation.getProvince();
+        int locProvinceId = -1;
+        for (ProvinceInfoJson province : allProvince) {
+            if (locProvince.indexOf(province.getProvinceName()) != -1) {
+                locProvinceId = province.getProvinceId();
+                break;
+            }
+        }
+        if (locProvinceId == -1)
+            return null;
+        String locCity = myLocation.getCity();
+        List<CityInfoJson> citys = WeizhangClient.getCitys(locProvinceId);
+        for (CityInfoJson city : citys) {
+            if (locCity.indexOf(city.getCity_name()) != -1) {
+                return city;
+            }
+        }
+        return null;
     }
 
     @Override
     public boolean onInterceptBack() {
         if (searchLevel == 0) {
-            destroySelfShowBefore();
+            finish();
         } else {
             searchLevel--;
             search.setText("");

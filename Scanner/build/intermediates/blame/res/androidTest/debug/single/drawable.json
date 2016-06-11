@@ -12,12 +12,12 @@
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_item_background_holo_dark.xml"
     },
     {
-        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\scan_flashlight.xml",
-        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\bundles\\debug\\res\\drawable\\scan_flashlight.xml"
-    },
-    {
         "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\scan_photo.xml",
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\bundles\\debug\\res\\drawable\\scan_photo.xml"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\scan_flashlight.xml",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\bundles\\debug\\res\\drawable\\scan_flashlight.xml"
     },
     {
         "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\scan_flashlight.xml",
