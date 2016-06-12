@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -72,16 +73,27 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootContain);
-        setColorFilter();
         allProvince = WeizhangClient.getAllProvince();
-        setView();
-        setRv();
-        setListener();
+        if (allProvince == null || allProvince.size() == 0){
+            Toast.makeText(getActivity(), "无法连接到服务器,请检查你网络后重试", Toast.LENGTH_SHORT);
+            finish();
+        }else {
+            setColorFilter();
+            setView();
+            setRv();
+            setListener();
+        }
         return rootView;
     }
 
     public interface OnGetCityIdListener {
         void onGetCityId(int id);
+    }
+
+    @Override
+    protected void onOnceGlobalLayoutListen() {
+        parentView.setTranslationY(parentView.getHeight());
+        parentView.animate().translationY(0f).setInterpolator(new AccelerateInterpolator()).start();
     }
 
     public void setOnGetCityIdListener(OnGetCityIdListener listener) {
@@ -157,7 +169,9 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
     }
 
     private void finish() {
-        destroySelfShowBefore();
+        destroySelfShowBefore(280L);
+        parentView.animate().translationY(parentView.getHeight())
+                .setInterpolator(new AccelerateInterpolator()).start();
     }
 
     private void hideSoftInput() {
@@ -237,7 +251,9 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
             searchLevel++;
             search.setText("");
         } else if (searchLevel == 1) {
-            Toast.makeText(getActivity(), "2级子目录 " + currentCitys.get(position).getCity_id(), Toast.LENGTH_SHORT).show();
+            if (listener != null)
+                listener.onGetCityId(currentCitys.get(position).getCity_id());
+            finish();
         }
     }
 

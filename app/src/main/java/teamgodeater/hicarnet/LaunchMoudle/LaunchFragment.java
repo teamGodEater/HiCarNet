@@ -66,7 +66,7 @@ public class LaunchFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+        View rootview = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootContain);
 
         tip.setText(getDate() + "\n让出行更美好");
@@ -77,7 +77,7 @@ public class LaunchFragment extends BaseFragment {
             public void run() {
                 Logger.d("load Over");
                 if (manageActivity != null) {
-                    destroySelfShowBefore();
+                    destroySelf(0L);
                     manageActivity.createMapView();
                     MainFragment to = new MainFragment();
                     manageActivity.switchFragment(to);
@@ -86,7 +86,7 @@ public class LaunchFragment extends BaseFragment {
         }, 5000);
 
         Logger.d("create ");
-        return rootContain;
+        return rootview;
     }
 
     private void loadRemoteData() {
@@ -101,6 +101,7 @@ public class LaunchFragment extends BaseFragment {
                     public void succeed(String bean) {
                         loadUserData();
                     }
+
                     @Override
                     public void error(int code) {
                     }

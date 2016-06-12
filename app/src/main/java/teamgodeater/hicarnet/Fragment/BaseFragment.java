@@ -204,16 +204,18 @@ public abstract class BaseFragment extends Fragment {
         v.setLayoutParams(params);
         v.setAlpha(alpha);
 
-        Matrix matrix = new Matrix();
-        // 然后再以某个点为中心进行缩放
-        float targetSize = Utils.dp2Px(30);
-        float centerX = Utils.dp2Px(25);
-        float centerY = Utils.dp2Px(25);
-        matrix.postTranslate(centerX - src.getIntrinsicWidth() / 2f, centerY - src.getIntrinsicHeight() / 2f);
-        matrix.postScale(targetSize / src.getIntrinsicWidth(), targetSize / src.getIntrinsicHeight(), centerX, centerY);
-        v.setScaleType(ImageView.ScaleType.MATRIX);
-        v.setImageDrawable(src);
-        v.setImageMatrix(matrix);
+        if (src != null) {
+            Matrix matrix = new Matrix();
+            // 然后再以某个点为中心进行缩放
+            float targetSize = Utils.dp2Px(30);
+            float centerX = Utils.dp2Px(25);
+            float centerY = Utils.dp2Px(25);
+            matrix.postTranslate(centerX - src.getIntrinsicWidth() / 2f, centerY - src.getIntrinsicHeight() / 2f);
+            matrix.postScale(targetSize / src.getIntrinsicWidth(), targetSize / src.getIntrinsicHeight(), centerX, centerY);
+            v.setScaleType(ImageView.ScaleType.MATRIX);
+            v.setImageDrawable(src);
+            v.setImageMatrix(matrix);
+        }
 
         v.setText(str);
         return v;
@@ -236,7 +238,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected void tAddRightContainView(View v, String tag) {
         v.setTag(tag);
-        tLeftContain.addView(v);
+        tRightContain.addView(v);
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) v.getLayoutParams();
         layoutParams.setMarginStart(Utils.dp2Px(8));
 
@@ -332,7 +334,7 @@ public abstract class BaseFragment extends Fragment {
         getFragmentManager().beginTransaction().remove(this).show(showFragment).commitAllowingStateLoss();
     }
 
-    public void destroySelfShowBefre(long delay) {
+    public void destroySelfShowBefore(long delay) {
         List<Fragment> fragments = getFragmentManager().getFragments();
         int size = fragments.size();
         Fragment showFragment = null;

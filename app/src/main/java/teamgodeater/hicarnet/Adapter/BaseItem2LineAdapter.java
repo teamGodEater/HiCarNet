@@ -15,7 +15,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
-import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 
@@ -54,16 +53,28 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
         BaseItem2LineData itemData = list.get(position);
         if (itemData.icoLeftBitmap == null) {
             holder.icoLeft.setImageResource(itemData.icoLeft);
-            holder.icoLeft.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
+            holder.icoLeft.setColorFilter(itemData.icoLeftColor, PorterDuff.Mode.SRC_IN);
         } else {
             holder.icoLeft.setImageBitmap(itemData.icoLeftBitmap);
         }
+
         holder.title.setText(itemData.title);
-        holder.tip.setText(itemData.tip);
+        if (itemData.tip == null || itemData.tip.equals("")) {
+            holder.tip.setVisibility(View.GONE);
+        }else {
+            holder.tip.setVisibility(View.VISIBLE);
+            holder.tip.setText(itemData.tip);
+        }
 
         holder.tipRight.setText(itemData.tipRight);
-        holder.icoRight.setImageResource(itemData.icoRight);
-        holder.icoRight.setColorFilter(Utils.getColorFromRes(R.color.colorBlack54), PorterDuff.Mode.SRC_IN);
+
+        if (itemData.icoRight == 0) {
+            holder.icoRight.setVisibility(View.GONE);
+        }else {
+            holder.icoRight.setVisibility(View.VISIBLE);
+            holder.icoRight.setImageResource(itemData.icoRight);
+            holder.icoRight.setColorFilter(itemData.icoRightColor, PorterDuff.Mode.SRC_IN);
+        }
 
         if (itemData.isDivider) {
             holder.divider.setVisibility(View.VISIBLE);

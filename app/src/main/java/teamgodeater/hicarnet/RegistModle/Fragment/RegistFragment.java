@@ -401,7 +401,7 @@ public class RegistFragment extends BaseFragment {
         circularReveal.setInterpolator(new AccelerateInterpolator());
         circularReveal.setDuration(350);
         circularReveal.start();
-        destroySelfShowBefre(300);
+        destroySelfShowBefore(300);
     }
 
     @Override

@@ -11,4 +11,7 @@ public class SharedPreferencesHelp {
     public static final String CLIENT_INFO_SESSION = "CLIENT_INFO_SESSION";
     public static final String USER_SET = "USER_SET";
     public static final String USER_SET_DEFAULT_CAT = "USER_SET_DEFAULT_CAT";
+    public static final String WEIZHANG = "WEIZHANG";
+    public static final String WEIZHANG_JSON = "WEIZHANG_JSON";
+
 }

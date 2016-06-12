@@ -97,7 +97,7 @@ public class MainFragment extends BaseFragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
         //绑定视图
         ButterKnife.bind(this, rootContain);
         //设置searchHelp
@@ -127,7 +127,7 @@ public class MainFragment extends BaseFragment
         mapHelp.map.setOnMapLoadedCallback(this);
         mapHelp.map.setOnMapTouchListener(this);
 
-        return rootContain;
+        return rootView;
     }
 
 
@@ -361,7 +361,7 @@ public class MainFragment extends BaseFragment
             @Override
             public void onClick(BaseItem2LineData data, int position) {
                 //点击回调
-                String tag = data.tag;
+                String tag = (String) data.tag;
                 switch (tag) {
                     case "获取车辆数据失败":
                         if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
