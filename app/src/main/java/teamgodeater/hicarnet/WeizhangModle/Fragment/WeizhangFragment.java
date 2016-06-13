@@ -20,6 +20,7 @@ import com.cheshouye.api.client.json.CarInfo;
 import com.cheshouye.api.client.json.CityInfoJson;
 import com.cheshouye.api.client.json.InputConfigJson;
 import com.cheshouye.api.client.json.ProvinceInfoJson;
+import com.cheshouye.api.client.json.WeizhangResponseJson;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,7 +37,6 @@ import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
-import teamgodeater.hicarnet.WeizhangModle.Data.WeiZhangJson;
 import teamgodeater.hicarnet.WeizhangModle.Help.UserCarInfoWeizhangHelp;
 
 /**
@@ -83,11 +83,23 @@ public class WeizhangFragment extends BaseFragment {
         ButterKnife.bind(this, rootContain);
         cityChose.getCompoundDrawables()[2].setColorFilter(Utils.getColorFromRes(R.color.colorWhite87), PorterDuff.Mode.SRC_IN);
         tSetDefaultView(true, "违章查询");
-        tAddRightContainView(tGetSimpleView("查询",0.87f), "query");
+        tAddRightContainView(tGetSimpleView("查询", 0.87f), "query");
         setListener();
 
+        SharedPreferences sharedPreferences = manageActivity.getSharedPreferences(SharedPreferencesHelp.WEIZHANG, Context.MODE_PRIVATE);
+        List<CarInfo> list = new ArrayList<>();
+        CarInfo carInfo = new CarInfo();
+        carInfo.setChepai_no("琼A9142414");
+        carInfo.setEngine_no("EF1241251FC");
+        carInfo.setChejia_no("EF1241251FC");
+        carInfo.setCity_id(292);
+        list.add(carInfo);
+        list.add(carInfo);
+        Gson gson = new Gson();
+        String s = gson.toJson(list);
+        sharedPreferences.edit().putString(SharedPreferencesHelp.WEIZHANG_JSON, s).apply();
+
         setRv();
-//        setView();
         return rootView;
     }
 
@@ -95,51 +107,95 @@ public class WeizhangFragment extends BaseFragment {
     protected void onToolBarClick(View v) {
         String tag = (String) v.getTag();
         if (tag.equals("query")) {
+            query();
+        }
+    }
+
+    private void query() {
+        CarInfo carInfo = new CarInfo();
+        carInfo.setChepai_no(licenseTip.getText().toString() + license.getText().toString());
+        if (engine.getVisibility() == View.VISIBLE) {
+            String engine_no = engine.getText().toString();
+            if (engine_no.equals("")) {
+                Toast.makeText(getActivity(), "输入的信息不够完整", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            carInfo.setEngine_no(engine_no);
+        }
+        if (chejia.getVisibility() == View.VISIBLE) {
+            String chejia_no = chejia.getText().toString();
+            if (chejia_no.equals("")) {
+                Toast.makeText(getActivity(), "输入的信息不够完整", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            carInfo.setChejia_no(chejia_no);
+        }
+        if (certificate.getVisibility() == View.VISIBLE) {
+            String register_no = certificate.getText().toString();
+            if (register_no.equals("")) {
+                Toast.makeText(getActivity(), "输入的信息不够完整", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            carInfo.setRegister_no(register_no);
+        }
+
+        WeizhangResponseJson weizhang = WeizhangClient.getWeizhang(carInfo);
+
+        if (weizhang.getStatus() == 2000 || weizhang.getStatus() == 2001) {
             WeiZhangDetialFragment to = new WeiZhangDetialFragment();
-            Gson gson = new Gson();
-            WeiZhangJson weiZhangJson = gson.fromJson("{\n" +
-                    "\t\"status\": 2001,\n" +
-                    "\t\"total_score\": 0,\n" +
-                    "\t\"total_money\": 100,\n" +
-                    "\t\"count\": 2,\n" +
-                    "\t\"historys\": [\n" +
-                    "\t\t{\n" +
-                    "\t\t\t\"id\": 2155626,\n" +
-                    "\t\t\t\"car_id\": 1497817,\n" +
-                    "\t\t\t\"status\": \"N\",\n" +
-                    "\t\t\t\"fen\": 0,\n" +
-                    "\t\t\t\"officer\": \"石柱土家族自治县交巡警大队南宾勤务中队\",\n" +
-                    "\t\t\t\"occur_date\": \"2014-06-16 15:30:00\",\n" +
-                    "\t\t\t\"occur_area\": \"牛石嵌至交巡警大队路段\",\n" +
-                    "\t\t\t\"city_id\": 145,\n" +
-                    "\t\t\t\"province_id\": 10,\n" +
-                    "\t\t\t\"code\": \"1047\",\n" +
-                    "\t\t\t\"info\": \"机动车未按规定临时停车\",\n" +
-                    "\t\t\t\"money\": 0,\n" +
-                    "\t\t\t\"city_name\": \"恩施\"\n" +
-                    "\t\t},\n" +
-                    "\t\t{\n" +
-                    "\t\t\t\"id\": 3058277,\n" +
-                    "\t\t\t\"car_id\": 1497817,\n" +
-                    "\t\t\t\"status\": \"N\",\n" +
-                    "\t\t\t\"fen\": 0,\n" +
-                    "\t\t\t\"officer\": \"重庆市公安局交通巡逻警察总队丰都大队\",\n" +
-                    "\t\t\t\"occur_date\": \"2014-09-09 11:18:00\",\n" +
-                    "\t\t\t\"occur_area\": \"省道105243公里900米\",\n" +
-                    "\t\t\t\"city_id\": 722,\n" +
-                    "\t\t\t\"province_id\": 31,\n" +
-                    "\t\t\t\"code\": \"60112\",\n" +
-                    "\t\t\t\"info\": \"在高速公路或城市快速路以外的道路上行驶时，驾驶人未按规定使用安全带的\",\n" +
-                    "\t\t\t\"money\": 100,\n" +
-                    "\t\t\t\"city_name\": \"钦州\"\n" +
-                    "\t\t}\n" +
-                    "\t]\n" +
-                    "}", WeiZhangJson.class);
-            to.setWeizhangJson(weiZhangJson);
+            to.setWeizhangJson(weizhang);
             manageActivity.switchFragment(to);
             hideSelfDelay(500L);
-            Toast.makeText(getActivity(),"查询",Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        if (weizhang.getStatus() >= 5000) {
+            Toast.makeText(getActivity(), "系统繁忙 请稍后重试", Toast.LENGTH_SHORT).show();
+        }
+
+        if (weizhang.getStatus() < 2000) {
+            Toast.makeText(getActivity(), "没有找到相关的信息 请检查 输入的数据是否准确", Toast.LENGTH_SHORT).show();
+        }
+
+//        Gson gson = new Gson();
+//        WeizhangResponseJson weiZhangJson = gson.fromJson("{\n" +
+//                "\t\"status\": 2001,\n" +
+//                "\t\"total_score\": 0,\n" +
+//                "\t\"total_money\": 100,\n" +
+//                "\t\"count\": 2,\n" +
+//                "\t\"historys\": [\n" +
+//                "\t\t{\n" +
+//                "\t\t\t\"id\": 2155626,\n" +
+//                "\t\t\t\"car_id\": 1497817,\n" +
+//                "\t\t\t\"status\": \"N\",\n" +
+//                "\t\t\t\"fen\": 0,\n" +
+//                "\t\t\t\"officer\": \"石柱土家族自治县交巡警大队南宾勤务中队\",\n" +
+//                "\t\t\t\"occur_date\": \"2014-06-16 15:30:00\",\n" +
+//                "\t\t\t\"occur_area\": \"牛石嵌至交巡警大队路段\",\n" +
+//                "\t\t\t\"city_id\": 145,\n" +
+//                "\t\t\t\"province_id\": 10,\n" +
+//                "\t\t\t\"code\": \"1047\",\n" +
+//                "\t\t\t\"info\": \"机动车未按规定临时停车\",\n" +
+//                "\t\t\t\"money\": 0,\n" +
+//                "\t\t\t\"city_name\": \"恩施\"\n" +
+//                "\t\t},\n" +
+//                "\t\t{\n" +
+//                "\t\t\t\"id\": 3058277,\n" +
+//                "\t\t\t\"car_id\": 1497817,\n" +
+//                "\t\t\t\"status\": \"N\",\n" +
+//                "\t\t\t\"fen\": 0,\n" +
+//                "\t\t\t\"officer\": \"重庆市公安局交通巡逻警察总队丰都大队\",\n" +
+//                "\t\t\t\"occur_date\": \"2014-09-09 11:18:00\",\n" +
+//                "\t\t\t\"occur_area\": \"省道105243公里900米\",\n" +
+//                "\t\t\t\"city_id\": 722,\n" +
+//                "\t\t\t\"province_id\": 31,\n" +
+//                "\t\t\t\"code\": \"60112\",\n" +
+//                "\t\t\t\"info\": \"在高速公路或城市快速路以外的道路上行驶时，驾驶人未按规定使用安全带的\",\n" +
+//                "\t\t\t\"money\": 100,\n" +
+//                "\t\t\t\"city_name\": \"钦州\"\n" +
+//                "\t\t}\n" +
+//                "\t]\n" +
+//                "}", WeizhangResponseJson.class);
     }
 
     private void setRv() {
@@ -162,7 +218,23 @@ public class WeizhangFragment extends BaseFragment {
         adapter.setOnClickListener(new BaseItem2LineAdapter.OnItemClickListener() {
             @Override
             public void onClick(BaseItem2LineData data, int position) {
-                Object tag = data.tag;
+                CarInfo tag = (CarInfo) data.tag;
+                setViewByCityId(tag.getCity_id());
+
+                String ltip = licenseTip.getText().toString();
+                String chepai = tag.getChepai_no();
+                license.setText(chepai
+                        .substring(ltip.length(), chepai.length()));
+                if (engine.getVisibility() == View.VISIBLE) {
+                    engine.setText(tag.getEngine_no());
+                }
+                if (chejia.getVisibility() == View.VISIBLE) {
+                    chejia.setText(tag.getChejia_no());
+                }
+                if (certificate.getVisibility() == View.VISIBLE) {
+                    certificate.setText(tag.getRegister_no());
+                }
+                query();
             }
         });
         recyclerView.setAdapter(adapter);
@@ -175,7 +247,8 @@ public class WeizhangFragment extends BaseFragment {
             return null;
         Gson gson = new Gson();
         List<CarInfo> t;
-        t =  gson.fromJson(string, new TypeToken<List<CarInfo>>(){}.getType());
+        t = gson.fromJson(string, new TypeToken<List<CarInfo>>() {
+        }.getType());
 
         if (t == null || t.size() == 0)
             return null;
@@ -220,11 +293,6 @@ public class WeizhangFragment extends BaseFragment {
             return null;
         return datas;
     }
-
-    private void setView() {
-        setViewByCityId(getLocationCityId());
-    }
-
 
     private void setListener() {
         cityChose.setOnClickListener(new View.OnClickListener() {

@@ -32,6 +32,7 @@ import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import teamgodeater.hicarnet.CarManageModle.Fragment.CarManageFragment;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Fragment.DrawerFragment;
 import teamgodeater.hicarnet.Help.LocationHelp;
@@ -40,7 +41,6 @@ import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
 import teamgodeater.hicarnet.R;
-import teamgodeater.hicarnet.WeizhangModle.Fragment.WeizhangFragment;
 
 public class ManageActivity extends AppCompatActivity implements BDLocationListener {
 
@@ -68,7 +68,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         setContentView(R.layout.activity);
         ButterKnife.bind(this);
         FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-        beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).replace(R.id.MainContain, new WeizhangFragment()).commit();
+        beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).replace(R.id.MainContain, new CarManageFragment()).commit();
         //mapSdk状态
         registerReceiver();
         //加载本地数据

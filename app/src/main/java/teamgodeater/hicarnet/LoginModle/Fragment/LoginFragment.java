@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -85,15 +86,34 @@ public class LoginFragment extends BaseFragment {
         tSetDefaultView(true, "登陆");
         setColorFilter();
         setListener();
-        username.setText("");
-        password.setText("");
+        username.setText(RestClientHelp.username);
+        password.setText(RestClientHelp.password);
         return rootView;
     }
 
     @Override
     public boolean onInterceptBack() {
-        destroySelf(0L);
+        finish();
         return true;
+    }
+
+    @Override
+    protected void onToolBarClick(View v) {
+        String tag = (String) v.getTag();
+        if (tag.equals("back")) {
+            finish();
+        }
+    }
+
+    private void finish() {
+        destroySelfShowBefore(280L);
+        parentView.animate().translationY(parentView.getHeight()).setInterpolator(new AccelerateInterpolator()).start();
+    }
+
+    @Override
+    protected void onOnceGlobalLayoutListen() {
+        parentView.setTranslationY(parentView.getHeight());
+        parentView.animate().translationY(0f).setInterpolator(new AccelerateInterpolator()).start();
     }
 
     private void setListener() {
@@ -258,11 +278,12 @@ public class LoginFragment extends BaseFragment {
         setRotateLoading(true);
         RestClientHelp.username = user;
         RestClientHelp.password = passwd;
-        RestClientHelp restClientHelp = new RestClientHelp();
+        final RestClientHelp restClientHelp = new RestClientHelp();
         restClientHelp.login(new RestClient.OnResultListener<String>() {
             @Override
             public void succeed(String bean) {
                 setRotateLoading(false);
+                finish();
             }
 
             @Override
@@ -270,14 +291,12 @@ public class LoginFragment extends BaseFragment {
                 setRotateLoading(false);
                 if (code == -1)
                     Toast.makeText(getActivity(), "好像没有网络哦!请检查你的网络", Toast.LENGTH_SHORT).show();
-                else if (code == 200) {
-                    destroySelfShowBefore();
-                } else if (code == 404)
+               else if (code == RestClientHelp.HTTP_NOT_FOUND)
                     Toast.makeText(getActivity(), "没有找到该用户", Toast.LENGTH_SHORT).show();
-                else if (code == 422)
+                else if (code == RestClientHelp.UNPROCESSABLE_ENTITY)
                     Toast.makeText(getActivity(), "密码错误", Toast.LENGTH_SHORT).show();
-                else if (code == 500)
-                    Toast.makeText(getActivity(), "用户名不能为空", Toast.LENGTH_SHORT).show();
+                else if (code == RestClientHelp.HTTP_NOT_ACCEPTABLE)
+                    Toast.makeText(getActivity(), "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
             }
         });
     }

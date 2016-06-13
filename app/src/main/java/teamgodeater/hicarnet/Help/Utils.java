@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
@@ -136,5 +137,9 @@ public class Utils {
             netType = NETTYPE_WIFI;
         }
         return netType;
+    }
+
+    public static void toast(String string) {
+        Toast.makeText(context,string,Toast.LENGTH_SHORT).show();
     }
 }

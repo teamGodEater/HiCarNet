@@ -23,11 +23,22 @@ import teamgodeater.hicarnet.RestClient.RestClient;
  */
 
 public class UserDataHelp {
+    public static int OK = 233, NOFOUND = 42, NOGET = 425, INVAIN = 552;
     public static UserInfoData userInfoData;
     public static UserPointData userPointData;
     public static List<UserCarInfoData> userCarInfoDatas;
     public static DrivingRouteResult userTrafficLine;
 
+
+    public static int getUserCarInfoStatus() {
+        if (userCarInfoDatas == null)
+            return NOGET;
+        if (userCarInfoDatas.size() == 0)
+            return NOFOUND;
+        if (userCarInfoDatas.get(0).getLicense_num().equals(""))
+            return INVAIN;
+        return OK;
+    }
 
     public static UserCarInfoData getDefaultCarInfoData() {
         if (userCarInfoDatas == null) {
@@ -84,7 +95,7 @@ public class UserDataHelp {
 
             @Override
             public void error(int code) {
-                if (code > 0)
+                if (code == RestClientHelp.HTTP_NOT_FOUND)
                     userPointData = new UserPointData();
                 if (listener != null)
                     listener.onDone(code);
@@ -105,7 +116,7 @@ public class UserDataHelp {
 
             @Override
             public void error(int code) {
-                if (code > 0)
+                if (code == RestClientHelp.HTTP_NOT_FOUND)
                     userInfoData = new UserInfoData();
                 if (listener != null)
                     listener.onDone(code);
@@ -125,7 +136,7 @@ public class UserDataHelp {
 
             @Override
             public void error(int code) {
-                if (code > 0)
+                if (code == RestClientHelp.HTTP_NOT_FOUND)
                     userCarInfoDatas = new ArrayList<>();
                 if (listener != null)
                     listener.onDone(code);
@@ -147,10 +158,8 @@ public class UserDataHelp {
                     if (code == 200)
                         userCarInfoDatas.get(finalI).setSignBitmap(BitmapFactory.decodeByteArray(result, 0, result.length));
                     doneCount[0]++;
-                    if (doneCount[0] == size) {
-                        if (listener != null)
-                            listener.onDone(code);
-                    }
+                    if (listener != null && doneCount[0] == size)
+                        listener.onDone(code);
                 }
             });
         }

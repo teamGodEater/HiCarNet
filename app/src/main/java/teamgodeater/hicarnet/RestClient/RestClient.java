@@ -207,8 +207,9 @@ public class RestClient implements Runnable {
                 httpURLConnection.setRequestProperty(entry.getKey(), entry.getValue());
             }
         }
+
         httpURLConnection.setRequestMethod(method);
-        httpURLConnection.setConnectTimeout(10000);
+        httpURLConnection.setConnectTimeout(5000);
         httpURLConnection.setReadTimeout(10000);
 
 

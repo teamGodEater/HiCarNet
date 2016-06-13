@@ -1,34 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/constraintLayout">
+    android:background="@color/colorBackground">
 
-
-    <com.rey.material.widget.TabPageIndicator
-        style="@style/Material.Widget.TabPageIndicator"
-        app:tpi_indicatorColor="@color/colorWhite20"
-        android:background="@color/colorPrimary"
-        android:textAppearance="@style/TabTextAppearance"
-        android:id="@+id/tabPagerIndicator"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        app:layout_constraintRight_toRightOf="@+id/constraintLayout"/>
+        android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:background="@color/colorBackground"
-        android:id="@+id/viewPager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/tabPagerIndicator"
-        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintHorizontal_bias="0.0" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+    <com.rey.material.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="72dp"
+        android:layout_marginRight="16dp"
+        app:fab_backgroundColor="@color/color1"
+        app:fab_elevation="4dp"
+        app:fab_iconSize="24dp"
+        app:fab_iconSrc="@drawable/ic_add"
+        app:fab_radius="26dp" />
+
+    <TextView
+        android:id="@+id/otherTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="108dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/colorBlack54"
+        android:textSize="18dp"/>
+
+    <teamgodeater.hicarnet.Widget.RippleBackGroundView
+        android:id="@+id/otherButton"
+        app:text="登录"
+        app:text_color="@color/colorWhite"
+        android:background="@color/color1"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="36dp" />
+
+    <View
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlack20" />
+
+    <com.victor.loading.rotate.RotateLoading
+        android:layout_gravity="center"
+        android:layout_marginBottom="72dp"
+        android:id="@+id/rotateLoading"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:loading_color="@color/color1"
+        app:loading_width="3dp" />
+
+</FrameLayout>

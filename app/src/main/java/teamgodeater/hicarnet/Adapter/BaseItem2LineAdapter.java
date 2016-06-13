@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
+import teamgodeater.hicarnet.Widget.RoundedImageView;
 
 /**
  * Created by G on 2016/5/29 0029.
@@ -110,7 +111,7 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
 
     public class BaseItem2LineHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.icoLeft)
-        public ImageView icoLeft;
+        public RoundedImageView icoLeft;
         @Bind(R.id.title)
         public TextView title;
         @Bind(R.id.tip)

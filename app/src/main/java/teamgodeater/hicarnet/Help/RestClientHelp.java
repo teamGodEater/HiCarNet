@@ -34,12 +34,27 @@ public class RestClientHelp {
     public static final int HTTP_UNAUTHORIZED = 401;
     public static final int HTTP_NOT_ACCEPTABLE = 406;
     public static final int HTTP_FOUND = 302;
+    public static final int UNPROCESSABLE_ENTITY = 422;
     public static final int HTTP_JSON_ERROR = -2;
 
     //---------------------------------------------------------------------------------------------
 
     public static String username = "";
     public static String password = "";
+
+    //----------------------------------------------------------------------------------------------
+    public static void generalErrorToast(int code) {
+        if (code == -1)
+            Utils.toast("连接服务器失败 请检查网络设置");
+        else if (code == RestClientHelp.HTTP_UNAUTHORIZED)
+            Utils.toast("还没有登录啊!请先登录吧");
+        else if (code == RestClientHelp.HTTP_NOT_ACCEPTABLE)
+            Utils.toast("参数错误 服务器拒绝本次请求");
+        else if (code == RestClientHelp.HTTP_NOT_FOUND)
+            Utils.toast("没有找到");
+        else
+            Utils.toast("未知错误");
+    }
 
     //----------------------------------------------POST--------------------------------------------
     public void login(final RestClient.OnResultListener<String> listener) {
@@ -55,7 +70,7 @@ public class RestClientHelp {
                     if (session != null && session.size() > 0) {
                         Session = session.get(0);
                         SharedPreferences sharedPreferences = Utils.getContext().getSharedPreferences(SharedPreferencesHelp.CLIENT_INFO, MODE_PRIVATE);
-                        sharedPreferences.edit().putString("SharedPreferencesHelp.CLIENT_INFO_SESSION", Session).apply();
+                        sharedPreferences.edit().putString(SharedPreferencesHelp.CLIENT_INFO_SESSION, Session).apply();
                         if (listener == null) {
                             return;
                         }
@@ -82,36 +97,36 @@ public class RestClientHelp {
     public void setUserInfo(UserInfoData data, RestClient.OnResultListener<String> listener) {
         RestClient restClient = new RestClient();
         restClient
-                .addHeaderParams("name", data.getName())
-                .addHeaderParams("email", data.getEmail())
-                .addHeaderParams("phone", data.getPhone())
-                .addHeaderParams("gender", data.getGender());
+                .addUrlParams("name", data.getName())
+                .addUrlParams("email", data.getEmail())
+                .addUrlParams("phone", data.getPhone())
+                .addUrlParams("gender", data.getGender());
         RestClient.loginOperation(RestClient.POST, USER_INFO, restClient, listener);
     }
 
     public void setUserCarInfo(UserCarInfoData data, RestClient.OnResultListener<String> listener) {
         RestClient restClient = new RestClient();
         restClient
-                .addHeaderParams("brand", data.getBrand())
-                .addHeaderParams("model", data.getModel())
-                .addHeaderParams("license_num", data.getLicense_num())
-                .addHeaderParams("engine_num", data.getEngine_num())
-                .addHeaderParams("level", data.getLevel())
-                .addHeaderParams("mileage", String.valueOf(data.getMileage()))
-                .addHeaderParams("petrol_gage", String.valueOf(data.getPetrol_gage()))
-                .addHeaderParams("engine_performance", String.valueOf(data.getEngine_performance()))
-                .addHeaderParams("transmission_performance", String.valueOf(data.getTransmission_performance()))
-                .addHeaderParams("light_performance", String.valueOf(data.getLight_performance()));
+                .addUrlParams("brand", data.getBrand())
+                .addUrlParams("model", data.getModel())
+                .addUrlParams("license_num", data.getLicense_num())
+                .addUrlParams("engine_num", data.getEngine_num())
+                .addUrlParams("level", data.getLevel())
+                .addUrlParams("mileage", String.valueOf(data.getMileage()))
+                .addUrlParams("petrol_gage", String.valueOf(data.getPetrol_gage()))
+                .addUrlParams("engine_performance", String.valueOf(data.getEngine_performance()))
+                .addUrlParams("transmission_performance", String.valueOf(data.getTransmission_performance()))
+                .addUrlParams("light_performance", String.valueOf(data.getLight_performance()));
         RestClient.loginOperation(RestClient.POST, USER_CAR_INFO, restClient, listener);
     }
 
     public void setUserPoint(UserPointData data, RestClient.OnResultListener<String> listener) {
         RestClient restClient = new RestClient();
         restClient
-                .addHeaderParams("home_latitude", String.valueOf(data.getHome_latitude()))
-                .addHeaderParams("home_longitude", String.valueOf(data.getHome_longitude()))
-                .addHeaderParams("company_latitude", String.valueOf(data.getCompany_latitude()))
-                .addHeaderParams("company_longitude", String.valueOf(data.getCompany_longitude()));
+                .addUrlParams("home_latitude", String.valueOf(data.getHome_latitude()))
+                .addUrlParams("home_longitude", String.valueOf(data.getHome_longitude()))
+                .addUrlParams("company_latitude", String.valueOf(data.getCompany_latitude()))
+                .addUrlParams("company_longitude", String.valueOf(data.getCompany_longitude()));
         RestClient.loginOperation(RestClient.POST, USER_POINT, restClient, listener);
     }
 
@@ -121,6 +136,7 @@ public class RestClientHelp {
         restClient
                 .addHeaderParams("username", username)
                 .addHeaderParams("password", password);
+
         RestClient.loginOperation(RestClient.PUT, SESSIONS, restClient, listener);
     }
 

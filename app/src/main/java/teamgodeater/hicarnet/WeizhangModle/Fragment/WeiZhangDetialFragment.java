@@ -12,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cheshouye.api.client.json.WeizhangResponseHistoryJson;
+import com.cheshouye.api.client.json.WeizhangResponseJson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +25,6 @@ import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
-import teamgodeater.hicarnet.WeizhangModle.Data.HistorysBean;
-import teamgodeater.hicarnet.WeizhangModle.Data.WeiZhangJson;
 
 /**
  * Created by G on 2016/6/12 0012.
@@ -35,10 +36,10 @@ public class WeiZhangDetialFragment extends BaseFragment {
     @Bind(R.id.linearLayout)
     LinearLayout linearLayout;
 
-    WeiZhangJson weiZhangJson;
+    WeizhangResponseJson weiZhangJson;
 
 
-    public void setWeizhangJson(WeiZhangJson weiZhangJson) {
+    public void setWeizhangJson(WeizhangResponseJson weiZhangJson) {
         this.weiZhangJson = weiZhangJson;
     }
 
@@ -100,13 +101,13 @@ public class WeiZhangDetialFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(new BaseItem2LineAdapter(datas));
 
-         List<HistorysBean> historys = weiZhangJson.getHistorys();
+         List<WeizhangResponseHistoryJson> historys = weiZhangJson.getHistorys();
 
         if (historys == null || historys.size() == 0)
             return;
 
         int count = 0;
-        for (HistorysBean bean : historys) {
+        for (WeizhangResponseHistoryJson bean : historys) {
             count++;
             View view = LayoutInflater.from(rootContain.getContext()).inflate(R.layout.item_weizhang, rootContain, false);
             TextView textView3 = (TextView) view.findViewById(R.id.textView3);

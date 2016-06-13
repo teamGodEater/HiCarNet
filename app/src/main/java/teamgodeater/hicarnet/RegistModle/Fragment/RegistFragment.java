@@ -70,7 +70,7 @@ public class RegistFragment extends BaseFragment {
     RotateLoading rotateLoading;
     @Bind(R.id.focus)
     View focus;
-    @Bind(R.id.headImage)
+    @Bind(R.id.baseLine)
     RoundedImageView headImage;
     private boolean isPasswordVisible = false;
 

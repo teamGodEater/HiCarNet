@@ -9,20 +9,18 @@ import android.graphics.Bitmap;
 public class UserCarInfoData {
 
     /**
-     * brand : 123
-     * create_data : 2016-06-03 14:08:22.000
-     * engine_num : 123
-     * engine_performance : 213
-     * id : 6
-     * level : 1
-     * license_num : 1
-     * light_performance : 124
-     * mileage : 124
-     * model : 12
-     * petrol_gage : 124
-     * sign_ico : 214
-     * transmission_performance : 124
-     * user_id : 1
+     * {
+     * "brand" : "五菱宏光",
+     * "engine_num" : "55EC2323D",
+     * "level" : "八门八座",
+     * "license_num" : "琼A515152",
+     * "mileage" : 1224,
+     * "model" : "秋明山车神",
+     * "petrol_gage" : 21,
+     * "engine_performance" : 2,
+     * "light_performance" : 1,
+     * "transmission_performance" : 1
+     * }
      */
 
     private String brand;

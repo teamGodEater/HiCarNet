@@ -21,7 +21,7 @@
 
     <teamgodeater.hicarnet.Widget.RoundedImageView
         android:padding="10dp"
-        android:id="@+id/headImage"
+        android:id="@+id/baseLine"
         app:border_width="5dp"
         app:border_incolor="@color/colorWhite"
         android:src="@drawable/ic_photo"
