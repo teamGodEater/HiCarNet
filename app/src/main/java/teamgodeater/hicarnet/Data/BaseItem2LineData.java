@@ -19,6 +19,6 @@ public class BaseItem2LineData {
     public String tipRight;
     public Object tag;
     public Bitmap icoLeftBitmap = null ;
-    public boolean isDivider =  false;
+    public boolean hasDivider =  false;
     public boolean isClickAble = true;
 }

@@ -128,7 +128,7 @@ public class CarDetailFragment extends BaseFragment {
         d1.icoLeftBitmap = carInfoData.getSignBitmap();
         d1.title = carInfoData.getBrand();
         d1.tip = carInfoData.getLicense_num();
-        d1.isDivider = true;
+        d1.hasDivider = true;
         items.add(d1);
         BaseItem2LineData d2 = new BaseItem2LineData();
         d2.title = "引擎";
@@ -159,7 +159,7 @@ public class CarDetailFragment extends BaseFragment {
         }
         items.add(d3);
         BaseItem2LineData d4 = new BaseItem2LineData();
-        d4.isDivider = true;
+        d4.hasDivider = true;
         d4.title = "车灯";
         d4.isClickAble = false;
         int light_performance = carInfoData.getLight_performance();
@@ -180,7 +180,7 @@ public class CarDetailFragment extends BaseFragment {
                 || carInfoData.getMileage() > 1500) {
 
             BaseItem2LineData t1 = new BaseItem2LineData();
-            t1.isDivider = true;
+            t1.hasDivider = true;
             t1.icoLeft = R.drawable.ic_build;
             t1.title = "出现损坏";
             t1.tip = "安全隐患";
@@ -192,7 +192,7 @@ public class CarDetailFragment extends BaseFragment {
 
         if (carInfoData.getPetrol_gage() < 30) {
             BaseItem2LineData t2 = new BaseItem2LineData();
-            t2.isDivider = true;
+            t2.hasDivider = true;
             t2.icoLeft = R.drawable.ic_local_gas;
             t2.title = "油量低";
             t2.tip = "主人!我跑不了多远了";
@@ -344,6 +344,11 @@ public class CarDetailFragment extends BaseFragment {
     public boolean onInterceptBack() {
         finish();
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return "car";
     }
 
     @Override

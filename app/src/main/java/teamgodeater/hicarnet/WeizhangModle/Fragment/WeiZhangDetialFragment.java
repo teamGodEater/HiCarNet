@@ -76,21 +76,21 @@ public class WeiZhangDetialFragment extends BaseFragment {
 
         List<BaseItem2LineData> datas = new ArrayList<>();
         BaseItem2LineData data1 = new BaseItem2LineData();
-        data1.isDivider = true;
+        data1.hasDivider = true;
         data1.isClickAble = false;
         data1.icoLeft = R.drawable.ic_receipt;
         data1.title = "扣分总计";
         data1.tipRight = weiZhangJson.getTotal_score() + " 分";
         datas.add(data1);
         BaseItem2LineData data2 = new BaseItem2LineData();
-        data2.isDivider = true;
+        data2.hasDivider = true;
         data2.isClickAble = false;
         data2.icoLeft = R.drawable.ic_monetization_on;
         data2.title = "罚款总计";
         data2.tipRight = weiZhangJson.getTotal_money() + " 元";
         datas.add(data2);
         BaseItem2LineData data3 = new BaseItem2LineData();
-        data3.isDivider = true;
+        data3.hasDivider = true;
         data3.isClickAble = false;
         data3.icoLeft = R.drawable.ic_format_list_numbered;
         data3.title = "违章记录条数";
@@ -161,6 +161,12 @@ public class WeiZhangDetialFragment extends BaseFragment {
     public boolean onInterceptBack() {
         finish();
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return "weizhang";
+
     }
 
     private void finish() {

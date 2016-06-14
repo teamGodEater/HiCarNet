@@ -4,12 +4,12 @@
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_fail.png",
-        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_fail.png"
-    },
-    {
         "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_corner_top_right.png",
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\drawable-hdpi\\scan_corner_top_right.png"
+    },
+    {
+        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_fail.png",
+        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\drawable-hdpi\\scan_fail.png"
     },
     {
         "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\scan_history_normal.png",

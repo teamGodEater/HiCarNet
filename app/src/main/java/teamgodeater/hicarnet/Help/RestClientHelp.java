@@ -26,6 +26,7 @@ public class RestClientHelp {
     private static final String USER_INFO = SERVICE_REST_URL + "/users/user_info";
     private static final String USER_CAR_INFO = SERVICE_REST_URL + "/users/user_car_info";
     private static final String USER_POINT = SERVICE_REST_URL + "/users/user_point";
+    public static final String USER_HEADIMAGE = SERVICE_REST_URL + "/head_image";
     public static String Session = "";
 
     //---------------------------------------------------------------------------------------------

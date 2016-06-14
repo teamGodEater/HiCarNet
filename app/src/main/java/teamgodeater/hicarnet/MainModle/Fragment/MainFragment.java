@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
@@ -50,7 +52,6 @@ public class MainFragment extends BaseFragment
         implements View.OnClickListener, BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapTouchListener
         , OnLocReceiverObserve, SearchHelp.OnSearchRouteListener, SearchView.OnBackClickListener {
 
-
     public static final int TYPE_LAUNCHER = 1;
 
     @Bind(R.id.bottomViewPager)
@@ -72,6 +73,16 @@ public class MainFragment extends BaseFragment
     SearchHelp searchHelp;
     BottomHelp bottomHelp;
     private DrivingRouteOverlay routeOverlay;
+
+    public static MainFragment getInstans() {
+        List<Fragment> fragments = ManageActivity.manageActivity.getSupportFragmentManager().getFragments();
+        for (Fragment f : fragments) {
+            if (f instanceof MainFragment) {
+                return (MainFragment) f;
+            }
+        }
+        return new MainFragment();
+    }
 
     //--------------------------------------Parent Implement Begin----------------------------------
 
@@ -167,6 +178,11 @@ public class MainFragment extends BaseFragment
     @Override
     public boolean onInterceptBack() {
         return searchHelp.isInterceptBack();
+    }
+
+    @Override
+    public String getType() {
+        return "main";
     }
 
     //--------------------------------------Parent Implement End------------------------------------

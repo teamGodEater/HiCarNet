@@ -98,6 +98,11 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
+    public String getType() {
+        return "login";
+    }
+
+    @Override
     protected void onToolBarClick(View v) {
         String tag = (String) v.getTag();
         if (tag.equals("back")) {
@@ -211,7 +216,7 @@ public class LoginFragment extends BaseFragment {
         regist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideSelfDelay(500);
+                hideSelf(500);
                 manageActivity.switchFragment(new RegistFragment());
             }
         });

@@ -77,7 +77,7 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
             holder.icoRight.setColorFilter(itemData.icoRightColor, PorterDuff.Mode.SRC_IN);
         }
 
-        if (itemData.isDivider) {
+        if (itemData.hasDivider) {
             holder.divider.setVisibility(View.VISIBLE);
         } else {
             holder.divider.setVisibility(View.GONE);
@@ -137,6 +137,8 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
     }
 
     public void setFocusItem(int position) {
+        if (focusItemIndex == position)
+            return;
         focusItemIndex = position;
         notifyDataSetChanged();
     }

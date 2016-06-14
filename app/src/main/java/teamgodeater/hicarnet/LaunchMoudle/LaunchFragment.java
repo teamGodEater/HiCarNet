@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
@@ -36,6 +39,16 @@ public class LaunchFragment extends BaseFragment {
     @Bind(R.id.brandContain)
     RelativeLayout brandContain;
 
+    public static LaunchFragment getInstans() {
+        List<Fragment> fragments = ManageActivity.manageActivity.getSupportFragmentManager().getFragments();
+        for (Fragment f : fragments) {
+            if (f instanceof LaunchFragment) {
+                return (LaunchFragment) f;
+            }
+        }
+        return new LaunchFragment();
+    }
+
     @Override
     protected SupportWindowsParams onCreateSupportViewParams() {
         SupportWindowsParams params = new SupportWindowsParams();
@@ -45,6 +58,11 @@ public class LaunchFragment extends BaseFragment {
         params.primaryColor = Color.BLACK;
         params.isHasToolBar = false;
         return params;
+    }
+
+    @Override
+    public String getType() {
+        return "";
     }
 
     private String getDate() {
@@ -77,7 +95,6 @@ public class LaunchFragment extends BaseFragment {
             public void run() {
                 Logger.d("load Over");
                 if (manageActivity != null) {
-                    destroySelf(0L);
                     manageActivity.createMapView();
                     MainFragment to = new MainFragment();
                     manageActivity.switchFragment(to);

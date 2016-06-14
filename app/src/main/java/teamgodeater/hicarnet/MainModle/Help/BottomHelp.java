@@ -156,7 +156,7 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
             data.tip = "轻松查看车况 和 违章";
             data.tipRight = "刷新";
             data.icoRight = R.drawable.ic_keyboard_arrow_right;
-            data.isDivider = true;
+            data.hasDivider = true;
             data.tag = "获取车辆数据失败";
             dataList.add(data);
         } else if (userCarInfoData.getLicense_num().equals("")) {
@@ -167,7 +167,7 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
             data.tip = "轻松查看车况 和 违章";
             data.tipRight = "去添加";
             data.icoRight = R.drawable.ic_keyboard_arrow_right;
-            data.isDivider = true;
+            data.hasDivider = true;
             data.tag = "没有设置车辆";
             dataList.add(data);
         } else {
@@ -191,7 +191,7 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
             dataList.add(weizhang);
             //性能
             BaseItem2LineData performance = new BaseItem2LineData();
-            performance.isDivider = true;
+            performance.hasDivider = true;
             if (userCarInfoData.getEngine_performance() == 2 || userCarInfoData.getTransmission_performance() == 2
                     || userCarInfoData.getLight_performance() == 2) {
                 performance.title = "车辆出现故障";
@@ -231,7 +231,7 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
             data.tip = "帮助你摆脱拥堵路线";
             data.tipRight = "刷新";
             data.icoRight = R.drawable.ic_keyboard_arrow_right;
-            data.isDivider = true;
+            data.hasDivider = true;
             data.tag = "获取路况数据失败";
 
         } else if (UserDataHelp.userPointData.getUser_id() == 0) {
@@ -242,7 +242,7 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
             data.tip = "设置常用路线 避免拥堵";
             data.tipRight = "去设置";
             data.icoRight = R.drawable.ic_keyboard_arrow_right;
-            data.isDivider = true;
+            data.hasDivider = true;
             data.tag = "没有设置路况";
         } else {
             //成功获取
@@ -269,7 +269,7 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
                 data.tip = "请尽量避免,拥堵 " + dis;
                 data.icoRight = R.drawable.ic_keyboard_arrow_right;
                 data.tipRight = "规划新路线";
-                data.isDivider = true;
+                data.hasDivider = true;
                 data.tag = "规划新路线";
             }
         }

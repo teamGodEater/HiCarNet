@@ -73,6 +73,7 @@ public class RegistFragment extends BaseFragment {
     @Bind(R.id.baseLine)
     RoundedImageView headImage;
     private boolean isPasswordVisible = false;
+    private Bitmap headBitMap;
 
     @NonNull
     @Override
@@ -296,9 +297,9 @@ public class RegistFragment extends BaseFragment {
         if (requestCode == REQUEST_CODE_PHOTO_SELECT_REQUEST_CODE) {
             startPhotoZoom(data.getData(),160);
         } else if (requestCode == REQUEST_CODE_PHOTO_CUT_REQUEST_CODE) {
-            Bitmap bitmap = data.getExtras().getParcelable("data");
+            headBitMap = data.getExtras().getParcelable("data");
             headImage.setPadding(0,0,0,0);
-            headImage.setImageBitmap(bitmap);
+            headImage.setImageBitmap(headBitMap);
         }
 
     }
@@ -328,6 +329,10 @@ public class RegistFragment extends BaseFragment {
         String passwd = password.getText().toString();
         String passwdConfirm = passwordConfirm.getText().toString();
         if (isPasswordVisible || passwd.equals(passwdConfirm)) {
+            if (headImage == null) {
+                Utils.toast("请选择一个头像");
+                return;
+            }
             RestClientHelp restClientHelp = new RestClientHelp();
             setRotateLoading(true);
             restClientHelp.regist(user, passwd, new RestClient.OnResultListener<String>() {
@@ -366,6 +371,7 @@ public class RegistFragment extends BaseFragment {
                 setRotateLoading(false);
                 CarManageFragment carManageFragment = new CarManageFragment();
                 manageActivity.switchFragment(carManageFragment);
+                // TODO: 2016/6/14 0014 记得把头像完善下
                 destroySelf(350);
             }
 
@@ -410,6 +416,11 @@ public class RegistFragment extends BaseFragment {
         int width = parentView.getWidth();
         backBefore(width / 2, height - 48);
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return "regist";
     }
 
     @Override

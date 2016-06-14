@@ -21,8 +21,6 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
-import java.util.List;
-
 import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
@@ -304,65 +302,20 @@ public abstract class BaseFragment extends Fragment {
         public int primaryColor = Utils.getColorFromRes(R.color.colorPrimary);
     }
 
-    public void hideSelfDelay(long delay) {
+    public void destroySelfShowBefore(long delay) {
+        manageActivity.destroyTopShowBefore(delay);
+    }
+
+    public void destroySelf(long delay) {
+        BaseFragmentManage.destroyTop(delay);
+    }
+
+    public void hideSelf(long delay) {
         Handler h = new Handler();
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
-                hideSelf();
-            }
-        }, delay);
-    }
-
-    public void hideSelf() {
-        getFragmentManager().beginTransaction().hide(BaseFragment.this).commitAllowingStateLoss();
-    }
-
-    public void destroySelfShowBefore() {
-        List<Fragment> fragments = getFragmentManager().getFragments();
-        int size = fragments.size();
-        Fragment showFragment = null;
-        for (int i = size - 2; i >= 0; i--) {
-            showFragment = fragments.get(i);
-            if (showFragment != null)
-                break;
-        }
-
-        if (showFragment == null)
-            return;
-
-        getFragmentManager().beginTransaction().remove(this).show(showFragment).commitAllowingStateLoss();
-    }
-
-    public void destroySelfShowBefore(long delay) {
-        List<Fragment> fragments = getFragmentManager().getFragments();
-        int size = fragments.size();
-        Fragment showFragment = null;
-        for (int i = size - 2; i >= 0; i--) {
-            showFragment = fragments.get(i);
-            if (showFragment != null)
-                break;
-        }
-
-        if (showFragment == null)
-            return;
-
-        getFragmentManager().beginTransaction().show(showFragment).commitAllowingStateLoss();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getFragmentManager().beginTransaction().remove(BaseFragment.this).commitAllowingStateLoss();
-            }
-        }, delay);
-    }
-
-    public void destroySelf(long delay) {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getFragmentManager().beginTransaction().remove(BaseFragment.this).commitAllowingStateLoss();
+                getFragmentManager().beginTransaction().hide(BaseFragment.this).commitAllowingStateLoss();
             }
         }, delay);
     }
@@ -370,4 +323,6 @@ public abstract class BaseFragment extends Fragment {
     public boolean onInterceptBack() {
         return false;
     }
+
+    public abstract String getType();
 }

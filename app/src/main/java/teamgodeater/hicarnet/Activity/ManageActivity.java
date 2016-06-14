@@ -9,9 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -32,14 +29,15 @@ import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import teamgodeater.hicarnet.CarManageModle.Fragment.CarManageFragment;
+import teamgodeater.hicarnet.DrawerMoudle.Fragment.DrawerFragment;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
-import teamgodeater.hicarnet.Fragment.DrawerFragment;
+import teamgodeater.hicarnet.Fragment.BaseFragmentManage;
 import teamgodeater.hicarnet.Help.LocationHelp;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
+import teamgodeater.hicarnet.LaunchMoudle.LaunchFragment;
 import teamgodeater.hicarnet.R;
 
 public class ManageActivity extends AppCompatActivity implements BDLocationListener {
@@ -51,29 +49,45 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     @Bind(R.id.DrawerLayout)
     DrawerLayout drawerLayout;
 
+    public static ManageActivity manageActivity;
     MapView mainMapView;
 
 
     BDLocation myLocation;
     OnLocReceiverObserve receiverObserve;
     SDKReceiver mapSdkReceiver;
+    private DrawerFragment drawerFragment;
+
+    public BDLocation getMyLoc() {
+        return myLocation;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        manageActivity = this;
         //不允许旋转
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //设置状态栏
         setSystemBar();
         setContentView(R.layout.activity);
         ButterKnife.bind(this);
-        FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-        beginTransaction.replace(R.id.DrawerContain, new DrawerFragment()).replace(R.id.MainContain, new CarManageFragment()).commit();
+        //侧滑
+        drawerFragment = new DrawerFragment();
+        drawerFragment.setDraweLayout(drawerLayout);
+        //----
+        setFragment();
         //mapSdk状态
         registerReceiver();
         //加载本地数据
         loadLocalData();
 
+    }
+
+    private void setFragment() {
+        BaseFragmentManage.fragmentManager = getSupportFragmentManager();
+        getSupportFragmentManager().beginTransaction().add(R.id.DrawerContain, drawerFragment).commitAllowingStateLoss();
+        BaseFragmentManage.switchFragment(new LaunchFragment());
     }
 
     private void loadLocalData() {
@@ -265,10 +279,13 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         }
     }
 
+    public void switchFragment(BaseFragment to) {
+        BaseFragmentManage.switchFragment(to);
+    }
 
-    public void switchFragment(Fragment to) {
-        FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-        beginTransaction.add(R.id.MainContain, to).commitAllowingStateLoss();
+    public void destroyTopShowBefore(long delay) {
+        drawerFragment.onFragmentChange(BaseFragmentManage.fragments.get(BaseFragmentManage.fragments.size() - 2));
+        BaseFragmentManage.destroyTopShowBefore(delay);
     }
 
     long backPressPrevious = 0;
@@ -279,16 +296,10 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
             drawerLayout.closeDrawer(Gravity.LEFT);
             return;
         }
-        FragmentManager supportFragmentManager = getSupportFragmentManager();
-        Fragment currentFragment = supportFragmentManager.findFragmentById(R.id.MainContain);
-        if (currentFragment instanceof BaseFragment
-                && ((BaseFragment) currentFragment).onInterceptBack()) {
+        if (BaseFragmentManage.getTopFragment().onInterceptBack()) {
             return;
         }
-        if (supportFragmentManager.getBackStackEntryCount() >= 1) {
-            supportFragmentManager.popBackStackImmediate();
-            return;
-        }
+
         if (System.currentTimeMillis() - backPressPrevious < 2000) {
             finish();
         } else {

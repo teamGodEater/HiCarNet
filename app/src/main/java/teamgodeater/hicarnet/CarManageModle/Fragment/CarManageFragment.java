@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.hugo.android.scanner.CaptureActivity;
+import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
 import teamgodeater.hicarnet.CarManageModle.Adapter.SmallRightRvAdapter;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
@@ -57,6 +60,16 @@ public class CarManageFragment extends BaseFragment {
     View rotateBackGround;
     @Bind(R.id.rotateLoading)
     RotateLoading rotateLoading;
+
+    public static CarManageFragment getInstans() {
+        List<Fragment> fragments = ManageActivity.manageActivity.getSupportFragmentManager().getFragments();
+        for (Fragment f : fragments) {
+            if (f instanceof CarManageFragment) {
+                return (CarManageFragment) f;
+            }
+        }
+        return new CarManageFragment();
+    }
 
     @NonNull
     @Override
@@ -141,6 +154,12 @@ public class CarManageFragment extends BaseFragment {
         }
     }
 
+    @Override
+    protected void onOnceGlobalLayoutListen() {
+        parentView.setTranslationX(parentView.getWidth());
+        parentView.animate().translationX(0).setInterpolator(new AccelerateInterpolator()).start();
+    }
+
     private void setColorFilter() {
         fab.getIcon().setColorFilter(Utils.getColorFromRes(R.color.colorWhite), PorterDuff.Mode.SRC_IN);
     }
@@ -149,7 +168,6 @@ public class CarManageFragment extends BaseFragment {
         otherButton.setVisibility(View.GONE);
         otherTip.setVisibility(View.GONE);
         rotateBackGround.setVisibility(View.GONE);
-
 
 
         if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
@@ -169,7 +187,7 @@ public class CarManageFragment extends BaseFragment {
 
         List<UserCarInfoData> datas = UserDataHelp.userCarInfoDatas;
 
-        if (RestClientHelp.Session.equals("") ) {
+        if (RestClientHelp.Session.equals("")) {
             linearLayout.removeAllViews();
             otherTip.setText("你还没有登录哦 请先登录");
             otherTip.setVisibility(View.VISIBLE);
@@ -178,7 +196,7 @@ public class CarManageFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     manageActivity.switchFragment(new LoginFragment());
-                    hideSelfDelay(500L);
+                    hideSelf(500L);
                 }
             });
             otherButton.setVisibility(View.VISIBLE);
@@ -230,7 +248,7 @@ public class CarManageFragment extends BaseFragment {
             d1.tip = data.getLicense_num();
             d1.tipRight = "查看详情";
             d1.icoRight = R.drawable.ic_keyboard_arrow_right;
-            d1.isDivider = true;
+            d1.hasDivider = true;
             items.add(d1);
             BaseItem2LineData d2 = new BaseItem2LineData();
             d2.title = "引擎";
@@ -328,7 +346,7 @@ public class CarManageFragment extends BaseFragment {
         View c = linearLayout.getChildAt(position);
         to.setCarPosititon(c.getY());
         manageActivity.switchFragment(to);
-        hideSelf();
+        hideSelf(280L);
     }
 
     @Override
@@ -339,8 +357,25 @@ public class CarManageFragment extends BaseFragment {
 
     @Override
     public boolean onInterceptBack() {
-        destroySelfShowBefore();
+        finish();
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return "car";
+    }
+
+    @Override
+    protected void onToolBarClick(View v) {
+        String tag = (String) v.getTag();
+        if (tag.equals("back"))
+            finish();
+    }
+
+    private void finish() {
+        destroySelfShowBefore(280L);
+        parentView.animate().translationX(parentView.getWidth()).setInterpolator(new AccelerateInterpolator()).start();
     }
 
     private void setRotateLoading(boolean start) {

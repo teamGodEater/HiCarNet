@@ -10,7 +10,7 @@ public class UserCarInfoData {
 
     /**
      * {
-     * "brand" : "五菱宏光",
+     * "brand" : "五菱",
      * "engine_num" : "55EC2323D",
      * "level" : "八门八座",
      * "license_num" : "琼A515152",

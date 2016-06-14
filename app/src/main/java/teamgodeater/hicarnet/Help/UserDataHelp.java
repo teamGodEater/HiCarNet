@@ -2,6 +2,7 @@ package teamgodeater.hicarnet.Help;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.baidu.mapapi.model.LatLng;
@@ -25,6 +26,7 @@ import teamgodeater.hicarnet.RestClient.RestClient;
 public class UserDataHelp {
     public static int OK = 233, NOFOUND = 42, NOGET = 425, INVAIN = 552;
     public static UserInfoData userInfoData;
+    public static Bitmap headImage;
     public static UserPointData userPointData;
     public static List<UserCarInfoData> userCarInfoDatas;
     public static DrivingRouteResult userTrafficLine;
@@ -38,6 +40,22 @@ public class UserDataHelp {
         if (userCarInfoDatas.get(0).getLicense_num().equals(""))
             return INVAIN;
         return OK;
+    }
+
+    public static void getHeadBitmap(final OnDoneListener listener) {
+        headImage = null;
+        RestClientHelp restClientHelp = new RestClientHelp();
+        restClientHelp.getFile(RestClientHelp.USER_HEADIMAGE, new RestClient.OnServiceResultListener() {
+            @Override
+            public void resultListener(byte[] result, int code, Map<String, List<String>> header) {
+                if (code == 200) {
+                    headImage = BitmapFactory.decodeByteArray(result, 0, result.length);
+                }
+                if (listener != null) {
+                    listener.onDone(code);
+                }
+            }
+        });
     }
 
     public static UserCarInfoData getDefaultCarInfoData() {

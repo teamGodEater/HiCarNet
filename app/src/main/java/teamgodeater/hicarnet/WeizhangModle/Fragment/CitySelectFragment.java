@@ -74,10 +74,10 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootContain);
         allProvince = WeizhangClient.getAllProvince();
-        if (allProvince == null || allProvince.size() == 0){
+        if (allProvince == null || allProvince.size() == 0) {
             Toast.makeText(getActivity(), "无法连接到服务器,请检查你网络后重试", Toast.LENGTH_SHORT);
             finish();
-        }else {
+        } else {
             setColorFilter();
             setView();
             setRv();
@@ -113,7 +113,7 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
             @Override
             public void onClick(View v) {
                 hideSoftInput();
-                if (searchLevel == 0){
+                if (searchLevel == 0) {
                     finish();
                     return;
                 }
@@ -292,5 +292,10 @@ public class CitySelectFragment extends BaseFragment implements CityRvAdapter.On
             search.setText("");
         }
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return "weizhang";
     }
 }

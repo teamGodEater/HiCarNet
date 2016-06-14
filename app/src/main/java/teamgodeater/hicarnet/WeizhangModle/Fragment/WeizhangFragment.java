@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.Data.UserCarInfoData;
@@ -67,6 +70,16 @@ public class WeizhangFragment extends BaseFragment {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
 
+    public static WeizhangFragment getInstans() {
+        List<Fragment> fragments = ManageActivity.manageActivity.getSupportFragmentManager().getFragments();
+        for (Fragment f : fragments) {
+            if (f instanceof WeizhangFragment) {
+                return (WeizhangFragment) f;
+            }
+        }
+        return new WeizhangFragment();
+    }
+
     @NonNull
     @Override
     protected SupportWindowsParams onCreateSupportViewParams() {
@@ -83,22 +96,9 @@ public class WeizhangFragment extends BaseFragment {
         ButterKnife.bind(this, rootContain);
         cityChose.getCompoundDrawables()[2].setColorFilter(Utils.getColorFromRes(R.color.colorWhite87), PorterDuff.Mode.SRC_IN);
         tSetDefaultView(true, "违章查询");
-        tAddRightContainView(tGetSimpleView("查询", 0.87f), "query");
+        tAddRightContainView(tGetSimpleView("查询", 1f), "query");
+        setViewByCityId(getLocationCityId());
         setListener();
-
-        SharedPreferences sharedPreferences = manageActivity.getSharedPreferences(SharedPreferencesHelp.WEIZHANG, Context.MODE_PRIVATE);
-        List<CarInfo> list = new ArrayList<>();
-        CarInfo carInfo = new CarInfo();
-        carInfo.setChepai_no("琼A9142414");
-        carInfo.setEngine_no("EF1241251FC");
-        carInfo.setChejia_no("EF1241251FC");
-        carInfo.setCity_id(292);
-        list.add(carInfo);
-        list.add(carInfo);
-        Gson gson = new Gson();
-        String s = gson.toJson(list);
-        sharedPreferences.edit().putString(SharedPreferencesHelp.WEIZHANG_JSON, s).apply();
-
         setRv();
         return rootView;
     }
@@ -108,6 +108,8 @@ public class WeizhangFragment extends BaseFragment {
         String tag = (String) v.getTag();
         if (tag.equals("query")) {
             query();
+        } else if (tag.equals("back")) {
+            finish();
         }
     }
 
@@ -145,7 +147,7 @@ public class WeizhangFragment extends BaseFragment {
             WeiZhangDetialFragment to = new WeiZhangDetialFragment();
             to.setWeizhangJson(weizhang);
             manageActivity.switchFragment(to);
-            hideSelfDelay(500L);
+            hideSelf(500L);
             return;
         }
 
@@ -207,8 +209,12 @@ public class WeizhangFragment extends BaseFragment {
         if (historyDatas != null)
             datas.addAll(historyDatas);
 
-        if (datas.size() == 0)
-            return;
+        if (datas.size() == 0){
+            BaseItem2LineData data = new BaseItem2LineData();
+            data.isClickAble = false;
+            data.title = "没有历史记录";
+            datas.add(data);
+        }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
@@ -257,7 +263,7 @@ public class WeizhangFragment extends BaseFragment {
 
         for (CarInfo c : t) {
             BaseItem2LineData item2LineData = new BaseItem2LineData();
-            item2LineData.isDivider = true;
+            item2LineData.hasDivider = true;
             item2LineData.tag = c;
             item2LineData.title = c.getChepai_no();
             item2LineData.icoLeft = R.drawable.search_ic_history_black_24dp;
@@ -281,7 +287,7 @@ public class WeizhangFragment extends BaseFragment {
             if (carInfo == null)
                 continue;
             BaseItem2LineData data = new BaseItem2LineData();
-            data.isDivider = true;
+            data.hasDivider = true;
             data.icoLeftBitmap = cid.getSignBitmap();
             data.title = cid.getBrand();
             data.tip = cid.getLicense_num();
@@ -306,7 +312,7 @@ public class WeizhangFragment extends BaseFragment {
                     }
                 });
                 manageActivity.switchFragment(citySelectFragment);
-                hideSelfDelay(500L);
+                hideSelf(500L);
             }
         });
 
@@ -389,6 +395,28 @@ public class WeizhangFragment extends BaseFragment {
             String hint = "请输入" + (registno == -1 ? "完整" : "后 " + registno + " 位") + "证书号";
             engine.setHint(hint);
         }
+    }
+
+    @Override
+    protected void onOnceGlobalLayoutListen() {
+        parentView.setTranslationX(parentView.getWidth());
+        parentView.animate().translationX(0).setInterpolator(new AccelerateInterpolator()).start();
+    }
+
+    @Override
+    public boolean onInterceptBack() {
+        finish();
+        return true;
+    }
+
+    @Override
+    public String getType() {
+        return "weizhang";
+    }
+
+    private void finish() {
+        destroySelfShowBefore(280L);
+        parentView.animate().translationX(parentView.getWidth()).setInterpolator(new AccelerateInterpolator()).start();
     }
 
     @Override
