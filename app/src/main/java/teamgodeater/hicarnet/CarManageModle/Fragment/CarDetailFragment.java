@@ -85,8 +85,9 @@ public class CarDetailFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 long currentTimeMillis = System.currentTimeMillis();
-                if (currentTimeMillis - lastFabClickTime < 700) {
+                if (currentTimeMillis - lastFabClickTime < 1000) {
                     fab.setClickable(false);
+                    Utils.toast("正在请求服务器 请稍后");
                     RestClientHelp restClientHelp = new RestClientHelp();
                     restClientHelp.delUserCarInfo(carInfoData.getLicense_num(), new RestClient.OnResultListener<String>() {
                         @Override
@@ -96,7 +97,6 @@ public class CarDetailFragment extends BaseFragment {
                             parentView.animate().scaleX(0.01f).scaleY(0.01f)
                                     .setInterpolator(new AccelerateInterpolator()).start();
                         }
-
                         @Override
                         public void error(int code) {
                             fab.setClickable(true);
@@ -106,7 +106,6 @@ public class CarDetailFragment extends BaseFragment {
                 } else {
                     lastFabClickTime = currentTimeMillis;
                     Toast.makeText(getActivity(), "快速双击 就能删除了\nTip : 此操作不可逆!请谨慎操作", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="280dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/status_tip"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:alpha="0.87"
+        android:gravity="center_horizontal"
+        android:text="Test"
+        android:textColor="@color/colorBlack"
+        android:textSize="18dp" />
 
     <com.github.zagum.speechrecognitionview.RecognitionProgressView
         android:id="@+id/recognition"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_gravity="center_horizontal"
-        android:alpha="0.87"
-        android:textColor="@color/colorBlack"
-        android:textSize="20dp"
-        android:text="test"
-        android:gravity="center_horizontal"
-        android:id="@+id/status_tip"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <ImageButton
-        android:id="@+id/button"
-        android:layout_gravity="bottom|center_horizontal"
         android:layout_width="256dp"
-        android:layout_height="50dp" />
+        android:layout_height="124dp"
+        android:layout_gravity="center" />
+
+
     <TextView
         android:id="@+id/tip"
-        android:textSize="16dp"
-        android:text="222"
-        android:textColor="@color/colorAccent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="Text"
+        android:textColor="@color/colorAccent"
+        android:textSize="12dp" />
 
-</FrameLayout>
+    <teamgodeater.hicarnet.Widget.RippleBackGroundView
+        android:id="@+id/button"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_height="36dp"
+        android:layout_gravity="bottom|center_horizontal" />
+
+
+</LinearLayout>

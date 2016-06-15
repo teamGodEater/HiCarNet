@@ -48,11 +48,15 @@ public class RippleBackGroundView extends RoundedImageView {
     }
 
     public void setText(String text) {
+
         if (text == null) {
             this.text = "";
-        } else {
+        } else if (this.text.equals(text)){
+            return;
+        }else
             this.text = text;
-        }
+
+        invalidate();
     }
 
     public int getTextSize() {

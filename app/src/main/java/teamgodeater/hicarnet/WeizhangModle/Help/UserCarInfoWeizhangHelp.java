@@ -44,11 +44,14 @@ public class UserCarInfoWeizhangHelp {
 
     public static int getCityIdFromShotName(String str) {
         List<ProvinceInfoJson> allProvince = WeizhangClient.getAllProvince();
+        String shotName = str.substring(0, 1);
+        String shotCityName = str.substring(0, 2);
+
         for (ProvinceInfoJson p : allProvince) {
-            if (p.getProvinceShortName().contains(str.substring(0, 2))) {
+            if (p.getProvinceShortName().contains(shotName)) {
                 List<CityInfoJson> citys = WeizhangClient.getCitys(p.getProvinceId());
                 for (CityInfoJson c : citys) {
-                    if (c.getCar_head().contains(str.substring(0, 3))) {
+                    if (c.getCar_head().contains(shotCityName)) {
                         return c.getCity_id();
                     }
                 }

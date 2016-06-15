@@ -64,7 +64,7 @@ public class BaseFragmentManage {
     public static void destroyTopShowBefore(long delay) {
         FragmentTransaction beginTransaction = fragmentManager.beginTransaction();
         BaseFragment fragment = fragments.get(fragments.size() - 2);
-        int i = beginTransaction.show(fragment).commitAllowingStateLoss();
+        beginTransaction.show(fragment).commitAllowingStateLoss();
         destroyTop(delay);
     }
 
@@ -99,4 +99,5 @@ public class BaseFragmentManage {
     public static BaseFragment getTopFragment() {
         return fragments.get(fragments.size() - 1);
     }
+
 }

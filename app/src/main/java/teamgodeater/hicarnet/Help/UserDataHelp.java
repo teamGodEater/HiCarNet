@@ -1,6 +1,5 @@
 package teamgodeater.hicarnet.Help;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,33 +12,66 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import teamgodeater.hicarnet.Data.GasstationData;
 import teamgodeater.hicarnet.Data.UserCarInfoData;
 import teamgodeater.hicarnet.Data.UserInfoData;
+import teamgodeater.hicarnet.Data.UserOrderData;
 import teamgodeater.hicarnet.Data.UserPointData;
 import teamgodeater.hicarnet.MainModle.Help.RoutePlanSearchHelp;
 import teamgodeater.hicarnet.RestClient.RestClient;
+
+import static android.content.Context.MODE_PRIVATE;
+import static teamgodeater.hicarnet.Help.RestClientHelp.password;
+import static teamgodeater.hicarnet.Help.RestClientHelp.username;
 
 /**
  * Created by G on 2016/6/7 0007.
  */
 
 public class UserDataHelp {
-    public static int OK = 233, NOFOUND = 42, NOGET = 425, INVAIN = 552;
     public static UserInfoData userInfoData;
     public static Bitmap headImage;
     public static UserPointData userPointData;
     public static List<UserCarInfoData> userCarInfoDatas;
+    public static List<UserOrderData> userOrderDatas;
     public static DrivingRouteResult userTrafficLine;
+    public static GasstationData gasstationData;
 
+    public static void loginOut() {
+        SharedPreferences sharedPreferences = Utils.getContext().getSharedPreferences(SharedPreferencesHelp.CLIENT_INFO, MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.remove(SharedPreferencesHelp.CLIENT_INFO_USERNAME);
+        edit.remove(SharedPreferencesHelp.CLIENT_INFO_PASSWORD);
+        edit.remove(SharedPreferencesHelp.CLIENT_INFO_SESSION);
+        edit.apply();
 
-    public static int getUserCarInfoStatus() {
-        if (userCarInfoDatas == null)
-            return NOGET;
-        if (userCarInfoDatas.size() == 0)
-            return NOFOUND;
-        if (userCarInfoDatas.get(0).getLicense_num().equals(""))
-            return INVAIN;
-        return OK;
+        username = "";
+        password = "";
+        RestClientHelp.Session = "";
+
+        userInfoData = null;
+        headImage = null;
+        userPointData = null;
+        userCarInfoDatas = null;
+        userTrafficLine = null;
+    }
+
+    public static void getGasstation(LatLng latLng, final OnDoneListener listener) {
+        RestClientHelp restClientHelp = new RestClientHelp();
+        restClientHelp.getGasStation(latLng,new RestClient.OnResultListener<GasstationData>() {
+            @Override
+            public void succeed(GasstationData bean) {
+                gasstationData = bean;
+                if (listener != null)
+                listener.onDone(200);
+            }
+
+            @Override
+            public void error(int code) {
+                if (listener != null)
+                    listener.onDone(code);
+            }
+        });
     }
 
     public static void getHeadBitmap(final OnDoneListener listener) {
@@ -65,7 +97,7 @@ public class UserDataHelp {
         if (userCarInfoDatas.size() == 0) {
             return new UserCarInfoData();
         }
-        SharedPreferences sharedPreferences = Utils.getContext().getSharedPreferences(SharedPreferencesHelp.USER_SET, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Utils.getContext().getSharedPreferences(SharedPreferencesHelp.USER_SET, MODE_PRIVATE);
         int defaultCar = sharedPreferences.getInt(SharedPreferencesHelp.USER_SET_DEFAULT_CAT, 0);
         defaultCar = defaultCar >= userCarInfoDatas.size() ? 0 : defaultCar;
         return userCarInfoDatas.get(defaultCar);
@@ -134,8 +166,6 @@ public class UserDataHelp {
 
             @Override
             public void error(int code) {
-                if (code == RestClientHelp.HTTP_NOT_FOUND)
-                    userInfoData = new UserInfoData();
                 if (listener != null)
                     listener.onDone(code);
             }
@@ -181,6 +211,24 @@ public class UserDataHelp {
                 }
             });
         }
+    }
+
+    public static void getUserOrderDatas(final OnDoneListener listener) {
+        userOrderDatas = null;
+        RestClientHelp restClientHelp = new RestClientHelp();
+        restClientHelp.getUserOrder(new RestClient.OnResultListener<List<UserOrderData>>() {
+            @Override
+            public void succeed(List<UserOrderData> bean) {
+                userOrderDatas = bean;
+            }
+            @Override
+            public void error(int code) {
+                if (code == RestClientHelp.HTTP_NOT_FOUND)
+                    userOrderDatas = new ArrayList<>();
+                if (listener != null)
+                    listener.onDone(code);
+            }
+        });
     }
 
 

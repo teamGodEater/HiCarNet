@@ -32,41 +32,40 @@
         app:fab_radius="26dp" />
 
     <TextView
-        android:id="@+id/otherTip"
+        android:id="@+id/errorTip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="108dp"
         android:gravity="center"
         android:text=""
-        android:textColor="@color/colorBlack54"
-        android:textSize="18dp"/>
+        android:textColor="@color/colorBlack87"
+        android:textSize="14dp"/>
 
     <teamgodeater.hicarnet.Widget.RippleBackGroundView
-        android:id="@+id/otherButton"
-        app:text="登录"
+        android:id="@+id/errorButton"
         app:text_color="@color/colorWhite"
         android:background="@color/color1"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="24dp"
         android:layout_gravity="center"
-        android:layout_width="match_parent"
+        android:layout_width="108dp"
         android:layout_height="36dp" />
 
-    <View
-        android:id="@+id/bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBlack20" />
-
     <com.victor.loading.rotate.RotateLoading
+        android:id="@+id/rotateLoading"
         android:layout_gravity="center"
         android:layout_marginBottom="72dp"
-        android:id="@+id/rotateLoading"
         android:layout_width="64dp"
         android:layout_height="64dp"
         app:loading_color="@color/color1"
         app:loading_width="3dp" />
+
+    <TextView
+        android:id="@+id/loadingTip"
+        android:textSize="14dp"
+        android:layout_gravity="center"
+        android:textColor="@color/colorBlack87"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

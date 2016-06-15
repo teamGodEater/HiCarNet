@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
@@ -18,11 +17,11 @@ import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
-import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 
 /**
  * Created by G on 2016/5/24 0024.
@@ -30,15 +29,17 @@ import teamgodeater.hicarnet.R;
 
 public class SpeachFragment extends DialogFragment {
 
+
+    SpeechRecognizer iat;
+    StringBuilder sayText;
     @Bind(R.id.recognition)
     RecognitionProgressView recognition;
     @Bind(R.id.status_tip)
     TextView statusTip;
     @Bind(R.id.button)
-    ImageButton button;
-
-    SpeechRecognizer iat;
-    StringBuilder sayText ;
+    RippleBackGroundView button;
+    @Bind(R.id.tip)
+    TextView tip;
 
 
     @Nullable
@@ -75,14 +76,22 @@ public class SpeachFragment extends DialogFragment {
         iat.setParameter(SpeechConstant.VAD_BOS, "6000");
         iat.setParameter(SpeechConstant.VAD_EOS, "2500");
 
-       iat.startListening(mRecoListener);
+        iat.startListening(mRecoListener);
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.d("speach start listen speach");
-                iat.startListening(mRecoListener);
+                String tag = ((RippleBackGroundView) v).getText();
+                if (tag.equals("停止说话")){
+                    iat.stopListening();
+                } else if (tag.equals("确定")) {
+
+                } else if (tag.equals("停止")) {
+                    iat.stopListening();
+                } else if (tag.equals("开始说话")) {
+                    iat.startListening(mRecoListener);
+                }
             }
         });
     }
@@ -90,13 +99,17 @@ public class SpeachFragment extends DialogFragment {
     RecognizerListener mRecoListener = new RecognizerListener() {
         @Override
         public void onVolumeChanged(int i, byte[] bytes) {
-            Logger.d("speach onVolumeChanged " + i);
             recognition.onRmsChanged(i);
+            if (i > 4) {
+                tip.setText("正在接收...");
+                button.setText("停止说话");
+            }
         }
 
         @Override
         public void onBeginOfSpeech() {
-            Logger.d("speach onBeginOfSpeech");
+            tip.setText("开始识别");
+            button.setText("请说话");
             recognition.play();
             recognition.onBeginningOfSpeech();
             sayText = new StringBuilder();
@@ -104,16 +117,17 @@ public class SpeachFragment extends DialogFragment {
 
         @Override
         public void onEndOfSpeech() {
-            Logger.d("speach onEndOfSpeech");
+            tip.setText("识别中...");
+            button.setText("停止");
             recognition.onEndOfSpeech();
         }
 
         @Override
         public void onResult(RecognizerResult recognizerResult, boolean b) {
-            Logger.d("speach onRouteResult  islast" + b);
             if (b) {
+                tip.setText("识别成功");
+                button.setText("确定");
                 recognition.stop();
-
             }
             sayText.append(recognizerResult.getResultString());
             statusTip.setText(sayText.toString());
@@ -121,7 +135,8 @@ public class SpeachFragment extends DialogFragment {
 
         @Override
         public void onError(SpeechError speechError) {
-            Logger.d("speach speechError  islast" + speechError.getErrorDescription());
+            tip.setText("错误: " + speechError.getErrorDescription());
+            button.setText("开始说话");
             recognition.stop();
             statusTip.setText(speechError.getErrorDescription());
         }

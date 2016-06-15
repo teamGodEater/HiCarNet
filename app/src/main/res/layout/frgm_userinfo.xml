@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBackground">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <teamgodeater.hicarnet.Widget.RippleBackGroundView
+        android:id="@+id/errorButton"
+        android:layout_gravity="center"
+        app:text= "重新加载"
+        app:text_color="@color/colorWhite"
+        app:text_size="14dp"
+        android:background="@color/colorAccent"
+        android:layout_width="108dp"
+        android:layout_height="36dp" />
+
+    <TextView
+        android:id="@+id/errorTip"
+        android:text="读取数据失败请 请重试!"
+        android:textColor="@color/colorBlack87"
+        android:textSize="16dp"
+        android:layout_marginBottom="72dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.victor.loading.rotate.RotateLoading
+        app:loading_color="@color/colorAccent"
+        app:loading_width="3dp"
+        android:id="@+id/rotateLoading"
+        android:layout_gravity="center"
+        android:layout_marginBottom="72dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp" />
+
+    <TextView
+        android:id="@id/loadingTip"
+        android:textColor="@color/colorBlack87"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

@@ -31,8 +31,10 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
+import teamgodeater.hicarnet.Help.ConditionTask;
 import teamgodeater.hicarnet.Help.DurationTask;
 import teamgodeater.hicarnet.Help.RestClientHelp;
+import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.RegistModle.Fragment.RegistFragment;
@@ -69,6 +71,7 @@ public class LoginFragment extends BaseFragment {
 
     boolean isPasswordVisible = false;
     private DurationTask durationGetHeadImageTask;
+    private ConditionTask conditionTask;
 
     @NonNull
     @Override
@@ -84,6 +87,13 @@ public class LoginFragment extends BaseFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootContain);
         tSetDefaultView(true, "登陆");
+        conditionTask = new ConditionTask(3, new Runnable() {
+            @Override
+            public void run() {
+                setRotateLoading(false);
+                finish();
+            }
+        });
         setColorFilter();
         setListener();
         username.setText(RestClientHelp.username);
@@ -287,8 +297,25 @@ public class LoginFragment extends BaseFragment {
         restClientHelp.login(new RestClient.OnResultListener<String>() {
             @Override
             public void succeed(String bean) {
-                setRotateLoading(false);
-                finish();
+                UserDataHelp.getUserInfoData(new UserDataHelp.OnDoneListener() {
+                    @Override
+                    public void onDone(int code) {
+                        conditionTask.excute();
+                    }
+                });
+                UserDataHelp.getUserCarInfoDatas(new UserDataHelp.OnDoneListener() {
+                    @Override
+                    public void onDone(int code) {
+                        conditionTask.excute();
+                    }
+                });
+                UserDataHelp.getUserPointData(new UserDataHelp.OnDoneListener() {
+                    @Override
+                    public void onDone(int code) {
+                        conditionTask.excute();
+                    }
+                });
+
             }
 
             @Override

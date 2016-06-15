@@ -106,6 +106,8 @@ public class BaseItem2LineAdapter extends RecyclerView.Adapter<BaseItem2LineAdap
 
     @Override
     public int getItemCount() {
+        if (list == null)
+            return 0;
         return list.size();
     }
 

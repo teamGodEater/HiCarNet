@@ -31,18 +31,22 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
+import teamgodeater.hicarnet.CarManageModle.Fragment.CarManageFragment;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Help.ConditionTask;
+import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
+import teamgodeater.hicarnet.LoginModle.Fragment.LoginFragment;
 import teamgodeater.hicarnet.MainModle.Help.BottomHelp;
 import teamgodeater.hicarnet.MainModle.Help.MapHelp;
 import teamgodeater.hicarnet.MainModle.Help.RouteHelp;
 import teamgodeater.hicarnet.MainModle.Help.SearchHelp;
 import teamgodeater.hicarnet.MainModle.MapOverlay.DrivingRouteOverlay;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.WeizhangModle.Fragment.WeizhangFragment;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 
 /**
@@ -52,7 +56,6 @@ public class MainFragment extends BaseFragment
         implements View.OnClickListener, BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapTouchListener
         , OnLocReceiverObserve, SearchHelp.OnSearchRouteListener, SearchView.OnBackClickListener {
 
-    public static final int TYPE_LAUNCHER = 1;
 
     @Bind(R.id.bottomViewPager)
     ViewPager bottomViewPager;
@@ -60,10 +63,7 @@ public class MainFragment extends BaseFragment
     RippleBackGroundView zoomLocButton;
     @Bind(R.id.searchView)
     SearchView searchView;
-    @Bind(R.id.pagerSelect1)
-    View pagerSelect1;
-    @Bind(R.id.pagerSelect2)
-    View pagerSelect2;
+
 
     MapHelp mapHelp;
     Handler handler;
@@ -72,6 +72,8 @@ public class MainFragment extends BaseFragment
     ConditionTask fristLocTask;
     SearchHelp searchHelp;
     BottomHelp bottomHelp;
+
+
     private DrivingRouteOverlay routeOverlay;
 
     public static MainFragment getInstans() {
@@ -116,7 +118,7 @@ public class MainFragment extends BaseFragment
         searchHelp.setOnSearchRouteListener(this);
         searchView.setOnBackClickListener(this);
         //设置bottomHelp
-        bottomHelp = new BottomHelp(manageActivity, bottomViewPager, pagerSelect1, pagerSelect2);
+        bottomHelp = new BottomHelp(manageActivity, bottomViewPager, rootContain);
         setFirstBottomPagerDefault();
         //添加地图
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -167,6 +169,7 @@ public class MainFragment extends BaseFragment
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        bottomHelp.onDestroyView();
     }
 
     @Override
@@ -359,6 +362,15 @@ public class MainFragment extends BaseFragment
     //----------------------------------------Method Begin------------------------------------------
 
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            mapHelp.setLocVisible(true);
+        } else {
+            mapHelp.setLocVisible(false);
+        }
+    }
+
     private void setFirstBottomPagerDefault() {
         List<BaseItem2LineData> datas = new ArrayList<>();
 
@@ -381,43 +393,56 @@ public class MainFragment extends BaseFragment
                 switch (tag) {
                     case "获取车辆数据失败":
                         if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
-                            Toast.makeText(getActivity(),"你好像没有打开网络哦",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "你好像没有打开网络哦", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Toast.makeText(getActivity(),"加载中...",Toast.LENGTH_SHORT).show();
+                        bottomHelp.setRotation(true, "车辆数据\n加载中....");
                         UserDataHelp.getUserCarInfoDatas(new UserDataHelp.OnDoneListener() {
                             @Override
                             public void onDone(int code) {
-                                if (code == 401) {
-
-                                }else {
+                                if (code == RestClientHelp.HTTP_UNAUTHORIZED) {
+                                    manageActivity.switchFragment(new LoginFragment());
+                                    hideSelf(400L);
+                                    Utils.toast("请先登录");
+                                } else {
                                     setFirstBottomPagerDefault();
                                 }
+                                bottomHelp.setRotation(false, null);
                             }
                         });
                         break;
                     case "获取路况数据失败":
                         if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
-                            Toast.makeText(getActivity(),"你好像没有打开网络哦",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "你好像没有打开网络哦", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Toast.makeText(getActivity(),"加载中...",Toast.LENGTH_SHORT).show();
+                        bottomHelp.setRotation(true, "路况数据\n加载中....");
                         UserDataHelp.getUserPointData(new UserDataHelp.OnDoneListener() {
                             @Override
                             public void onDone(int code) {
-                                if (code == 401) {
-
-                                }else {
+                                if (code == RestClientHelp.HTTP_UNAUTHORIZED) {
+                                    manageActivity.switchFragment(new LoginFragment());
+                                    hideSelf(400L);
+                                    Utils.toast("请先登录");
+                                } else {
                                     setFirstBottomPagerDefault();
                                 }
+                                bottomHelp.setRotation(false, null);
+
                             }
                         });
                         break;
-                    case "没有设置车辆":
-                        break;
                     case "管理车辆":
+                        manageActivity.switchFragment(CarManageFragment.getInstans());
+                        hideSelf(400L);
                         break;
                     case "违章查询":
+                        manageActivity.switchFragment(WeizhangFragment.getInstans());
+                        hideSelf(400L);
+                        break;
+                    case "没有设置车辆":
+                        manageActivity.switchFragment(CarManageFragment.getInstans());
+                        hideSelf(400L);
                         break;
                     case "附近的4S店":
                         break;
@@ -429,7 +454,6 @@ public class MainFragment extends BaseFragment
             }
         });
         bottomHelp.setRvAdapter(0, baseItem2LineAdapter);
-
     }
 
 

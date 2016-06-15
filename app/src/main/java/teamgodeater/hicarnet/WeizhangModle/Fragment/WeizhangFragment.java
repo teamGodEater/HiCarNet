@@ -149,13 +149,9 @@ public class WeizhangFragment extends BaseFragment {
             manageActivity.switchFragment(to);
             hideSelf(500L);
             return;
-        }
-
-        if (weizhang.getStatus() >= 5000) {
+        } else if (weizhang.getStatus() >= 5000) {
             Toast.makeText(getActivity(), "系统繁忙 请稍后重试", Toast.LENGTH_SHORT).show();
-        }
-
-        if (weizhang.getStatus() < 2000) {
+        } else if (weizhang.getStatus() < 2000) {
             Toast.makeText(getActivity(), "没有找到相关的信息 请检查 输入的数据是否准确", Toast.LENGTH_SHORT).show();
         }
 
@@ -209,7 +205,7 @@ public class WeizhangFragment extends BaseFragment {
         if (historyDatas != null)
             datas.addAll(historyDatas);
 
-        if (datas.size() == 0){
+        if (datas.size() == 0) {
             BaseItem2LineData data = new BaseItem2LineData();
             data.isClickAble = false;
             data.title = "没有历史记录";

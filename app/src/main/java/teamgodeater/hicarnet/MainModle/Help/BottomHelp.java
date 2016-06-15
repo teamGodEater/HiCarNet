@@ -6,13 +6,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.baidu.mapapi.search.route.DrivingRouteLine;
+import com.victor.loading.rotate.RotateLoading;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
@@ -27,27 +31,33 @@ import teamgodeater.hicarnet.R;
 
 public class BottomHelp implements ViewPager.OnPageChangeListener {
 
+
+    @Bind(R.id.bottomRotation)
+    RotateLoading bottomRotation;
+    @Bind(R.id.bottomRotationTip)
+    TextView bottomRotationTip;
+    @Bind(R.id.pagerSelect1)
+    View select1;
+    @Bind(R.id.pagerSelect2)
+    View select2;
+
+
     private final ManageActivity manageActivity;
     private final ViewPager viewPager;
-    private final View select1;
-    private final View select2;
     private final mPagerAdapter adapter;
-    private List<View> pagerList;
+    private List<RecyclerView> pagerList;
 
-    public BottomHelp(ManageActivity m, ViewPager b, View s1, View s2) {
+    public BottomHelp(ManageActivity m, ViewPager b, View r) {
         manageActivity = m;
         viewPager = b;
-        select1 = s1;
-        select2 = s2;
+        ButterKnife.bind(this, r);
 
         initView();
-
         adapter = new mPagerAdapter();
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
         changePagerSelect(0);
     }
-
 
     //------------------------------pagerStatusChangeListener---------------------------------------
 
@@ -108,12 +118,12 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
     }
 
     public void setRvAdapter(int position, BaseItem2LineAdapter adapter) {
-        RecyclerView view = (RecyclerView) pagerList.get(position);
+        RecyclerView view = pagerList.get(position);
         view.setAdapter(adapter);
     }
 
     public RecyclerView.Adapter getRvAdapter(int position) {
-        RecyclerView view = (RecyclerView) pagerList.get(position);
+        RecyclerView view = pagerList.get(position);
         return view.getAdapter();
     }
 
@@ -127,6 +137,7 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
             select2.setAlpha(0.53f);
         }
     }
+
 
     private void initView() {
         pagerList = new ArrayList<>();
@@ -142,6 +153,8 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
 
         pagerList.add(view1);
         pagerList.add(view2);
+
+        setRotation(false, null);
     }
 
     //-----------------firstPagerData
@@ -273,8 +286,25 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
                 data.tag = "规划新路线";
             }
         }
-
         return data;
     }
 
+
+
+    public void setRotation(boolean start, String tip) {
+        if (start) {
+            bottomRotation.start();
+            bottomRotationTip.setText(tip);
+            pagerList.get(0).setVisibility(View.GONE);
+            bottomRotationTip.setVisibility(View.VISIBLE);
+        } else {
+            bottomRotation.stop();
+            pagerList.get(0).setVisibility(View.VISIBLE);
+            bottomRotationTip.setVisibility(View.GONE);
+        }
+    }
+
+    public void onDestroyView() {
+        ButterKnife.unbind(this);
+    }
 }

@@ -3,15 +3,20 @@ package teamgodeater.hicarnet.Help;
 
 import android.content.SharedPreferences;
 
+import com.baidu.mapapi.model.LatLng;
+
 import java.util.List;
 import java.util.Map;
 
+import teamgodeater.hicarnet.Data.GasstationData;
 import teamgodeater.hicarnet.Data.UserCarInfoData;
 import teamgodeater.hicarnet.Data.UserInfoData;
+import teamgodeater.hicarnet.Data.UserOrderData;
 import teamgodeater.hicarnet.Data.UserPointData;
 import teamgodeater.hicarnet.RestClient.RestClient;
 
 import static android.content.Context.MODE_PRIVATE;
+import static teamgodeater.hicarnet.RestClient.RestClient.GET;
 
 
 /**
@@ -26,9 +31,12 @@ public class RestClientHelp {
     private static final String USER_INFO = SERVICE_REST_URL + "/users/user_info";
     private static final String USER_CAR_INFO = SERVICE_REST_URL + "/users/user_car_info";
     private static final String USER_POINT = SERVICE_REST_URL + "/users/user_point";
+    private static final String USER_ORDER = SERVICE_REST_URL + "/users/order";
     public static final String USER_HEADIMAGE = SERVICE_REST_URL + "/head_image";
     public static String Session = "";
 
+    //---------------------------------------------------------------------------------------------
+    private static final String GASSTATION = "http://apis.juhe.cn/oil/local?key=9c060f190062368578e0851b3883dfd9";
     //---------------------------------------------------------------------------------------------
 
     public static final int HTTP_NOT_FOUND = 404;
@@ -148,12 +156,12 @@ public class RestClientHelp {
     }
 
     public void getUserInfo(RestClient.OnResultListener<UserInfoData> listener) {
-        RestClient.loginOperation(RestClient.GET, USER_INFO, new RestClient(), listener);
+        RestClient.loginOperation(GET, USER_INFO, new RestClient(), listener);
     }
 
     public void getUserPoint(RestClient.OnResultListener<UserPointData> listener) {
         RestClient restClient = new RestClient();
-        RestClient.loginOperation(RestClient.GET, USER_POINT, restClient, listener);
+        RestClient.loginOperation(GET, USER_POINT, restClient, listener);
     }
 
     public void getUserCarInfo(String License, RestClient.OnResultListener<List<UserCarInfoData>> listener) {
@@ -161,9 +169,20 @@ public class RestClientHelp {
         if (listener != null && License != null && !License.equals("")) {
             restClient.addUrlParams("license", License);
         }
-        RestClient.loginOperation(RestClient.GET, USER_CAR_INFO, restClient, listener);
+        RestClient.loginOperation(GET, USER_CAR_INFO, restClient, listener);
     }
 
+    public void getUserOrder(RestClient.OnResultListener<List<UserOrderData>> listener) {
+        RestClient restClient = new RestClient();
+        RestClient.loginOperation(GET,USER_ORDER,restClient,listener);
+    }
+
+    public void getGasStation(LatLng latLng, RestClient.OnResultListener<GasstationData> listener) {
+        RestClient restClient = new RestClient();
+        restClient.addUrlParams("lon", String.valueOf(latLng.longitude));
+        restClient.addUrlParams("lat", String.valueOf(latLng.latitude));
+        RestClient.loginOperation(GET,GASSTATION,restClient,listener);
+    }
     //--------------------------------------DELETE--------------------------------------------------
 
     public void delUserPoint(RestClient.OnResultListener<String> listener) {

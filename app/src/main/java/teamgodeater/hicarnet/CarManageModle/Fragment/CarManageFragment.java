@@ -41,6 +41,7 @@ import teamgodeater.hicarnet.RestClient.RestClient;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 
 import static cn.hugo.android.scanner.CaptureActivity.DECODE_OK;
+import static teamgodeater.hicarnet.Help.UserDataHelp.userCarInfoDatas;
 
 /**
  * Created by G on 2016/6/9 0009.
@@ -48,18 +49,20 @@ import static cn.hugo.android.scanner.CaptureActivity.DECODE_OK;
 
 public class CarManageFragment extends BaseFragment {
 
+
     @Bind(R.id.linearLayout)
     LinearLayout linearLayout;
     @Bind(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.otherTip)
-    TextView otherTip;
-    @Bind(R.id.otherButton)
-    RippleBackGroundView otherButton;
-    @Bind(R.id.bg)
-    View rotateBackGround;
+    @Bind(R.id.errorTip)
+    TextView errorTip;
+    @Bind(R.id.errorButton)
+    RippleBackGroundView errorButton;
     @Bind(R.id.rotateLoading)
     RotateLoading rotateLoading;
+    @Bind(R.id.loadingTip)
+    TextView loadingTip;
+    private List<UserCarInfoData> carDatas;
 
     public static CarManageFragment getInstans() {
         List<Fragment> fragments = ManageActivity.manageActivity.getSupportFragmentManager().getFragments();
@@ -86,14 +89,14 @@ public class CarManageFragment extends BaseFragment {
         ButterKnife.bind(this, rootContain);
         setColorFilter();
         setListener();
-        refresh();
+        setView();
         return rootView;
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-        if (hidden == false) {
-            refresh();
+        if (!hidden) {
+            setView();
         }
     }
 
@@ -133,11 +136,11 @@ public class CarManageFragment extends BaseFragment {
                 restClientHelp.setUserCarInfo(userCarInfoData, new RestClient.OnResultListener<String>() {
                     @Override
                     public void succeed(String bean) {
-                        setRotateLoading(true);
+                        setRotateLoading(true, "正在处理扫描结果");
                         UserDataHelp.getUserCarInfoDatas(new UserDataHelp.OnDoneListener() {
                             @Override
                             public void onDone(int code) {
-                                setRotateLoading(false);
+                                setRotateLoading(false, null);
                                 setView();
                             }
                         });
@@ -145,6 +148,7 @@ public class CarManageFragment extends BaseFragment {
 
                     @Override
                     public void error(int code) {
+                        setView();
                         restClientHelp.generalErrorToast(code);
                     }
                 });
@@ -164,71 +168,22 @@ public class CarManageFragment extends BaseFragment {
         fab.getIcon().setColorFilter(Utils.getColorFromRes(R.color.colorWhite), PorterDuff.Mode.SRC_IN);
     }
 
+    boolean isDestroy = false;
+
     private void setView() {
-        otherButton.setVisibility(View.GONE);
-        otherTip.setVisibility(View.GONE);
-        rotateBackGround.setVisibility(View.GONE);
+        goneErrorTip(true);
+        setRotateLoading(false, null);
 
-
-        if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
-            linearLayout.removeAllViews();
-            otherTip.setText("无法连接到网络");
-            otherTip.setVisibility(View.VISIBLE);
-            otherButton.setText("重试");
-            otherButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    refresh();
-                }
-            });
-            otherButton.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        List<UserCarInfoData> datas = UserDataHelp.userCarInfoDatas;
-
-        if (RestClientHelp.Session.equals("")) {
-            linearLayout.removeAllViews();
-            otherTip.setText("你还没有登录哦 请先登录");
-            otherTip.setVisibility(View.VISIBLE);
-            otherButton.setText("登录");
-            otherButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    manageActivity.switchFragment(new LoginFragment());
-                    hideSelf(500L);
-                }
-            });
-            otherButton.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        if (datas == null || datas.size() == 0) {
-            linearLayout.removeAllViews();
-            otherTip.setText("你还没有添加车辆数据\n添加后才能看到哦");
-            otherTip.setVisibility(View.VISIBLE);
-            otherButton.setText("刷新");
-            otherButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    refresh();
-                }
-            });
-            otherButton.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        int size = datas.size();
-        int childCount = linearLayout.getChildCount();
-
-        //如果已经添加了view 而且和当前的carInfoDatas一样就不刷新
-        if (childCount != 0 && childCount == size)
+        if (isDestroy || noChange() || noNet() || noLogin() || illegalData())
             return;
 
+        carDatas = UserDataHelp.userCarInfoDatas;
+
+        int size = carDatas.size();
         linearLayout.removeAllViews();
 
         for (int i = 0; i < size; i++) {
-            UserCarInfoData data = datas.get(i);
+            UserCarInfoData data = carDatas.get(i);
             if (data == null || data.getLicense_num().equals(""))
                 continue;
             View overView = LayoutInflater.from(rootContain.getContext())
@@ -323,21 +278,136 @@ public class CarManageFragment extends BaseFragment {
 
     }
 
-    private void refresh() {
-        //没有网络或者 carInfoData没问题直接返回
-        if (UserDataHelp.getUserCarInfoStatus() == UserDataHelp.OK || Utils.getNetworkType() == Utils.NETTYPE_NONET) {
-            setView();
-            return;
+    private boolean illegalData() {
+        if (UserDataHelp.userCarInfoDatas == null) {
+            errorNoData();
+            return true;
+        } else if (UserDataHelp.userCarInfoDatas.size() == 0) {
+            errorNoCarInfo();
+            return true;
         }
+        return false;
+    }
 
-        setRotateLoading(true);
-        UserDataHelp.getUserCarInfoDatas(new UserDataHelp.OnDoneListener() {
+    private boolean noLogin() {
+        if (RestClientHelp.Session.equals(""))
+            return true;
+        return false;
+    }
+
+    private boolean noNet() {
+        if (Utils.getNetworkType() == Utils.NETTYPE_NONET) {
+            errorNoNet();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean noChange() {
+        if (carDatas == null || !carDatas.equals(userCarInfoDatas))
+            return false;
+        return true;
+    }
+
+    private void errorNoData() {
+        setErrorTip("读取数据失败", "刷新", new View.OnClickListener() {
             @Override
-            public void onDone(int code) {
-                setView();
-                setRotateLoading(false);
+            public void onClick(View v) {
+                setRotateLoading(true, "正在加载 数据...");
+                UserDataHelp.getUserCarInfoDatas(new UserDataHelp.OnDoneListener() {
+                    @Override
+                    public void onDone(int code) {
+                        setRotateLoading(false, null);
+                        if (code == 200) {
+                            setView();
+                            return;
+                        }
+                        RestClientHelp.generalErrorToast(code);
+                        if (code == RestClientHelp.HTTP_UNAUTHORIZED) {
+                            errorNoLogin();
+                        } else if (code == RestClientHelp.HTTP_NOT_FOUND) {
+                            errorNoCarInfo();
+                        } else {
+                            errorNoData();
+                        }
+                    }
+                });
             }
         });
+    }
+
+    private void errorNoCarInfo() {
+        //没有订单
+        setErrorTip("你还没有添加车辆!", "刷新", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setRotateLoading(true, "正在加载 数据...");
+                UserDataHelp.getUserCarInfoDatas(new UserDataHelp.OnDoneListener() {
+                    @Override
+                    public void onDone(int code) {
+                        setRotateLoading(false, null);
+                        if (code == 200) {
+                            setView();
+                            return;
+                        }
+                        if (code == RestClientHelp.HTTP_NOT_FOUND) {
+                            errorNoCarInfo();
+                        }
+                        RestClientHelp.generalErrorToast(code);
+                    }
+                });
+            }
+        });
+    }
+
+    private void errorNoLogin() {
+        setErrorTip("需要登陆后才能查看 请先登录!", "登陆", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manageActivity.switchFragment(new LoginFragment());
+                hideSelf(280L);
+            }
+        });
+    }
+
+    private void errorNoNet() {
+        Utils.toast("请检查网络设置");
+        setErrorTip("无法连接到网络", "重试", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setView();
+            }
+        });
+
+    }
+
+    public void setErrorTip(String tip, String tipButton, View.OnClickListener listener) {
+        goneErrorTip(false);
+        errorTip.setText(tip);
+        errorButton.setText(tipButton);
+        errorButton.setOnClickListener(listener);
+    }
+
+    public void goneErrorTip(boolean gone) {
+        if (gone) {
+            errorButton.setVisibility(View.GONE);
+            errorTip.setVisibility(View.GONE);
+        } else {
+            errorButton.setVisibility(View.VISIBLE);
+            errorTip.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void setRotateLoading(boolean start, String str) {
+        if (start) {
+            goneErrorTip(true);
+            rotateLoading.start();
+            loadingTip.setText(str);
+            loadingTip.setVisibility(View.VISIBLE);
+        } else {
+            rotateLoading.stop();
+            loadingTip.setVisibility(View.GONE);
+        }
     }
 
     public void onRVItemClick(int position) {
@@ -352,6 +422,7 @@ public class CarManageFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        isDestroy = true;
         ButterKnife.unbind(this);
     }
 
@@ -378,14 +449,5 @@ public class CarManageFragment extends BaseFragment {
         parentView.animate().translationX(parentView.getWidth()).setInterpolator(new AccelerateInterpolator()).start();
     }
 
-    private void setRotateLoading(boolean start) {
-        if (start) {
-            rotateLoading.start();
-            rotateBackGround.setVisibility(View.VISIBLE);
-        } else {
-            rotateLoading.stop();
-            rotateBackGround.setVisibility(View.GONE);
-        }
-    }
 
 }

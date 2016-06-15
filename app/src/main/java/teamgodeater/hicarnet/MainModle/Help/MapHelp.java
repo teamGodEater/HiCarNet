@@ -115,7 +115,6 @@ public class MapHelp {
             }
         }
 
-
         myLoc = manageActivity.getMyLocation();
         if (myLoc != null) {
             requestLocMarket();
@@ -126,6 +125,7 @@ public class MapHelp {
     }
 
     public void requestLocMarket() {
+        if (locVisible)
         if (myLocMarker == null) {
             if (glfLst == null)
                 glfLst = getGlfLst();
@@ -137,12 +137,17 @@ public class MapHelp {
         }
     }
 
+    boolean locVisible = true;
     public void setLocVisible(boolean visible) {
         if (visible) {
+            locVisible = true;
             requestLocMarket();
         } else {
-            myLocMarker.remove();
-            myLocMarker = null;
+            locVisible = false;
+            if (myLocMarker != null) {
+                myLocMarker.remove();
+                myLocMarker = null;
+            }
         }
     }
 

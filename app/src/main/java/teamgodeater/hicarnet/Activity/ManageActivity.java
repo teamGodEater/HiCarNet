@@ -25,6 +25,7 @@ import com.baidu.mapapi.map.BaiduMapOptions;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.model.LatLng;
 import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
@@ -35,6 +36,7 @@ import teamgodeater.hicarnet.Fragment.BaseFragmentManage;
 import teamgodeater.hicarnet.Help.LocationHelp;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
+import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
 import teamgodeater.hicarnet.LaunchMoudle.LaunchFragment;
@@ -61,6 +63,8 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     public BDLocation getMyLoc() {
         return myLocation;
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +191,11 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
                 || bdLocation.getLocType() == BDLocation.TypeOffLineLocation) {
             myLocation = bdLocation;
             createMapView();
+        }
+        if (myLocation != null
+                && (UserDataHelp.gasstationData == null || !UserDataHelp.gasstationData.getResultcode().equals("200"))) {
+            LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            UserDataHelp.getGasstation(latLng,null);
         }
         if (receiverObserve != null)
             receiverObserve.onReceiveLoc(bdLocation);

@@ -29,9 +29,13 @@ import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.Data.UserCarInfoData;
 import teamgodeater.hicarnet.Fragment.BaseFragment;
 import teamgodeater.hicarnet.Fragment.BaseFragmentManage;
+import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
+import teamgodeater.hicarnet.LoginModle.Fragment.LoginFragment;
 import teamgodeater.hicarnet.MainModle.Fragment.MainFragment;
+import teamgodeater.hicarnet.OrderMoudle.Fragment.OrderFragment;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.UserInfoModle.Fragment.UserinfoFragment;
 import teamgodeater.hicarnet.WeizhangModle.Fragment.WeizhangFragment;
 import teamgodeater.hicarnet.Widget.RoundedImageView;
 
@@ -70,6 +74,24 @@ public class DrawerFragment extends Fragment {
     }
 
     private void setListener() {
+        headImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (UserDataHelp.userInfoData == null && RestClientHelp.Session.equals("") && RestClientHelp.username.equals("")) {
+                    // TODO: 2016/6/14 0014 denglu
+                    BaseFragmentManage.hideTopDelay(400L);
+                    ManageActivity.manageActivity.switchFragment(new LoginFragment());
+
+                } else {
+                    // TODO: 2016/6/14 0014 个人信息
+                    BaseFragmentManage.hideTopDelay(400L);
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                    ManageActivity.manageActivity.switchFragment(new UserinfoFragment());
+
+                }
+            }
+        });
+
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -85,8 +107,10 @@ public class DrawerFragment extends Fragment {
                 }
                 adapter.notifyItemChanged(1);
                 // TODO: 2016/6/14 0014 订单管理
-//                BaseItem2LineData d4 = adapter.list.get(3);
-
+                BaseItem2LineData d4 = adapter.list.get(3);
+                int count = OrderFragment.getNousedOrderCount();
+                d4.tipRight = count > 0 ? count + " 未消费" : "";
+                adapter.notifyItemChanged(3);
             }
         });
     }
@@ -100,9 +124,7 @@ public class DrawerFragment extends Fragment {
         else if (fragment.getType().equals("weizhang"))
             adapter.setFocusItem(2);
         else if (fragment.getType().equals("order"))
-
-            //// TODO: 2016/6/14 0014 订单
-            ;
+            adapter.setFocusItem(3);
     }
 
     private void setHeadView() {
@@ -117,10 +139,13 @@ public class DrawerFragment extends Fragment {
         else {
             headImage.setImageBitmap(UserDataHelp.headImage);
         }
-        if (UserDataHelp.userInfoData == null) {
-            greetings.setText("你还没有登录!");
+        if (RestClientHelp.Session.equals("")) {
+            greetings.setText("你还没有登陆!");
         } else {
-            greetings.setText("你好! " + UserDataHelp.userInfoData.getName());
+            if (UserDataHelp.userInfoData == null)
+                greetings.setText("你好! ");
+            else
+                greetings.setText("你好! " + UserDataHelp.userInfoData.getName());
         }
     }
 
@@ -167,7 +192,7 @@ public class DrawerFragment extends Fragment {
                 } else if (position == 2) {
                     ManageActivity.manageActivity.switchFragment(WeizhangFragment.getInstans());
                 } else if (position == 3) {
-                    // TODO: 2016/6/14 0014 订单
+                    ManageActivity.manageActivity.switchFragment(OrderFragment.getInstans());
                 }
                 drawerLayout.closeDrawer(Gravity.LEFT);
             }

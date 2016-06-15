@@ -129,7 +129,6 @@ public final class CaptureActivity extends Activity implements
 
         @Override
         public void handleMessage(Message msg) {
-
             switch (msg.what) {
                 case PARSE_BARCODE_SUC: // 解析图片成功
                     //// TODO: 2016/6/9 0009 图片结果解析成功
@@ -359,7 +358,6 @@ public final class CaptureActivity extends Activity implements
         inactivityTimer.onActivity();
 
         lastResult = rawResult;
-
         beepManager.playBeepSoundAndVibrate();
         // TODO: 2016/6/9 0009 相机结果解析成功
         Intent intent = new Intent();
