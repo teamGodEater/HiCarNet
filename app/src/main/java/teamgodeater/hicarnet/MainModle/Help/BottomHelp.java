@@ -1,11 +1,14 @@
 package teamgodeater.hicarnet.MainModle.Help;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
 import com.baidu.mapapi.search.route.DrivingRouteLine;
@@ -130,11 +133,11 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
     //------------------private
     private void changePagerSelect(int position) {
         if (position == 0) {
-            select1.setAlpha(0.54f);
+            select1.setAlpha(0.87f);
             select2.setAlpha(0.34f);
         } else {
-            select1.setAlpha(0.34f);
-            select2.setAlpha(0.53f);
+            select1.setAlpha(0.54f);
+            select2.setAlpha(0.37f);
         }
     }
 
@@ -289,17 +292,47 @@ public class BottomHelp implements ViewPager.OnPageChangeListener {
         return data;
     }
 
+    public void animationVisible(boolean visible) {
+        animationVisible(visible,null);
+    }
 
+    public void animationVisible(boolean visible, final Runnable runnable) {
+        if (visible) {
+            select1.setVisibility(View.VISIBLE);
+            select2.setVisibility(View.VISIBLE);
+        } else {
+            select1.setVisibility(View.GONE);
+            select2.setVisibility(View.GONE);
+        }
+        viewPager.animate().translationY(visible ? 0f : viewPager.getHeight())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        super.onAnimationCancel(animation);
+                        if (runnable != null)
+                            runnable.run();
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (runnable != null)
+                            runnable.run();
+                    }
+                }).setInterpolator(new AccelerateInterpolator()).start();
+    }
 
     public void setRotation(boolean start, String tip) {
         if (start) {
             bottomRotation.start();
             bottomRotationTip.setText(tip);
             pagerList.get(0).setVisibility(View.GONE);
+            pagerList.get(1).setVisibility(View.GONE);
             bottomRotationTip.setVisibility(View.VISIBLE);
         } else {
             bottomRotation.stop();
             pagerList.get(0).setVisibility(View.VISIBLE);
+            pagerList.get(1).setVisibility(View.VISIBLE);
             bottomRotationTip.setVisibility(View.GONE);
         }
     }

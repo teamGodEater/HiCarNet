@@ -1,24 +1,27 @@
 package teamgodeater.hicarnet.Data;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
- * Created by G on 2016/6/15 0015.
+ * Created by G on 2016/6/16 0016.
  */
 
-public class GasstationData {
+public class GasStationData {
+
     /**
      * resultcode : 200
      * reason : Successed!
-     * result : {"data":[{"id":"34299","name":"中油燕宾北邮加油站\u200e（办卡优惠）","area":"chongwen","areaname":"北京市 崇文区","address":"北京市崇文区天坛路12号，与东市场东街路交叉西南角（天坛北门往西一公里路南）。","brandname":"中石油","type":"加盟店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.401654,39.886973","lon":"116.40804671453","lat":"39.893324983272","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.77"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,信用卡支付","distance":2564},{"id":"34316","name":"中油北汽宣武门加油站（办卡优惠）","area":"xuanwu","areaname":"北京市 宣武区","address":"北京市宣武区宣武门西大街28院宣武门地铁西南出口辅路。","brandname":"中石油","type":"加盟店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.373169,39.899263","lon":"116.37964995964","lat":"39.905320913583","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,信用卡支付,加油卡,便利店,洗车服务","distance":2332},{"id":"34374","name":"中石化宣武门加油站","area":"xuanwu","areaname":"北京市 宣武区","address":"北京市宣武区宣武门东大街，（北京市急救中心对面，北京市教委斜对面。崇光百货的北面）。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.3724501688,39.8936984142","lon":"116.38527024009","lat":"39.905558817477","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,信用卡支付,加油卡,便利店,发卡充值网点,卫生间,银联卡充值,移动二维码业务,加油卡充值业务,会员卡服务,公交卡充值,出租车数据采集","distance":1920},{"id":"46231","name":"中石化崇文门加油站","area":"chongwen","areaname":"北京市 崇文区","address":"北京市崇文区崇文门东大街甲22号崇文门地铁站以东400米处,崇文门饭店东面。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.421336,39.900329","lon":"116.42778321554","lat":"39.906481951762","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"加油卡,便利店,92#自助加油,95#自助加油,发卡充值网点,银联卡充值,移动二维码业务,加油卡充值业务,出租车数据采集","distance":2360},{"id":"34280","name":"中石化北京站加油站","area":"dongcheng","areaname":"北京市 东城区","address":"北京市东城区西镇江胡同北京站西街路西北。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.422892,39.904058","lon":"116.42934447783","lat":"39.910183641108","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"加油卡,便利店,92#自助加油,95#自助加油,发卡充值网点,移动二维码业务,加油卡充值业务","distance":2332},{"id":"34359","name":"加油站\u200e（东四南大街）","area":"dongcheng","areaname":"北京市 东城区","address":"北京东城区东四南大街。","brandname":"不详","type":"其他","discount":"非打折加油站","exhaust":"京Ⅴ","position":"116.415918,39.910041","lon":"116.42232800867","lat":"39.916272549494","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"","distance":1640},{"id":"34297","name":"中石化金融街加油站","area":"xicheng","areaname":"北京市 西城区","address":"北京市西城区太平桥大街路西侧与二龙路西街交口处。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.362794,39.912337","lon":"116.36932672496","lat":"39.918204483855","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,信用卡支付,加油卡,便利店,发卡充值网点,卫生间,银联卡充值,移动二维码业务,加油卡充值业务,会员卡服务,公交卡充值,出租车数据采集","distance":2895},{"id":"75156","name":"中石油朝阳加油站","area":"","areaname":"北京市 东城区","address":"","brandname":"中石油","type":"其他","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.42194748,39.91724124","lon":"116.4283836199","lat":"39.923379083879","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.58"}],"fwlsmc":"信用卡支付","distance":2306},{"id":"34360","name":"中国石化 (中国新闻出版总署东南)...","area":"dongcheng","areaname":"北京市 东城区","address":"北京市东四南大街106号中华人民共和国新闻出版总署东南。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.417775,39.92043","lon":"116.42418687653","lat":"39.926632910538","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.92"}],"fwlsmc":"加油卡","distance":2151},{"id":"34291","name":"中石化景山加油站","area":"dongcheng","areaname":"北京市 东城区","address":"北京市东城景山后街7号,区景山后街东段路北,与地安门内大街交叉口东。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.397631,39.928785","lon":"116.40399325389","lat":"39.935125033327","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"}],"fwlsmc":"加油卡,便利店,发卡充值网点,移动二维码业务,加油卡充值业务,出租车数据采集","distance":2126},{"id":"15955","name":"中石化平安大街加油站\u200e \u200e","area":"xicheng","areaname":"北京市 西城区","address":"北京市西城区西城区地安门西大街，北海北门向西，教场胡同里。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.386505,39.932882","lon":"116.39289518126","lat":"39.93914114521","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,加油卡,便利店,柴油自助加油,发卡充值网点,银联卡充值,移动二维码业务,加油卡充值业务,出租车数据采集","distance":2715}],"pageinfo":{"pnums":20,"current":"1","allpage":1}}
+     * result : {"data":[{"id":"30818","name":"中石化长风加油站","area":"571133","areaname":"海南省 海口市 美兰区","address":"海南省海口市美兰区和平东路与长提路交叉口,西侧,路北","brandname":"中石化","type":"其他","discount":"非打折加油站","exhaust":"国Ⅳ","position":"110.349366,20.045485","lon":"110.35592462262","lat":"20.051193980571","price":{"E90":"6.55","E93":"7.08","E97":"7.5","E0":"5.63"},"gastprice":{"E90":"6.98","E93":"6.98","E97":"7.31","E0":"5.53"},"fwlsmc":"加油卡,便利店,发卡充值网点,卫生间,银联卡充值,加油卡充值业务","distance":2388}],"pageinfo":{"pnums":20,"current":1,"allpage":1}}
      * error_code : 0
      */
 
     private String resultcode;
     private String reason;
     /**
-     * data : [{"id":"34299","name":"中油燕宾北邮加油站\u200e（办卡优惠）","area":"chongwen","areaname":"北京市 崇文区","address":"北京市崇文区天坛路12号，与东市场东街路交叉西南角（天坛北门往西一公里路南）。","brandname":"中石油","type":"加盟店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.401654,39.886973","lon":"116.40804671453","lat":"39.893324983272","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.77"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,信用卡支付","distance":2564},{"id":"34316","name":"中油北汽宣武门加油站（办卡优惠）","area":"xuanwu","areaname":"北京市 宣武区","address":"北京市宣武区宣武门西大街28院宣武门地铁西南出口辅路。","brandname":"中石油","type":"加盟店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.373169,39.899263","lon":"116.37964995964","lat":"39.905320913583","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,信用卡支付,加油卡,便利店,洗车服务","distance":2332},{"id":"34374","name":"中石化宣武门加油站","area":"xuanwu","areaname":"北京市 宣武区","address":"北京市宣武区宣武门东大街，（北京市急救中心对面，北京市教委斜对面。崇光百货的北面）。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.3724501688,39.8936984142","lon":"116.38527024009","lat":"39.905558817477","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,信用卡支付,加油卡,便利店,发卡充值网点,卫生间,银联卡充值,移动二维码业务,加油卡充值业务,会员卡服务,公交卡充值,出租车数据采集","distance":1920},{"id":"46231","name":"中石化崇文门加油站","area":"chongwen","areaname":"北京市 崇文区","address":"北京市崇文区崇文门东大街甲22号崇文门地铁站以东400米处,崇文门饭店东面。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.421336,39.900329","lon":"116.42778321554","lat":"39.906481951762","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"加油卡,便利店,92#自助加油,95#自助加油,发卡充值网点,银联卡充值,移动二维码业务,加油卡充值业务,出租车数据采集","distance":2360},{"id":"34280","name":"中石化北京站加油站","area":"dongcheng","areaname":"北京市 东城区","address":"北京市东城区西镇江胡同北京站西街路西北。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.422892,39.904058","lon":"116.42934447783","lat":"39.910183641108","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"加油卡,便利店,92#自助加油,95#自助加油,发卡充值网点,移动二维码业务,加油卡充值业务","distance":2332},{"id":"34359","name":"加油站\u200e（东四南大街）","area":"dongcheng","areaname":"北京市 东城区","address":"北京东城区东四南大街。","brandname":"不详","type":"其他","discount":"非打折加油站","exhaust":"京Ⅴ","position":"116.415918,39.910041","lon":"116.42232800867","lat":"39.916272549494","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"","distance":1640},{"id":"34297","name":"中石化金融街加油站","area":"xicheng","areaname":"北京市 西城区","address":"北京市西城区太平桥大街路西侧与二龙路西街交口处。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.362794,39.912337","lon":"116.36932672496","lat":"39.918204483855","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,信用卡支付,加油卡,便利店,发卡充值网点,卫生间,银联卡充值,移动二维码业务,加油卡充值业务,会员卡服务,公交卡充值,出租车数据采集","distance":2895},{"id":"75156","name":"中石油朝阳加油站","area":"","areaname":"北京市 东城区","address":"","brandname":"中石油","type":"其他","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.42194748,39.91724124","lon":"116.4283836199","lat":"39.923379083879","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.58"}],"fwlsmc":"信用卡支付","distance":2306},{"id":"34360","name":"中国石化 (中国新闻出版总署东南)...","area":"dongcheng","areaname":"北京市 东城区","address":"北京市东四南大街106号中华人民共和国新闻出版总署东南。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.417775,39.92043","lon":"116.42418687653","lat":"39.926632910538","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.92"}],"fwlsmc":"加油卡","distance":2151},{"id":"34291","name":"中石化景山加油站","area":"dongcheng","areaname":"北京市 东城区","address":"北京市东城景山后街7号,区景山后街东段路北,与地安门内大街交叉口东。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.397631,39.928785","lon":"116.40399325389","lat":"39.935125033327","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"92#","price":"6.92"}],"fwlsmc":"加油卡,便利店,发卡充值网点,移动二维码业务,加油卡充值业务,出租车数据采集","distance":2126},{"id":"15955","name":"中石化平安大街加油站\u200e \u200e","area":"xicheng","areaname":"北京市 西城区","address":"北京市西城区西城区地安门西大街，北海北门向西，教场胡同里。","brandname":"中石化","type":"直营店","discount":"打折加油站","exhaust":"京Ⅴ","position":"116.386505,39.932882","lon":"116.39289518126","lat":"39.93914114521","price":[{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}],"gastprice":[{"name":"0#","price":"6.84"},{"name":"92#","price":"6.92"},{"name":"95#","price":"7.36"}],"fwlsmc":"银联卡,加油卡,便利店,柴油自助加油,发卡充值网点,银联卡充值,移动二维码业务,加油卡充值业务,出租车数据采集","distance":2715}]
-     * pageinfo : {"pnums":20,"current":"1","allpage":1}
+     * data : [{"id":"30818","name":"中石化长风加油站","area":"571133","areaname":"海南省 海口市 美兰区","address":"海南省海口市美兰区和平东路与长提路交叉口,西侧,路北","brandname":"中石化","type":"其他","discount":"非打折加油站","exhaust":"国Ⅳ","position":"110.349366,20.045485","lon":"110.35592462262","lat":"20.051193980571","price":{"E90":"6.55","E93":"7.08","E97":"7.5","E0":"5.63"},"gastprice":{"E90":"6.98","E93":"6.98","E97":"7.31","E0":"5.53"},"fwlsmc":"加油卡,便利店,发卡充值网点,卫生间,银联卡充值,加油卡充值业务","distance":2388}]
+     * pageinfo : {"pnums":20,"current":1,"allpage":1}
      */
 
     private ResultBean result;
@@ -65,22 +68,22 @@ public class GasstationData {
 
         private PageinfoBean pageinfo;
         /**
-         * id : 34299
-         * name : 中油燕宾北邮加油站‎（办卡优惠）
-         * area : chongwen
-         * areaname : 北京市 崇文区
-         * address : 北京市崇文区天坛路12号，与东市场东街路交叉西南角（天坛北门往西一公里路南）。
-         * brandname : 中石油
-         * type : 加盟店
-         * discount : 打折加油站
-         * exhaust : 京Ⅴ
-         * position : 116.401654,39.886973
-         * lon : 116.40804671453
-         * lat : 39.893324983272
-         * price : [{"type":"E90","price":"7.31"},{"type":"E93","price":"6.92"},{"type":"E97","price":"7.36"},{"type":"E0","price":"6.84"}]
-         * gastprice : [{"name":"92#","price":"6.77"},{"name":"95#","price":"7.36"}]
-         * fwlsmc : 银联卡,信用卡支付
-         * distance : 2564
+         * id : 30818
+         * name : 中石化长风加油站
+         * area : 571133
+         * areaname : 海南省 海口市 美兰区
+         * address : 海南省海口市美兰区和平东路与长提路交叉口,西侧,路北
+         * brandname : 中石化
+         * type : 其他
+         * discount : 非打折加油站
+         * exhaust : 国Ⅳ
+         * position : 110.349366,20.045485
+         * lon : 110.35592462262
+         * lat : 20.051193980571
+         * price : {"E90":"6.55","E93":"7.08","E97":"7.5","E0":"5.63"}
+         * gastprice : {"E90":"6.98","E93":"6.98","E97":"7.31","E0":"5.53"}
+         * fwlsmc : 加油卡,便利店,发卡充值网点,卫生间,银联卡充值,加油卡充值业务
+         * distance : 2388
          */
 
         private List<DataBean> data;
@@ -103,7 +106,7 @@ public class GasstationData {
 
         public static class PageinfoBean {
             private int pnums;
-            private String current;
+            private int current;
             private int allpage;
 
             public int getPnums() {
@@ -114,11 +117,11 @@ public class GasstationData {
                 this.pnums = pnums;
             }
 
-            public String getCurrent() {
+            public int getCurrent() {
                 return current;
             }
 
-            public void setCurrent(String current) {
+            public void setCurrent(int current) {
                 this.current = current;
             }
 
@@ -144,20 +147,24 @@ public class GasstationData {
             private String position;
             private String lon;
             private String lat;
+            /**
+             * E90 : 6.55
+             * E93 : 7.08
+             * E97 : 7.5
+             * E0 : 5.63
+             */
+
+            private PriceBean price;
+            /**
+             * E90 : 6.98
+             * E93 : 6.98
+             * E97 : 7.31
+             * E0 : 5.53
+             */
+
+            private GastpriceBean gastprice;
             private String fwlsmc;
             private int distance;
-            /**
-             * type : E90
-             * price : 7.31
-             */
-
-            private List<PriceBean> price;
-            /**
-             * name : 92#
-             * price : 6.77
-             */
-
-            private List<GastpriceBean> gastprice;
 
             public String getId() {
                 return id;
@@ -255,6 +262,22 @@ public class GasstationData {
                 this.lat = lat;
             }
 
+            public PriceBean getPrice() {
+                return price;
+            }
+
+            public void setPrice(PriceBean price) {
+                this.price = price;
+            }
+
+            public GastpriceBean getGastprice() {
+                return gastprice;
+            }
+
+            public void setGastprice(GastpriceBean gastprice) {
+                this.gastprice = gastprice;
+            }
+
             public String getFwlsmc() {
                 return fwlsmc;
             }
@@ -271,61 +294,85 @@ public class GasstationData {
                 this.distance = distance;
             }
 
-            public List<PriceBean> getPrice() {
-                return price;
-            }
-
-            public void setPrice(List<PriceBean> price) {
-                this.price = price;
-            }
-
-            public List<GastpriceBean> getGastprice() {
-                return gastprice;
-            }
-
-            public void setGastprice(List<GastpriceBean> gastprice) {
-                this.gastprice = gastprice;
-            }
-
             public static class PriceBean {
-                private String type;
-                private String price;
+                private String E90;
+                private String E93;
+                private String E97;
+                private String E0;
 
-                public String getType() {
-                    return type;
+                public String getE90() {
+                    return E90;
                 }
 
-                public void setType(String type) {
-                    this.type = type;
+                public void setE90(String E90) {
+                    this.E90 = E90;
                 }
 
-                public String getPrice() {
-                    return price;
+                public String getE93() {
+                    return E93;
                 }
 
-                public void setPrice(String price) {
-                    this.price = price;
+                public void setE93(String E93) {
+                    this.E93 = E93;
+                }
+
+                public String getE97() {
+                    return E97;
+                }
+
+                public void setE97(String E97) {
+                    this.E97 = E97;
+                }
+
+                public String getE0() {
+                    return E0;
+                }
+
+                public void setE0(String E0) {
+                    this.E0 = E0;
                 }
             }
 
             public static class GastpriceBean {
-                private String name;
-                private String price;
+                @SerializedName("90#")
+                private String E90;
+                @SerializedName("93#")
+                private String E93;
+                @SerializedName("97#")
+                private String E97;
+                @SerializedName("0#车柴")
+                private String E0;
 
-                public String getName() {
-                    return name;
+                public String getE90() {
+                    return E90;
                 }
 
-                public void setName(String name) {
-                    this.name = name;
+                public void setE90(String E90) {
+                    this.E90 = E90;
                 }
 
-                public String getPrice() {
-                    return price;
+                public String getE93() {
+                    return E93;
                 }
 
-                public void setPrice(String price) {
-                    this.price = price;
+                public void setE93(String E93) {
+                    this.E93 = E93;
+                }
+
+                public String getE97() {
+                    return E97;
+                }
+
+                public void setE97(String E97) {
+                    this.E97 = E97;
+                }
+
+                public String getE0() {
+                    return E0;
+                }
+
+                public void setE0(String E0) {
+                    this.E0 = E0;
                 }
             }
         }

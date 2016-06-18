@@ -19,7 +19,7 @@ import java.util.List;
 
 import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Help.Utils;
-import teamgodeater.hicarnet.MainModle.Fragment.SpeachFragment;
+import teamgodeater.hicarnet.MainModle.Fragment.SpeechFragment;
 import teamgodeater.hicarnet.R;
 
 /**
@@ -74,7 +74,17 @@ public class SearchHelp implements SearchView.OnVoiceClickListener, SearchView.O
     //---------------------------SearchViewImplements-----------------------------------------
     @Override
     public void onVoiceClick() {
-        new SpeachFragment().show(fragmentManager, "speach");
+        SpeechFragment speechFragment = new SpeechFragment();
+        speechFragment.setResultListener(new SpeechFragment.OnSpeechResultListener() {
+            @Override
+            public void onResult(String result) {
+                if (!searchView.isSearchOpen()) {
+                    searchView.open(false);
+                }
+                searchView.setText(result);
+            }
+        });
+        speechFragment.show(fragmentManager, "speach");
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.baidu.mapapi.model.LatLng;
 import java.util.List;
 import java.util.Map;
 
-import teamgodeater.hicarnet.Data.GasstationData;
+import teamgodeater.hicarnet.Data.GasStationData;
 import teamgodeater.hicarnet.Data.UserCarInfoData;
 import teamgodeater.hicarnet.Data.UserInfoData;
 import teamgodeater.hicarnet.Data.UserOrderData;
@@ -177,7 +177,7 @@ public class RestClientHelp {
         RestClient.loginOperation(GET,USER_ORDER,restClient,listener);
     }
 
-    public void getGasStation(LatLng latLng, RestClient.OnResultListener<GasstationData> listener) {
+    public void getGasStation(LatLng latLng, RestClient.OnResultListener<GasStationData> listener) {
         RestClient restClient = new RestClient();
         restClient.addUrlParams("lon", String.valueOf(latLng.longitude));
         restClient.addUrlParams("lat", String.valueOf(latLng.latitude));

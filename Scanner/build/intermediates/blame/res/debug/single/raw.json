@@ -1,13 +1,5 @@
 [
     {
-        "merged": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\build\\intermediates\\res\\merged\\debug\\raw\\beep.ogg",
-        "source": "C:\\Users\\G\\Downloads\\BarcodeScanner\\app\\src\\main\\res\\raw\\beep.ogg"
-    },
-    {
-        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\debug\\raw\\beep.ogg",
-        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\src\\main\\res\\raw\\beep.ogg"
-    },
-    {
         "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\debug\\raw\\beep.ogg",
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\src\\main\\res\\raw\\beep.ogg"
     }

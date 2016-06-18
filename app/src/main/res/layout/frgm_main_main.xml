@@ -56,7 +56,8 @@
         app:layout_constraintLeft_toLeftOf="@+id/bottomViewPager"
         app:layout_constraintTop_toTopOf="@+id/bottomViewPager"
         app:layout_constraintRight_toRightOf="@+id/bottomViewPager"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomViewPager" />
+        app:layout_constraintBottom_toBottomOf="@+id/bottomViewPager"
+        app:layout_constraintVertical_bias="0.4" />
 
     <TextView
         android:id="@+id/bottomRotationTip"
@@ -64,10 +65,10 @@
         android:textColor="@color/colorBlack87"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/bottomViewPager"
         app:layout_constraintTop_toBottomOf="@+id/bottomRotation"
-        app:layout_constraintRight_toRightOf="@+id/bottomViewPager"/>
+        android:layout_marginTop="8dp"
+        app:layout_constraintRight_toRightOf="@+id/bottomViewPager" />
 
     <com.lapism.searchview.SearchView
         android:id="@+id/searchView"

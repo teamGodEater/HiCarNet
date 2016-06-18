@@ -31,15 +31,15 @@ import com.orhanobut.logger.Logger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.DrawerMoudle.Fragment.DrawerFragment;
-import teamgodeater.hicarnet.Fragment.BaseFragment;
-import teamgodeater.hicarnet.Fragment.BaseFragmentManage;
+import teamgodeater.hicarnet.Fragment.OldBaseFragment;
+import teamgodeater.hicarnet.Fragment.OldBaseFragmentManage;
 import teamgodeater.hicarnet.Help.LocationHelp;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
-import teamgodeater.hicarnet.LaunchMoudle.LaunchFragment;
+import teamgodeater.hicarnet.LaunchMoudle.LaunchFragmentOld;
 import teamgodeater.hicarnet.R;
 
 public class ManageActivity extends AppCompatActivity implements BDLocationListener {
@@ -59,12 +59,6 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     OnLocReceiverObserve receiverObserve;
     SDKReceiver mapSdkReceiver;
     private DrawerFragment drawerFragment;
-
-    public BDLocation getMyLoc() {
-        return myLocation;
-    }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +82,18 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
 
     }
 
+    public void setDrawerLayoutAllow(boolean allow) {
+        if (allow) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED); //打开手势滑
+        } else {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED); //关闭
+        }
+    }
+
     private void setFragment() {
-        BaseFragmentManage.fragmentManager = getSupportFragmentManager();
+        OldBaseFragmentManage.fragmentManager = getSupportFragmentManager();
         getSupportFragmentManager().beginTransaction().add(R.id.DrawerContain, drawerFragment).commitAllowingStateLoss();
-        BaseFragmentManage.switchFragment(new LaunchFragment());
+        OldBaseFragmentManage.switchFragment(new LaunchFragmentOld());
     }
 
     private void loadLocalData() {
@@ -195,7 +197,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         if (myLocation != null
                 && (UserDataHelp.gasstationData == null || !UserDataHelp.gasstationData.getResultcode().equals("200"))) {
             LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-            UserDataHelp.getGasstation(latLng,null);
+            UserDataHelp.getGasstation(latLng, null);
         }
         if (receiverObserve != null)
             receiverObserve.onReceiveLoc(bdLocation);
@@ -288,13 +290,13 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         }
     }
 
-    public void switchFragment(BaseFragment to) {
-        BaseFragmentManage.switchFragment(to);
+    public void switchFragment(OldBaseFragment to) {
+        OldBaseFragmentManage.switchFragment(to);
     }
 
     public void destroyTopShowBefore(long delay) {
-        drawerFragment.onFragmentChange(BaseFragmentManage.fragments.get(BaseFragmentManage.fragments.size() - 2));
-        BaseFragmentManage.destroyTopShowBefore(delay);
+        drawerFragment.onFragmentChange(OldBaseFragmentManage.fragments.get(OldBaseFragmentManage.fragments.size() - 2));
+        OldBaseFragmentManage.destroyTopShowBefore(delay);
     }
 
     long backPressPrevious = 0;
@@ -305,7 +307,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
             drawerLayout.closeDrawer(Gravity.LEFT);
             return;
         }
-        if (BaseFragmentManage.getTopFragment().onInterceptBack()) {
+        if (OldBaseFragmentManage.getTopFragment().onInterceptBack()) {
             return;
         }
 

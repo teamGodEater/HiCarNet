@@ -2,12 +2,8 @@ package teamgodeater.hicarnet.MainModle.MapOverlay;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMap.OnPolylineClickListener;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.Polyline;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.model.LatLngBounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +29,8 @@ public abstract class OverlayManager implements OnMarkerClickListener, OnPolylin
     private List<OverlayOptions> mOverlayOptionList = null;
 
     List<Overlay> mOverlayList = null;
-    private int width;
-    private int height;
+    protected int width;
+    protected int height;
 
     /**
      * 通过一个BaiduMap 对象构造
@@ -100,42 +96,11 @@ public abstract class OverlayManager implements OnMarkerClickListener, OnPolylin
 
         mOverlayOptionList.clear();
         mOverlayList.clear();
+        mBaiduMap.removeMarkerClickListener(this);
     }
 
-    /**
-     * 缩放地图，使所有Overlay都在合适的视野内
-     * <p>
-     * 注： 该方法只对Marker类型的overlay有效
-     * </p>
-     */
     public boolean zoomToSpan() {
-        if ( mOverlayList.size() <= 0) {
-            return false;
-        }
-
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Overlay overlay : mOverlayList) {
-            if (overlay instanceof Polyline) {
-                Polyline polyline = (Polyline) overlay;
-                if (polyline.isFocus()) {
-                    List<LatLng> points = polyline.getPoints();
-                    if (points != null && points.size() > 0) {
-                        int bounder = points.size() - 1;
-                        for (int i = 0; i < 10; i++) {
-                            builder.include(points.get((int) (bounder * i / 9f)));
-                        }
-                    }
-                }
-            }
-        }
-
-        LatLngBounds build = builder.build();
-        if (width == 0 || height == 0) {
-            throw new RuntimeException("调用次方法前必须调用setZoomWh 设置显示区域宽高");
-        }
-        mBaiduMap.animateMapStatus(MapStatusUpdateFactory
-                .newLatLngBounds(build, width,height),500);
-        return true;
+        return false;
     }
 
     public void setZoomWH(int w, int h) {

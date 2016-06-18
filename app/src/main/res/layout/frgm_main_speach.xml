@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -21,20 +22,23 @@
 
     <com.github.zagum.speechrecognitionview.RecognitionProgressView
         android:id="@+id/recognition"
-        android:layout_width="256dp"
-        android:layout_height="124dp"
+        android:layout_width="286dp"
+        android:layout_height="108dp"
         android:layout_gravity="center" />
 
 
-    <TextView
+    <teamgodeater.hicarnet.Widget.RippleBackGroundView
         android:id="@+id/tip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="16dp"
-        android:text="Text"
-        android:textColor="@color/colorAccent"
-        android:textSize="12dp" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:text="Text"
+        app:text_color="@color/colorAccent"
+        app:text_size="12dp" />
+
 
     <teamgodeater.hicarnet.Widget.RippleBackGroundView
         android:id="@+id/button"
@@ -43,7 +47,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_height="36dp"
+        android:layout_marginBottom="16dp"
         android:layout_gravity="bottom|center_horizontal" />
+
 
 
 </LinearLayout>

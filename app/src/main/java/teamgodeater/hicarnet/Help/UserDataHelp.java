@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import teamgodeater.hicarnet.Data.GasstationData;
+import teamgodeater.hicarnet.Data.GasStationData;
 import teamgodeater.hicarnet.Data.UserCarInfoData;
 import teamgodeater.hicarnet.Data.UserInfoData;
 import teamgodeater.hicarnet.Data.UserOrderData;
@@ -35,7 +35,7 @@ public class UserDataHelp {
     public static List<UserCarInfoData> userCarInfoDatas;
     public static List<UserOrderData> userOrderDatas;
     public static DrivingRouteResult userTrafficLine;
-    public static GasstationData gasstationData;
+    public static GasStationData gasstationData;
 
     public static void loginOut() {
         SharedPreferences sharedPreferences = Utils.getContext().getSharedPreferences(SharedPreferencesHelp.CLIENT_INFO, MODE_PRIVATE);
@@ -58,9 +58,9 @@ public class UserDataHelp {
 
     public static void getGasstation(LatLng latLng, final OnDoneListener listener) {
         RestClientHelp restClientHelp = new RestClientHelp();
-        restClientHelp.getGasStation(latLng,new RestClient.OnResultListener<GasstationData>() {
+        restClientHelp.getGasStation(latLng,new RestClient.OnResultListener<GasStationData>() {
             @Override
-            public void succeed(GasstationData bean) {
+            public void succeed(GasStationData bean) {
                 gasstationData = bean;
                 if (listener != null)
                 listener.onDone(200);
@@ -94,12 +94,13 @@ public class UserDataHelp {
         if (userCarInfoDatas == null) {
             return null;
         }
-        if (userCarInfoDatas.size() == 0) {
-            return new UserCarInfoData();
-        }
         SharedPreferences sharedPreferences = Utils.getContext().getSharedPreferences(SharedPreferencesHelp.USER_SET, MODE_PRIVATE);
         int defaultCar = sharedPreferences.getInt(SharedPreferencesHelp.USER_SET_DEFAULT_CAT, 0);
         defaultCar = defaultCar >= userCarInfoDatas.size() ? 0 : defaultCar;
+
+        if (userCarInfoDatas.size() == 0 || defaultCar > userCarInfoDatas.size() -1)
+            return null;
+
         return userCarInfoDatas.get(defaultCar);
     }
 

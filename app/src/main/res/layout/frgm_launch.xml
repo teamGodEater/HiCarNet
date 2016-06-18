@@ -17,31 +17,20 @@
         android:text="Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="172dp"
-        tools:layout_editor_absoluteY="271dp"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-        tools:layout_constraintLeft_creator="0"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        tools:layout_constraintTop_creator="0"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        tools:layout_constraintRight_creator="0"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-        tools:layout_constraintBottom_creator="0" />
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout" />
 
 
     <RelativeLayout
         android:id="@+id/brandContain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="491dp"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-        tools:layout_constraintLeft_creator="0"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        tools:layout_constraintRight_creator="0"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-        android:layout_marginBottom="16dp"
-        tools:layout_constraintBottom_creator="0">
+        android:layout_marginBottom="16dp">
 
         <ImageView
             android:src="@drawable/logo"
@@ -52,8 +41,6 @@
             tools:layout_editor_absoluteY="0dp" />
 
         <TextView
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="4dp"
             android:layout_toRightOf="@+id/brandLogo"
             android:text="嘿嘿"
             android:alpha="0.87"
@@ -62,12 +49,12 @@
             android:id="@+id/brandName"
             android:textSize="18sp"
             android:textColor="@color/colorBlack"
-            tools:layout_editor_absoluteX="60dp"
-            tools:layout_editor_absoluteY="0dp" />
+            tools:layout_editor_absoluteX="58dp"
+            tools:layout_editor_absoluteY="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp" />
 
         <TextView
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/brandLogo"
             android:layout_below="@+id/brandName"
             android:text="内测版0.1"
@@ -77,12 +64,11 @@
             android:id="@+id/brandVersion"
             android:textSize="12sp"
             android:textColor="@color/colorBlack"
-            tools:layout_editor_absoluteX="60dp"
-            tools:layout_editor_absoluteY="46dp" />
+            tools:layout_editor_absoluteX="50dp"
+            tools:layout_editor_absoluteY="21dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="8dp" />
 
     </RelativeLayout>
-
-
-
 
 </android.support.constraint.ConstraintLayout>

@@ -19,5 +19,9 @@
         <item name="android:textColor">@color/color1</item>
     </style>
 
+    <style name="Material.Drawable.CircularProgress.My">
+        <item name="cpd_strokeColor">@color/colorPrimary</item>
+    </style>
+
 </resources>
 

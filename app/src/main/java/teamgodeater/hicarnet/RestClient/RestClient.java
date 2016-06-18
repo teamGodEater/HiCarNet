@@ -184,7 +184,11 @@ public class RestClient implements Runnable {
         if (urlParams != null && urlParams.size() > 0) {
             int urlParamsSize = urlParams.size();
             StringBuilder params = new StringBuilder();
-            params.append("?");
+            if (url.contains("?"))
+                params.append("&");
+            else
+                params.append("?");
+
             int count = 0;
             for (Map.Entry<String, String> entry : urlParams.entrySet()) {
                 String key = entry.getKey();
@@ -240,14 +244,15 @@ public class RestClient implements Runnable {
                     Type type = getInterfacetype(listener.getClass());
                     if (type != null) {
 
+                        String json = byteToString(result);
                         if (type.equals(String.class)) {
-                            listener.succeed((T) byteToString(result));
+                            listener.succeed((T) json);
                             return;
                         }
 
                         T userInfoData;
                         try {
-                            userInfoData = (T) new Gson().fromJson(byteToString(result), type);
+                            userInfoData = (T) new Gson().fromJson(json, type);
 
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();

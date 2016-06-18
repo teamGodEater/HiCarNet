@@ -1,9 +1,5 @@
 [
     {
-        "merged": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\capture.xml",
-        "source": "C:\\Users\\G\\Desktop\\MyApplication2\\my_sc\\build\\intermediates\\bundles\\debug\\res\\layout\\capture.xml"
-    },
-    {
         "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_list_menu_item_checkbox.xml",
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\abc_list_menu_item_checkbox.xml"
     },
@@ -12,12 +8,12 @@
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\abc_screen_simple.xml"
     },
     {
-        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_action_mode_bar.xml",
-        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\abc_action_mode_bar.xml"
-    },
-    {
         "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\select_dialog_item_material.xml",
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\select_dialog_item_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_action_mode_bar.xml",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\abc_action_mode_bar.xml"
     },
     {
         "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_activity_chooser_view_list_item.xml",

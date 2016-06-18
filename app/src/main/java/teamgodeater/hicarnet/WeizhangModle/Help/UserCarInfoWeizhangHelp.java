@@ -36,12 +36,6 @@ public class UserCarInfoWeizhangHelp {
         return carInfo;
     }
 
-    public static boolean isCanQuery(CarInfo c) {
-        int city_id = c.getCity_id();
-        InputConfigJson inputConfig = WeizhangClient.getInputConfig(city_id);
-        return inputConfig != null && inputConfig.getClassno() == 0 && inputConfig.getRegistno() == 0;
-    }
-
     public static int getCityIdFromShotName(String str) {
         List<ProvinceInfoJson> allProvince = WeizhangClient.getAllProvince();
         String shotName = str.substring(0, 1);
@@ -50,11 +44,16 @@ public class UserCarInfoWeizhangHelp {
         for (ProvinceInfoJson p : allProvince) {
             if (p.getProvinceShortName().contains(shotName)) {
                 List<CityInfoJson> citys = WeizhangClient.getCitys(p.getProvinceId());
+                int quanshengId = 0;
                 for (CityInfoJson c : citys) {
                     if (c.getCar_head().contains(shotCityName)) {
                         return c.getCity_id();
                     }
+                    if (c.getCity_name().contains("全省")) {
+                       quanshengId = c.getCity_id();
+                    }
                 }
+                return quanshengId;
             }
         }
         return -1;

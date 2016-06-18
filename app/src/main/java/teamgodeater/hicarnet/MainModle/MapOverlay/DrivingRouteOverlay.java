@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.Overlay;
@@ -12,6 +13,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.route.DrivingRouteLine;
 import com.baidu.mapapi.search.route.DrivingRouteLine.DrivingStep;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
@@ -36,7 +38,6 @@ public class DrivingRouteOverlay extends OverlayManager {
     public DrivingRouteOverlay(BaiduMap baiduMap) {
         super(baiduMap);
     }
-
 
     public void setShowMarket(boolean showMarket) {
         isShowMarket = showMarket;
@@ -192,6 +193,39 @@ public class DrivingRouteOverlay extends OverlayManager {
         }
     }
 
+    @Override
+    public boolean zoomToSpan() {
+        if ( mOverlayList.size() <= 0) {
+            return false;
+        }
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        boolean hasBound = false;
+        for (Overlay overlay : mOverlayList) {
+            if (overlay instanceof Polyline) {
+                Polyline polyline = (Polyline) overlay;
+                if (polyline.isFocus()) {
+                    List<LatLng> points = polyline.getPoints();
+                    if (points != null && points.size() > 0) {
+                        hasBound = true;
+                        int bounder = points.size() - 1;
+                        for (int i = 0; i < 10; i++) {
+                            builder.include(points.get((int) (bounder * i / 9f)));
+                        }
+                    }
+                }
+            }
+        }
+        if (!hasBound)
+            return false;
+
+        LatLngBounds build = builder.build();
+        if (width == 0 || height == 0) {
+            throw new RuntimeException("调用次方法前必须调用setZoomWh 设置显示区域宽高");
+        }
+        mBaiduMap.animateMapStatus(MapStatusUpdateFactory
+                .newLatLngBounds(build, width,height),500);
+        return true;
+    }
 
     //---------------------------------------interface----------------------------------------------
     public interface OnPolyLineChangeListener {
