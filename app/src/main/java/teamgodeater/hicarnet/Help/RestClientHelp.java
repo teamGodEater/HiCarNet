@@ -14,9 +14,23 @@ import teamgodeater.hicarnet.Data.UserInfoData;
 import teamgodeater.hicarnet.Data.UserOrderData;
 import teamgodeater.hicarnet.Data.UserPointData;
 import teamgodeater.hicarnet.RestClient.RestClient;
+import teamgodeater.hicarnet.Utils.Utils;
 
 import static android.content.Context.MODE_PRIVATE;
-import static teamgodeater.hicarnet.RestClient.RestClient.GET;
+import static teamgodeater.hicarnet.C.DELETE;
+import static teamgodeater.hicarnet.C.GASSTATION;
+import static teamgodeater.hicarnet.C.GET;
+import static teamgodeater.hicarnet.C.HTTP_NOT_ACCEPTABLE;
+import static teamgodeater.hicarnet.C.HTTP_NOT_FOUND;
+import static teamgodeater.hicarnet.C.HTTP_UNAUTHORIZED;
+import static teamgodeater.hicarnet.C.POST;
+import static teamgodeater.hicarnet.C.PUT;
+import static teamgodeater.hicarnet.C.SERVICE_URL;
+import static teamgodeater.hicarnet.C.SESSIONS;
+import static teamgodeater.hicarnet.C.USER_CAR_INFO;
+import static teamgodeater.hicarnet.C.USER_INFO;
+import static teamgodeater.hicarnet.C.USER_ORDER;
+import static teamgodeater.hicarnet.C.USER_POINT;
 
 
 /**
@@ -25,26 +39,12 @@ import static teamgodeater.hicarnet.RestClient.RestClient.GET;
 
 public class RestClientHelp {
     //-------------------------------------Params---------------------------------------------------
-    private static final String SERVICE_URL = "http://192.168.137.1:8080";
-    private static final String SERVICE_REST_URL = SERVICE_URL + "/api/v1.0";
-    private static final String SESSIONS = SERVICE_REST_URL + "/sessions";
-    private static final String USER_INFO = SERVICE_REST_URL + "/users/user_info";
-    private static final String USER_CAR_INFO = SERVICE_REST_URL + "/users/user_car_info";
-    private static final String USER_POINT = SERVICE_REST_URL + "/users/user_point";
-    private static final String USER_ORDER = SERVICE_REST_URL + "/users/order";
-    public static final String USER_HEADIMAGE = SERVICE_REST_URL + "/head_image";
+
     public static String Session = "";
 
     //---------------------------------------------------------------------------------------------
-    private static final String GASSTATION = "http://apis.juhe.cn/oil/local?key=9c060f190062368578e0851b3883dfd9";
     //---------------------------------------------------------------------------------------------
 
-    public static final int HTTP_NOT_FOUND = 404;
-    public static final int HTTP_UNAUTHORIZED = 401;
-    public static final int HTTP_NOT_ACCEPTABLE = 406;
-    public static final int HTTP_FOUND = 302;
-    public static final int UNPROCESSABLE_ENTITY = 422;
-    public static final int HTTP_JSON_ERROR = -2;
 
     //---------------------------------------------------------------------------------------------
 
@@ -55,16 +55,15 @@ public class RestClientHelp {
     public static void generalErrorToast(int code) {
         if (code == -1)
             Utils.toast("连接服务器失败 请检查网络设置");
-        else if (code == RestClientHelp.HTTP_UNAUTHORIZED)
+        else if (code == HTTP_UNAUTHORIZED)
             Utils.toast("还没有登录啊!请先登录吧");
-        else if (code == RestClientHelp.HTTP_NOT_ACCEPTABLE)
+        else if (code == HTTP_NOT_ACCEPTABLE)
             Utils.toast("参数错误 服务器拒绝本次请求");
-        else if (code == RestClientHelp.HTTP_NOT_FOUND)
+        else if (code == HTTP_NOT_FOUND)
             Utils.toast("没有找到");
         else
             Utils.toast("未知错误");
     }
-
     //----------------------------------------------POST--------------------------------------------
     public void login(final RestClient.OnResultListener<String> listener) {
         RestClient restClient = new RestClient();
@@ -79,13 +78,15 @@ public class RestClientHelp {
                     if (session != null && session.size() > 0) {
                         Session = session.get(0);
                         SharedPreferences sharedPreferences = Utils.getContext().getSharedPreferences(SharedPreferencesHelp.CLIENT_INFO, MODE_PRIVATE);
-                        sharedPreferences.edit().putString(SharedPreferencesHelp.CLIENT_INFO_SESSION, Session).apply();
+                        sharedPreferences.edit()
+                                .putString(SharedPreferencesHelp.CLIENT_INFO_USERNAME,username)
+                                .putString(SharedPreferencesHelp.CLIENT_INFO_PASSWORD,password)
+                                .putString(SharedPreferencesHelp.CLIENT_INFO_SESSION, Session).apply();
                         if (listener == null) {
                             return;
                         }
                         listener.succeed("Ok");
                     } else {
-
                         if (listener == null) {
                             return;
                         }
@@ -110,7 +111,7 @@ public class RestClientHelp {
                 .addUrlParams("email", data.getEmail())
                 .addUrlParams("phone", data.getPhone())
                 .addUrlParams("gender", data.getGender());
-        RestClient.loginOperation(RestClient.POST, USER_INFO, restClient, listener);
+        RestClient.loginOperation(POST, USER_INFO, restClient, listener);
     }
 
     public void setUserCarInfo(UserCarInfoData data, RestClient.OnResultListener<String> listener) {
@@ -126,7 +127,7 @@ public class RestClientHelp {
                 .addUrlParams("engine_performance", String.valueOf(data.getEngine_performance()))
                 .addUrlParams("transmission_performance", String.valueOf(data.getTransmission_performance()))
                 .addUrlParams("light_performance", String.valueOf(data.getLight_performance()));
-        RestClient.loginOperation(RestClient.POST, USER_CAR_INFO, restClient, listener);
+        RestClient.loginOperation(POST, USER_CAR_INFO, restClient, listener);
     }
 
     public void setUserPoint(UserPointData data, RestClient.OnResultListener<String> listener) {
@@ -136,7 +137,7 @@ public class RestClientHelp {
                 .addUrlParams("home_longitude", String.valueOf(data.getHome_longitude()))
                 .addUrlParams("company_latitude", String.valueOf(data.getCompany_latitude()))
                 .addUrlParams("company_longitude", String.valueOf(data.getCompany_longitude()));
-        RestClient.loginOperation(RestClient.POST, USER_POINT, restClient, listener);
+        RestClient.loginOperation(POST, USER_POINT, restClient, listener);
     }
 
     //---------------------------------------------PUT----------------------------------------------
@@ -146,7 +147,7 @@ public class RestClientHelp {
                 .addHeaderParams("username", username)
                 .addHeaderParams("password", password);
 
-        RestClient.loginOperation(RestClient.PUT, SESSIONS, restClient, listener);
+        RestClient.loginOperation(PUT, SESSIONS, restClient, listener);
     }
 
     //---------------------------------------GET----------------------------------------------------
@@ -174,26 +175,26 @@ public class RestClientHelp {
 
     public void getUserOrder(RestClient.OnResultListener<List<UserOrderData>> listener) {
         RestClient restClient = new RestClient();
-        RestClient.loginOperation(GET,USER_ORDER,restClient,listener);
+        RestClient.loginOperation(GET, USER_ORDER, restClient, listener);
     }
 
     public void getGasStation(LatLng latLng, RestClient.OnResultListener<GasStationData> listener) {
         RestClient restClient = new RestClient();
         restClient.addUrlParams("lon", String.valueOf(latLng.longitude));
         restClient.addUrlParams("lat", String.valueOf(latLng.latitude));
-        RestClient.loginOperation(GET,GASSTATION,restClient,listener);
+        RestClient.loginOperation(GET, GASSTATION, restClient, listener);
     }
     //--------------------------------------DELETE--------------------------------------------------
 
     public void delUserPoint(RestClient.OnResultListener<String> listener) {
         RestClient restClient = new RestClient();
-        RestClient.loginOperation(RestClient.DELETE, USER_POINT, restClient, listener);
+        RestClient.loginOperation(DELETE, USER_POINT, restClient, listener);
     }
 
     public void delUserCarInfo(String License, RestClient.OnResultListener<String> listener) {
         RestClient restClient = new RestClient();
         restClient.addUrlParams("license", License);
-        RestClient.loginOperation(RestClient.DELETE, USER_CAR_INFO, restClient, listener);
+        RestClient.loginOperation(DELETE, USER_CAR_INFO, restClient, listener);
     }
 
 

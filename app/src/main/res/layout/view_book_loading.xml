@@ -3,18 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:id="@+id/loadingBackGround"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlack20"
+        android:clickable="true" />
 
     <com.victor.loading.book.BookLoading
         android:id="@+id/bookLoading"
-        android:layout_marginBottom="72dp"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
         android:layout_gravity="center"
-        android:layout_width="56dp"
-        android:layout_height="56dp" />
+        android:layout_marginBottom="54dp" />
 
     <TextView
+        android:background="@drawable/shape_rotate_tip_bg"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:id="@+id/loadingTip"
         android:layout_gravity="center"
-        android:textColor="@color/colorBlack87"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="30dp"
         android:textSize="14dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

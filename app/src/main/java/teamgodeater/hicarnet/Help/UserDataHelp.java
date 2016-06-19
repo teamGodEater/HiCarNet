@@ -17,10 +17,13 @@ import teamgodeater.hicarnet.Data.UserCarInfoData;
 import teamgodeater.hicarnet.Data.UserInfoData;
 import teamgodeater.hicarnet.Data.UserOrderData;
 import teamgodeater.hicarnet.Data.UserPointData;
-import teamgodeater.hicarnet.MainModle.Help.RoutePlanSearchHelp;
+import teamgodeater.hicarnet.MapHelp.RoutePlanSearchHelp;
 import teamgodeater.hicarnet.RestClient.RestClient;
+import teamgodeater.hicarnet.Utils.Utils;
 
 import static android.content.Context.MODE_PRIVATE;
+import static teamgodeater.hicarnet.C.HTTP_NOT_FOUND;
+import static teamgodeater.hicarnet.C.USER_HEADIMAGE;
 import static teamgodeater.hicarnet.Help.RestClientHelp.password;
 import static teamgodeater.hicarnet.Help.RestClientHelp.username;
 
@@ -58,12 +61,12 @@ public class UserDataHelp {
 
     public static void getGasstation(LatLng latLng, final OnDoneListener listener) {
         RestClientHelp restClientHelp = new RestClientHelp();
-        restClientHelp.getGasStation(latLng,new RestClient.OnResultListener<GasStationData>() {
+        restClientHelp.getGasStation(latLng, new RestClient.OnResultListener<GasStationData>() {
             @Override
             public void succeed(GasStationData bean) {
                 gasstationData = bean;
                 if (listener != null)
-                listener.onDone(200);
+                    listener.onDone(200);
             }
 
             @Override
@@ -74,10 +77,10 @@ public class UserDataHelp {
         });
     }
 
-    public static void getHeadBitmap(final OnDoneListener listener) {
+    public static void getHeadBitmap(String username, final OnDoneListener listener) {
         headImage = null;
         RestClientHelp restClientHelp = new RestClientHelp();
-        restClientHelp.getFile(RestClientHelp.USER_HEADIMAGE, new RestClient.OnServiceResultListener() {
+        restClientHelp.getFile(USER_HEADIMAGE + "/" + username, new RestClient.OnServiceResultListener() {
             @Override
             public void resultListener(byte[] result, int code, Map<String, List<String>> header) {
                 if (code == 200) {
@@ -98,7 +101,7 @@ public class UserDataHelp {
         int defaultCar = sharedPreferences.getInt(SharedPreferencesHelp.USER_SET_DEFAULT_CAT, 0);
         defaultCar = defaultCar >= userCarInfoDatas.size() ? 0 : defaultCar;
 
-        if (userCarInfoDatas.size() == 0 || defaultCar > userCarInfoDatas.size() -1)
+        if (userCarInfoDatas.size() == 0 || defaultCar > userCarInfoDatas.size() - 1)
             return null;
 
         return userCarInfoDatas.get(defaultCar);
@@ -146,7 +149,7 @@ public class UserDataHelp {
 
             @Override
             public void error(int code) {
-                if (code == RestClientHelp.HTTP_NOT_FOUND)
+                if (code == HTTP_NOT_FOUND)
                     userPointData = new UserPointData();
                 if (listener != null)
                     listener.onDone(code);
@@ -180,12 +183,12 @@ public class UserDataHelp {
             @Override
             public void succeed(List<UserCarInfoData> bean) {
                 userCarInfoDatas = bean;
-                getUserCarSignIco(listener);
+                getUserCarSignIco(userCarInfoDatas, listener);
             }
 
             @Override
             public void error(int code) {
-                if (code == RestClientHelp.HTTP_NOT_FOUND)
+                if (code == HTTP_NOT_FOUND)
                     userCarInfoDatas = new ArrayList<>();
                 if (listener != null)
                     listener.onDone(code);
@@ -193,19 +196,27 @@ public class UserDataHelp {
         });
     }
 
-    public static void getUserCarSignIco(final OnDoneListener listener) {
-        if (userCarInfoDatas == null || userCarInfoDatas.size() == 0)
+    public static void getUserCarSignIco(final List<UserCarInfoData> carInfoDatas, final OnDoneListener listener) {
+        if (carInfoDatas == null || carInfoDatas.size() == 0) {
+            listener.onDone(-1);
             return;
+        }
         RestClientHelp restClientHelp = new RestClientHelp();
-        final int size = userCarInfoDatas.size();
+        final int size = carInfoDatas.size();
         final int[] doneCount = {0};
         for (int i = 0; i < size; i++) {
+            if (carInfoDatas.get(i).getLicense_num().equals("")) {
+                doneCount[0]++;
+                if (listener != null && doneCount[0] == size)
+                    listener.onDone(-1);
+                continue;
+            }
             final int finalI = i;
-            restClientHelp.getFile(userCarInfoDatas.get(i).getSign_ico(), new RestClient.OnServiceResultListener() {
+            restClientHelp.getFile(carInfoDatas.get(i).getSign_ico(), new RestClient.OnServiceResultListener() {
                 @Override
                 public void resultListener(byte[] result, int code, Map<String, List<String>> header) {
                     if (code == 200)
-                        userCarInfoDatas.get(finalI).setSignBitmap(BitmapFactory.decodeByteArray(result, 0, result.length));
+                        carInfoDatas.get(finalI).setSignBitmap(BitmapFactory.decodeByteArray(result, 0, result.length));
                     doneCount[0]++;
                     if (listener != null && doneCount[0] == size)
                         listener.onDone(code);
@@ -222,9 +233,10 @@ public class UserDataHelp {
             public void succeed(List<UserOrderData> bean) {
                 userOrderDatas = bean;
             }
+
             @Override
             public void error(int code) {
-                if (code == RestClientHelp.HTTP_NOT_FOUND)
+                if (code == HTTP_NOT_FOUND)
                     userOrderDatas = new ArrayList<>();
                 if (listener != null)
                     listener.onDone(code);

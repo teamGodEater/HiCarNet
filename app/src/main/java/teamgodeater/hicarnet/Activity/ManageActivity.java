@@ -31,16 +31,14 @@ import com.orhanobut.logger.Logger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.DrawerMoudle.Fragment.DrawerFragment;
-import teamgodeater.hicarnet.Fragment.OldBaseFragment;
-import teamgodeater.hicarnet.Fragment.OldBaseFragmentManage;
 import teamgodeater.hicarnet.Help.LocationHelp;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
-import teamgodeater.hicarnet.Help.Utils;
-import teamgodeater.hicarnet.Interface.OnLocReceiverObserve;
-import teamgodeater.hicarnet.LaunchMoudle.LaunchFragmentOld;
+import teamgodeater.hicarnet.MVP.Base.BaseFragmentManage;
+import teamgodeater.hicarnet.MVP.Ui.Car.CarFragment;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.Utils.Utils;
 
 public class ManageActivity extends AppCompatActivity implements BDLocationListener {
 
@@ -52,6 +50,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     DrawerLayout drawerLayout;
 
     public static ManageActivity manageActivity;
+
     MapView mainMapView;
 
 
@@ -72,14 +71,13 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         ButterKnife.bind(this);
         //侧滑
         drawerFragment = new DrawerFragment();
-        drawerFragment.setDraweLayout(drawerLayout);
+        drawerFragment.setDrawerLayout(drawerLayout);
         //----
         setFragment();
         //mapSdk状态
         registerReceiver();
         //加载本地数据
         loadLocalData();
-
     }
 
     public void setDrawerLayoutAllow(boolean allow) {
@@ -91,15 +89,16 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     }
 
     private void setFragment() {
-        OldBaseFragmentManage.fragmentManager = getSupportFragmentManager();
+        BaseFragmentManage.mFragmentManage = getSupportFragmentManager();
         getSupportFragmentManager().beginTransaction().add(R.id.DrawerContain, drawerFragment).commitAllowingStateLoss();
-        OldBaseFragmentManage.switchFragment(new LaunchFragmentOld());
+        // TODO: 2016/6/18 0018 启动
+        BaseFragmentManage.switchFragment(new CarFragment());
     }
 
     private void loadLocalData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesHelp.CLIENT_INFO, MODE_PRIVATE);
-        String username = sharedPreferences.getString(SharedPreferencesHelp.CLIENT_INFO_USERNAME, "admin");
-        String password = sharedPreferences.getString(SharedPreferencesHelp.CLIENT_INFO_PASSWORD, "root");
+        String username = sharedPreferences.getString(SharedPreferencesHelp.CLIENT_INFO_USERNAME, "");
+        String password = sharedPreferences.getString(SharedPreferencesHelp.CLIENT_INFO_PASSWORD, "");
         String session = sharedPreferences.getString(SharedPreferencesHelp.CLIENT_INFO_SESSION, "");
         RestClientHelp.username = username;
         RestClientHelp.password = password;
@@ -196,8 +195,8 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         }
         if (myLocation != null
                 && (UserDataHelp.gasstationData == null || !UserDataHelp.gasstationData.getResultcode().equals("200"))) {
-            LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-            UserDataHelp.getGasstation(latLng, null);
+            LatLng latLng = Utils.getLatLng(myLocation);
+//            UserDataHelp.getGasstation(latLng, null);
         }
         if (receiverObserve != null)
             receiverObserve.onReceiveLoc(bdLocation);
@@ -227,7 +226,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
     /**
      * @return状态栏高度
      */
-    public int getStatuBarHeight() {
+    public int getStatusBarHeight() {
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         return getResources().getDimensionPixelSize(resourceId);
     }
@@ -279,7 +278,6 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
      */
     public void createMapView() {
         if (mainMapView == null) {
-            Logger.d("create map" + Utils.getLatLng(myLocation));
             BaiduMapOptions op = new BaiduMapOptions();
             MapStatus status = new MapStatus.Builder().target(Utils.getLatLng(myLocation)).zoom(11f).build();
             op.logoPosition(LogoPosition.logoPostionCenterBottom);
@@ -290,15 +288,6 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         }
     }
 
-    public void switchFragment(OldBaseFragment to) {
-        OldBaseFragmentManage.switchFragment(to);
-    }
-
-    public void destroyTopShowBefore(long delay) {
-        drawerFragment.onFragmentChange(OldBaseFragmentManage.fragments.get(OldBaseFragmentManage.fragments.size() - 2));
-        OldBaseFragmentManage.destroyTopShowBefore(delay);
-    }
-
     long backPressPrevious = 0;
 
     @Override
@@ -307,7 +296,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
             drawerLayout.closeDrawer(Gravity.LEFT);
             return;
         }
-        if (OldBaseFragmentManage.getTopFragment().onInterceptBack()) {
+        if (BaseFragmentManage.getTopFragment().onInterceptBack()) {
             return;
         }
 
@@ -318,5 +307,9 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         }
 
         backPressPrevious = System.currentTimeMillis();
+    }
+
+    public interface OnLocReceiverObserve {
+        void onReceiveLoc(BDLocation loc);
     }
 }

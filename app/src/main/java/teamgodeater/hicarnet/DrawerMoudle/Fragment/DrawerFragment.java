@@ -24,20 +24,19 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import teamgodeater.hicarnet.Activity.ManageActivity;
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
-import teamgodeater.hicarnet.CarManageModle.Fragment.CarManageFragmentOld;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.Data.UserCarInfoData;
-import teamgodeater.hicarnet.Fragment.OldBaseFragment;
-import teamgodeater.hicarnet.Fragment.OldBaseFragmentManage;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
-import teamgodeater.hicarnet.LoginModle.Fragment.LoginFragmentOld;
-import teamgodeater.hicarnet.MainModle.Fragment.MainFragmentOld;
-import teamgodeater.hicarnet.OrderMoudle.Fragment.OrderFragmentOld;
+import teamgodeater.hicarnet.MVP.Base.BaseFragment;
+import teamgodeater.hicarnet.MVP.Base.BaseFragmentManage;
 import teamgodeater.hicarnet.R;
-import teamgodeater.hicarnet.UserInfoModle.Fragment.UserinfoFragmentOld;
-import teamgodeater.hicarnet.WeizhangModle.Fragment.WeizhangFragmentOld;
 import teamgodeater.hicarnet.Widget.RoundedImageView;
+
+import static teamgodeater.hicarnet.C.VT_CAR;
+import static teamgodeater.hicarnet.C.VT_MAIN;
+import static teamgodeater.hicarnet.C.VT_ORDER;
+import static teamgodeater.hicarnet.C.VT_WEIZHANG;
 
 /**
  * Created by G on 2016/5/20 0020.
@@ -45,7 +44,7 @@ import teamgodeater.hicarnet.Widget.RoundedImageView;
 public class DrawerFragment extends Fragment {
 
 
-    @Bind(R.id.baseLine)
+    @Bind(R.id.headImage)
     RoundedImageView headImage;
     @Bind(R.id.Greetings)
     TextView greetings;
@@ -57,7 +56,7 @@ public class DrawerFragment extends Fragment {
     RecyclerView recyclerView;
     private DrawerLayout drawerLayout;
 
-    public void setDraweLayout(DrawerLayout drawerLayout) {
+    public void setDrawerLayout(DrawerLayout drawerLayout) {
         this.drawerLayout = drawerLayout;
     }
 
@@ -67,27 +66,41 @@ public class DrawerFragment extends Fragment {
         View v = inflater.inflate(R.layout.frgm_drawer, container, false);
         ButterKnife.bind(this, v);
         setColorFilter();
-        setListener();
-        setHeadView();
         setRv();
+        setHeadView();
+        setListener();
         return v;
     }
 
     private void setListener() {
+        BaseFragmentManage.setOnFragmentChangeListener(new BaseFragmentManage.OnFragmentChangeListener() {
+            @Override
+            public void onFragmentChange(BaseFragment to) {
+                if (recyclerView ==null || recyclerView.getAdapter() == null)
+                    return;
+                BaseItem2LineAdapter adapter = (BaseItem2LineAdapter) recyclerView.getAdapter();
+                if (to.getType().equals(VT_MAIN))
+                    adapter.setFocusItem(0);
+                else if (to.getType().equals(VT_CAR))
+                    adapter.setFocusItem(1);
+                else if (to.getType().equals(VT_WEIZHANG))
+                    adapter.setFocusItem(2);
+                else if (to.getType().equals(VT_ORDER))
+                    adapter.setFocusItem(3);
+            }
+        });
+
         headImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BaseFragmentManage.getTopFragment().hideSelf(400L);
                 if (UserDataHelp.userInfoData == null && RestClientHelp.Session.equals("") && RestClientHelp.username.equals("")) {
                     // TODO: 2016/6/14 0014 denglu
-                    OldBaseFragmentManage.hideTopDelay(400L);
-                    ManageActivity.manageActivity.switchFragment(new LoginFragmentOld());
-
+//                    BaseFragmentManage.switchFragment();
                 } else {
                     // TODO: 2016/6/14 0014 个人信息
-                    OldBaseFragmentManage.hideTopDelay(400L);
                     drawerLayout.closeDrawer(Gravity.LEFT);
-                    ManageActivity.manageActivity.switchFragment(new UserinfoFragmentOld());
-
+//                    BaseFragmentManage.switchFragment();
                 }
             }
         });
@@ -107,23 +120,12 @@ public class DrawerFragment extends Fragment {
                 }
                 adapter.notifyItemChanged(1);
                 BaseItem2LineData d4 = adapter.list.get(3);
-                int count = OrderFragmentOld.getNousedOrderCount();
-                d4.tipRight = count > 0 ? count + " 未消费" : "";
-                adapter.notifyItemChanged(3);
+                // TODO: 2016/6/18 0018 获取订单数量
+//                int count = OrderFragmentOld.getNousedOrderCount();
+//                d4.tipRight = count > 0 ? count + " 未消费" : "";
+//                adapter.notifyItemChanged(3);
             }
         });
-    }
-
-    public void onFragmentChange(OldBaseFragment fragment) {
-        BaseItem2LineAdapter adapter = (BaseItem2LineAdapter) recyclerView.getAdapter();
-        if (fragment.getType().equals("main"))
-            adapter.setFocusItem(0);
-        else if (fragment.getType().equals("car"))
-            adapter.setFocusItem(1);
-        else if (fragment.getType().equals("weizhang"))
-            adapter.setFocusItem(2);
-        else if (fragment.getType().equals("order"))
-            adapter.setFocusItem(3);
     }
 
     private void setHeadView() {
@@ -181,17 +183,15 @@ public class DrawerFragment extends Fragment {
         baseItem2LineAdapter.setOnClickListener(new BaseItem2LineAdapter.OnItemClickListener() {
             @Override
             public void onClick(BaseItem2LineData data, int position) {
-                OldBaseFragmentManage.hideTopDelay(400L);
-                BaseItem2LineAdapter adapter = (BaseItem2LineAdapter) recyclerView.getAdapter();
-                adapter.setFocusItem(position);
+                BaseFragmentManage.getTopFragment().hideSelf(400L);
                 if (position == 0) {
-                    ManageActivity.manageActivity.switchFragment(MainFragmentOld.getInstans());
+//                    BaseFragmentManage.switchFragment(MainFragmentOld.getInstans());
                 } else if (position == 1) {
-                    ManageActivity.manageActivity.switchFragment(CarManageFragmentOld.getInstans());
+//                    BaseFragmentManage.switchFragment(CarManageFragmentOld.getInstans());
                 } else if (position == 2) {
-                    ManageActivity.manageActivity.switchFragment(WeizhangFragmentOld.getInstans());
+//                    BaseFragmentManage.switchFragment(WeizhangFragmentOld.getInstans());
                 } else if (position == 3) {
-                    ManageActivity.manageActivity.switchFragment(OrderFragmentOld.getInstans());
+//                    BaseFragmentManage.switchFragment(OrderFragmentOld.getInstans());
                 }
                 drawerLayout.closeDrawer(Gravity.LEFT);
             }

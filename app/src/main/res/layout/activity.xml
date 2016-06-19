@@ -7,6 +7,8 @@
     tools:context=".Activity.ManageActivity">
 
     <io.codetail.widget.RevealFrameLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:id="@+id/MainContain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

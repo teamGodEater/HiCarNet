@@ -1,11 +1,13 @@
 package teamgodeater.hicarnet.MVP.Base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,15 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import teamgodeater.hicarnet.Activity.ManageActivity;
-import teamgodeater.hicarnet.Help.Utils;
-import teamgodeater.hicarnet.MVP.Utils.Tutil;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.Utils.Tutil;
+import teamgodeater.hicarnet.Utils.Utils;
 import teamgodeater.hicarnet.Widget.RippleBackGroundView;
 
 /**
@@ -37,7 +40,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     public P mPresenter;
 
     final int TOOLBAR_HEIGHT = 50;
-
+    public boolean mHasDestroy = false;
     public ViewGroup mTopView;
     public ViewGroup mRootContain;
     public ViewGroup mToolbarContain;
@@ -52,23 +55,23 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        onCreateSupportViewParams(mWindowsParams);
+        mWindowsParams = onCreateSupportViewParams(mWindowsParams);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        int statusBarHeight = manageActivity.getStatuBarHeight();
+        int statusBarHeight = manageActivity.getStatusBarHeight();
 
         mTopView = new FrameLayout(container.getContext());
         mTopView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        if (mWindowsParams.isHasToolBar) {
-            createToolBar(inflater, mTopView, statusBarHeight);
-        }
-
         if (mWindowsParams.rootLayoutId != -1) {
             createRootView(inflater, mTopView, statusBarHeight);
+        }
+
+        if (mWindowsParams.isHasToolBar) {
+            createToolBar(inflater, mTopView, statusBarHeight);
         }
 
         manageActivity.setStatusBarAlpha(mWindowsParams.statusAlpha);
@@ -85,10 +88,11 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
         mRootContain = (ViewGroup) inflater.inflate(mWindowsParams.rootLayoutId, container, false);
         //rootView 是否在toolbar下面
         if (mWindowsParams.isNoFullScreen) {
-            if (mToolbarContain == null)
-                mRootContain.setPadding(0, statusBarHeight, 0, 0);
-            else
+            if (mWindowsParams.isHasToolBar)
                 mRootContain.setPadding(0, statusBarHeight + Utils.dp2Px(TOOLBAR_HEIGHT), 0, 0);
+            else
+            mRootContain.setPadding(0, statusBarHeight, 0, 0);
+
         }
 
         final ViewTreeObserver.OnGlobalLayoutListener global = new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -140,15 +144,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //将toolbar放在顶层
-        if (mToolbarContain != null) {
-            mToolbarContain.getParent().bringChildToFront(mToolbarContain);
-        }
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         manageActivity = (ManageActivity) activity;
@@ -163,8 +158,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
+        mHasDestroy = true;
         mPresenter.onDestroy();
+        super.onDestroyView();
     }
 
     /**
@@ -173,7 +169,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
      * @return 布局的参数
      */
     @NonNull
-    protected abstract void onCreateSupportViewParams(WindowsParams windowsParams);
+    protected abstract WindowsParams onCreateSupportViewParams(WindowsParams windowsParams);
 
     /**
      * 获取一个常用的可点击的ClickCircleBackGroundView
@@ -298,11 +294,11 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     }
 
     public void destroySelfShowBefore(long delay) {
-        FragmentSwitchManage.destroyTopShowBefore(delay);
+        BaseFragmentManage.destroyTopShowBefore(delay);
     }
 
     public void destroySelf(long delay) {
-        FragmentSwitchManage.destroyTop(delay);
+        BaseFragmentManage.destroyTop(delay);
     }
 
     public void hideSelf(long delay) {
@@ -318,6 +314,19 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     public void fadeHideSelf(long duration) {
         mTopView.animate().alpha(0f).setDuration(duration).setInterpolator(new AccelerateInterpolator()).start();
         hideSelf(duration - 50L);
+    }
+
+    public void hideSoftInput() {
+        View focusedChild = mRootContain.getFocusedChild();
+        if (focusedChild == null)
+            return;
+        IBinder windowToken = focusedChild.getWindowToken();
+        if (windowToken == null)
+            return;
+        InputMethodManager imm = (InputMethodManager)
+                manageActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(windowToken, 0);
+        mRootContain.getRootView().requestFocus();
     }
 
     public boolean onInterceptBack() {

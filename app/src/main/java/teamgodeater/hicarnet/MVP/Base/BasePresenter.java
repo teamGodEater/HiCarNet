@@ -1,12 +1,12 @@
 package teamgodeater.hicarnet.MVP.Base;
 
-import teamgodeater.hicarnet.MVP.Utils.Tutil;
+import teamgodeater.hicarnet.Utils.Tutil;
 
 /**
  * Created by G on 2016/6/18 0018.
  */
 
-public abstract class BasePresenter<V ,M extends BaseModel > {
+public abstract class BasePresenter<V ,M> {
     public M mModel;
     public V mView;
 
@@ -19,9 +19,9 @@ public abstract class BasePresenter<V ,M extends BaseModel > {
         this.onStart();
     }
 
-    public abstract void onStart();
+    protected abstract void onStart();
 
-    public void onDestroy() {
+    protected void onDestroy() {
         mView = null;
     }
 }

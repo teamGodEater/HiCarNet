@@ -15,7 +15,7 @@
        android:layout_height="225dp">
 
       <teamgodeater.hicarnet.Widget.RoundedImageView
-          android:id="@+id/baseLine"
+          android:id="@+id/headImage"
           android:layout_gravity="center_horizontal"
           app:border_incolor="#afffffff"
           app:border_width="3dp"

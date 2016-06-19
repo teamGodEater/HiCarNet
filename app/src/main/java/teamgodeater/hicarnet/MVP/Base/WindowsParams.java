@@ -1,7 +1,7 @@
 package teamgodeater.hicarnet.MVP.Base;
 
-import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.Utils.Utils;
 
 /**
  * Created by G on 2016/6/18 0018.

@@ -13,7 +13,7 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 
 import teamgodeater.hicarnet.Help.LocationHelp;
-import teamgodeater.hicarnet.Help.Utils;
+import teamgodeater.hicarnet.Utils.Utils;
 
 /**
  * Created by G on 2016/5/18 0018.

@@ -2,8 +2,8 @@ package teamgodeater.hicarnet.Data;
 
 import android.graphics.Bitmap;
 
-import teamgodeater.hicarnet.Help.Utils;
 import teamgodeater.hicarnet.R;
+import teamgodeater.hicarnet.Utils.Utils;
 
 /**
  * Created by G on 2016/5/29 0029.

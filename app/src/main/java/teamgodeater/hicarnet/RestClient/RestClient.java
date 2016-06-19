@@ -5,7 +5,6 @@ import android.os.Message;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,16 +19,17 @@ import java.util.Map;
 
 import teamgodeater.hicarnet.Help.RestClientHelp;
 
+import static teamgodeater.hicarnet.C.DELETE;
+import static teamgodeater.hicarnet.C.GET;
+import static teamgodeater.hicarnet.C.POST;
+import static teamgodeater.hicarnet.C.PUT;
 import static teamgodeater.hicarnet.Help.RestClientHelp.Session;
 
 public class RestClient implements Runnable {
 
     public static final int DID_SUCCEED = 1;
 
-    public static final String GET = "GET";
-    public static final String POST = "POST";
-    public static final String DELETE = "DELETE";
-    public static final String PUT = "PUT";
+
 
     private String url;
     private String method;
@@ -39,9 +39,6 @@ public class RestClient implements Runnable {
     private Map<String, String> urlParams = null;
     private Map<String, String> headerParams = null;
 
-    // public RestClient() {
-    // this(new Handler());
-    // }
 
     public void create(String method, String url, OnServiceResultListener listener) {
         this.method = method;
@@ -105,6 +102,7 @@ public class RestClient implements Runnable {
                 result = httpClient.getInputStream();
             }
         } catch (Exception e) {
+            ConnectionManager.getInstance().didComplete(this);
             this.sendMessage(null, -1, headerFields);
             if (httpClient != null)
                 httpClient.disconnect();
@@ -121,7 +119,6 @@ public class RestClient implements Runnable {
                 while ((count = result.read(data, 0, BUFFER_SIZE)) != -1)
                     outStream.write(data, 0, count);
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
 
