@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
-import teamgodeater.hicarnet.Adapter.SmallRightRvAdapter;
 import teamgodeater.hicarnet.C;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.Data.UserCarInfoData;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
+import teamgodeater.hicarnet.MVP.Base.BaseFragmentManage;
+import teamgodeater.hicarnet.MVP.Ui.Car.Adapter.SmallRightRvAdapter;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.RestClient.RestClient;
 import teamgodeater.hicarnet.Utils.Utils;
@@ -124,6 +125,7 @@ public class CarPresent extends CarContractor.Present {
             d1.tipRight = "查看详情";
             d1.icoRight = R.drawable.ic_keyboard_arrow_right;
             d1.hasDivider = true;
+            d1.tag = i;
             items.add(d1);
             BaseItem2LineData d2 = new BaseItem2LineData();
             d2.title = "引擎";
@@ -176,6 +178,11 @@ public class CarPresent extends CarContractor.Present {
                 @Override
                 public void onClick(BaseItem2LineData data, int position) {
                     // TODO: 2016/6/19 0019 切换到详情
+                    mView.hideSelf(0L);
+                    int index = (int) data.tag;
+                    View childAt = mView.linearLayout.getChildAt(index);
+                    float y = childAt.getY() - mView.myScrollView.getScrollY();
+                    BaseFragmentManage.switchFragment(new CarDetailFragment(index, y));
                 }
             });
             rv.setAdapter(adapter);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
@@ -222,8 +223,12 @@ public class DrivingRouteOverlay extends OverlayManager {
         if (width == 0 || height == 0) {
             throw new RuntimeException("调用次方法前必须调用setZoomWh 设置显示区域宽高");
         }
+
+        mBaiduMap.setMapStatus(MapStatusUpdateFactory
+                .newMapStatus(new MapStatus.Builder().rotate(0f).overlook(0f).build()));
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory
                 .newLatLngBounds(build, width,height),500);
+
         return true;
     }
 

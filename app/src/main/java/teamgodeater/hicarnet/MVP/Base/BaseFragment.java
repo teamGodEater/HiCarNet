@@ -77,8 +77,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
         manageActivity.setStatusBarAlpha(mWindowsParams.statusAlpha);
 
         mPresenter = Tutil.getT(this, 0);
-        mPresenter.setView(this);
-        mPresenter.onStart();
+        if (mPresenter != null) {
+            mPresenter.setView(this);
+        }
 
         return mTopView;
     }
@@ -91,7 +92,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
             if (mWindowsParams.isHasToolBar)
                 mRootContain.setPadding(0, statusBarHeight + Utils.dp2Px(TOOLBAR_HEIGHT), 0, 0);
             else
-            mRootContain.setPadding(0, statusBarHeight, 0, 0);
+                mRootContain.setPadding(0, statusBarHeight, 0, 0);
 
         }
 
@@ -159,7 +160,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onDestroyView() {
         mHasDestroy = true;
-        mPresenter.onDestroy();
+        if (mPresenter != null)
+            mPresenter.onDestroy();
         super.onDestroyView();
     }
 

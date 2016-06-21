@@ -13,10 +13,10 @@
         android:layout_width="0dp"
         android:layout_height="7dp"
         android:visibility="invisible"
-        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
         app:layout_constraintVertical_bias="0.55" />
 
 
@@ -24,72 +24,56 @@
         android:id="@+id/zoomLocButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
         android:background="@drawable/shape_rounded_rectangle_background"
         android:padding="8dp"
         android:src="@drawable/ic_my_location"
-        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomViewPager"
-        android:layout_marginBottom="32dp" />
+        app:layout_constraintBottom_toTopOf="@+id/viewPagerFramelayout"
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/bottomViewPager"
+    <FrameLayout
+        android:id="@+id/viewPagerFramelayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:background="@drawable/shape_rounded_top_rectangle_background"
         android:splitMotionEvents="false"
-        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintVertical_bias="0.55" />
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.55">
 
-    <com.victor.loading.rotate.RotateLoading
-        android:id="@+id/bottomRotation"
-        app:loading_color="@color/color1"
-        app:loading_width="3dp"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        app:layout_constraintLeft_toLeftOf="@+id/bottomViewPager"
-        app:layout_constraintTop_toTopOf="@+id/bottomViewPager"
-        app:layout_constraintRight_toRightOf="@+id/bottomViewPager"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomViewPager"
-        app:layout_constraintVertical_bias="0.4" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/bottomViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
-    <TextView
-        android:id="@+id/bottomRotationTip"
-        android:textSize="14dp"
-        android:textColor="@color/colorBlack87"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/bottomViewPager"
-        app:layout_constraintTop_toBottomOf="@+id/bottomRotation"
-        android:layout_marginTop="8dp"
-        app:layout_constraintRight_toRightOf="@+id/bottomViewPager" />
 
     <com.lapism.searchview.SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:search_hint="开始搜索"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        app:layout_constraintRight_toRightOf="@+id/constraintLayout" />
+        app:search_hint="开始搜索" />
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-        android:layout_marginStart="16dp"
-        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomViewPager"
-        android:layout_marginBottom="16dp">
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPagerFramelayout"
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout">
 
         <View
             android:id="@+id/pagerSelect1"
@@ -103,10 +87,10 @@
             android:id="@+id/pagerSelect2"
             android:layout_width="6dp"
             android:layout_height="6dp"
+            android:layout_marginStart="16dp"
             android:background="@drawable/circle_black"
-            tools:layout_editor_absoluteY="0dp"
             app:layout_constraintLeft_toLeftOf="@+id/pagerSelect1"
-            android:layout_marginStart="16dp" />
+            tools:layout_editor_absoluteY="0dp" />
 
     </LinearLayout>
 

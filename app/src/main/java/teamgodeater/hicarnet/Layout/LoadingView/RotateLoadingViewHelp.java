@@ -22,7 +22,7 @@ public class RotateLoadingViewHelp implements ILoadingAnimator {
     View mLoadingBackGround;
     boolean hasBackGround = false;
     private ViewGroup mInflate;
-    private long mDuration = 300L;
+    private long mDuration = 400L;
 
     public RotateLoadingViewHelp(ViewGroup vp) {
         mInflate = (ViewGroup) LayoutInflater.from(vp.getContext())
@@ -93,9 +93,24 @@ public class RotateLoadingViewHelp implements ILoadingAnimator {
 
     @Override
     public void setLoadingBg(boolean Visible, int color, View.OnClickListener listener) {
+        setLoadingBg(Visible, false, color, listener);
+    }
+
+    @Override
+    public void setLoadingBg(boolean Visible, int color) {
+        setLoadingBg(Visible, false, color, null);
+
+    }
+
+    @Override
+    public void setLoadingBg(boolean Visible) {
+        setLoadingBg(Visible, true, -1, null);
+    }
+
+    private void setLoadingBg(boolean Visible, boolean defaultColor, int color, View.OnClickListener listener) {
         hasBackGround = Visible;
-        if (color != -1)
-        mLoadingBackGround.setBackgroundColor(color);
+        if (!defaultColor)
+            mLoadingBackGround.setBackgroundColor(color);
         if (listener != null)
             mLoadingBackGround.setOnClickListener(listener);
     }

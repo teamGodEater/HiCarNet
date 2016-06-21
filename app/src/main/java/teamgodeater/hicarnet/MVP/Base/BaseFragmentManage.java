@@ -8,7 +8,7 @@ import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
-import teamgodeater.hicarnet.MVP.Ui.Main.Main;
+import teamgodeater.hicarnet.MVP.Ui.Main.MainFragment;
 import teamgodeater.hicarnet.R;
 
 
@@ -22,7 +22,7 @@ public class BaseFragmentManage {
     private static OnFragmentChangeListener mListener;
 
     public static void switchFragment(BaseFragment to) {
-        if (to instanceof Main) {
+        if (to instanceof MainFragment) {
             int size = mFragments.size();
             for (int i = size - 1; i >= 0; i--) {
                 removeFragment(mFragments.get(i));
@@ -89,7 +89,7 @@ public class BaseFragmentManage {
     }
 
     private static void removeFragment(BaseFragment baseFragment) {
-        if (!(baseFragment instanceof Main)) {
+        if (!(baseFragment instanceof MainFragment)) {
             Logger.d(baseFragment.getClass().getName());
             mFragments.remove(baseFragment);
             FragmentTransaction beginTransaction = mFragmentManage.beginTransaction();

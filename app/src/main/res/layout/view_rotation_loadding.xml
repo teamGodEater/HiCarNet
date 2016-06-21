@@ -25,6 +25,8 @@
         android:gravity="center"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:id="@+id/loadingTip"
         android:layout_gravity="center"
         android:textColor="@color/colorWhite"

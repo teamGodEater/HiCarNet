@@ -99,6 +99,15 @@ public abstract class OverlayManager implements OnMarkerClickListener, OnPolylin
         mBaiduMap.removeMarkerClickListener(this);
     }
 
+    public void setVisible(boolean visible) {
+        if (mBaiduMap == null || mOverlayList == null || mOverlayList.size() <= 0) {
+            return;
+        }
+        for (Overlay marker : mOverlayList) {
+            marker.setVisible(visible);
+        }
+    }
+
     public boolean zoomToSpan() {
         return false;
     }

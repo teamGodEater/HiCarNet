@@ -6,17 +6,19 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <ScrollView
+    <teamgodeater.hicarnet.Widget.MyScrollView
+        android:id="@+id/myScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:splitMotionEvents="false"
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"></LinearLayout>
 
-    </ScrollView>
+    </teamgodeater.hicarnet.Widget.MyScrollView>
 
     <com.rey.material.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -12,8 +12,8 @@
 
     <com.victor.loading.book.BookLoading
         android:id="@+id/bookLoading"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
+        android:layout_width="72dp"
+        android:layout_height="64dp"
         android:layout_gravity="center"
         android:layout_marginBottom="54dp" />
 
@@ -22,6 +22,8 @@
         android:gravity="center"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:id="@+id/loadingTip"
         android:layout_gravity="center"
         android:textColor="@color/colorWhite"

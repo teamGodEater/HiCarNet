@@ -1,6 +1,7 @@
 package teamgodeater.hicarnet.MVP.Ui.Car;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import teamgodeater.hicarnet.MVP.Base.WindowsParams;
 import teamgodeater.hicarnet.MVP.Ui.Login.LoginFragment;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.Utils.Utils;
+import teamgodeater.hicarnet.Widget.MyScrollView;
 
 import static cn.hugo.android.scanner.CaptureActivity.DECODE_OK;
 
@@ -41,6 +43,8 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
     LinearLayout linearLayout;
     @Bind(R.id.fab)
     FloatingActionButton fab;
+    @Bind(R.id.myScrollView)
+    public MyScrollView myScrollView;
 
     private ErrorViewHelp errorTip;
     private BookLoadingViewHelp bookLoading;
@@ -65,6 +69,7 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
         tSetDefaultView(true, "车辆管理");
         setColorFilter();
         bookLoading = new BookLoadingViewHelp(mTopView);
+        bookLoading.setLoadingBg(true, Color.TRANSPARENT);
         errorTip = new ErrorViewHelp(mTopView);
         setListen();
         mPresenter.legalCarData();
@@ -82,8 +87,18 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-        if (!hidden)
+        if (!hidden) {
             mPresenter.legalCarData();
+            fab.setScaleX(0.001f);
+            fab.setScaleY(0.001f);
+            fab.animate().scaleX(1f).scaleY(1f).setInterpolator(new AccelerateInterpolator()).setStartDelay(700L).start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideLoadingErrorTip();
     }
 
     //--------------------------------------数据回调接口---------------------------------------------
@@ -95,6 +110,7 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
     @Override
     public void errorNoNet() {
         Utils.toast("无法连接到网络 请检查网络设置!");
+        linearLayout.removeAllViews();
         setErrorTip(R.drawable.face_sad, "重试", "无法连接到网络!", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +121,7 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
 
     @Override
     public void errorNoData() {
+        linearLayout.removeAllViews();
         setErrorTip(R.drawable.face_sad, "刷新", "获取数据失败!", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +132,7 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
 
     @Override
     public void errorNoLogin() {
+        linearLayout.removeAllViews();
         setErrorTip(R.drawable.face_sad, "去登陆", "你还没有登陆!", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +144,7 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
 
     @Override
     public void errorNoCarInfo() {
+        linearLayout.removeAllViews();
         setErrorTip(R.drawable.face_wunai, "刷新", "你还没有添加车辆信息!", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +155,7 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
 
     @Override
     public void errorUnKnow() {
+        linearLayout.removeAllViews();
         setErrorTip(R.drawable.face_wunai, "重试", "服务器返回了一个未知错误 请稍后重试!", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +186,7 @@ public class CarFragment extends BaseFragment<CarPresent> implements CarContract
     private void addCar() {
         Intent intent = new Intent(manageActivity, CaptureActivity.class);
         startActivityForResult(intent, FORGETCARINFO);
+        setLoading("正在准备相机 请稍后...");
     }
 
     @Override

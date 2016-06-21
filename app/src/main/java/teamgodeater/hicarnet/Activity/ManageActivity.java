@@ -30,13 +30,13 @@ import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import teamgodeater.hicarnet.DrawerMoudle.Fragment.DrawerFragment;
+import teamgodeater.hicarnet.Drawer.Fragment.DrawerFragment;
 import teamgodeater.hicarnet.Help.LocationHelp;
 import teamgodeater.hicarnet.Help.RestClientHelp;
 import teamgodeater.hicarnet.Help.SharedPreferencesHelp;
 import teamgodeater.hicarnet.Help.UserDataHelp;
 import teamgodeater.hicarnet.MVP.Base.BaseFragmentManage;
-import teamgodeater.hicarnet.MVP.Ui.Car.CarFragment;
+import teamgodeater.hicarnet.MVP.Ui.Main.MainFragment;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.Utils.Utils;
 
@@ -92,7 +92,7 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
         BaseFragmentManage.mFragmentManage = getSupportFragmentManager();
         getSupportFragmentManager().beginTransaction().add(R.id.DrawerContain, drawerFragment).commitAllowingStateLoss();
         // TODO: 2016/6/18 0018 启动
-        BaseFragmentManage.switchFragment(new CarFragment());
+        BaseFragmentManage.switchFragment(new MainFragment());
     }
 
     private void loadLocalData() {

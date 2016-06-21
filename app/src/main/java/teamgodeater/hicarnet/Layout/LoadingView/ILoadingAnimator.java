@@ -21,5 +21,9 @@ public interface ILoadingAnimator {
 
     void setLoadingBg(boolean Visible, int color, View.OnClickListener listener);
 
+    void setLoadingBg(boolean Visible, int color);
+
+    void setLoadingBg(boolean Visible);
+
     void setMinShowTime(long duration);
 }

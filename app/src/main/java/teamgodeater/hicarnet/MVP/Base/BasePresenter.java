@@ -7,6 +7,7 @@ import teamgodeater.hicarnet.Utils.Tutil;
  */
 
 public abstract class BasePresenter<V ,M> {
+    //dispatchPresent
     public M mModel;
     public V mView;
 
@@ -18,6 +19,7 @@ public abstract class BasePresenter<V ,M> {
         this.mView = v;
         this.onStart();
     }
+
 
     protected abstract void onStart();
 

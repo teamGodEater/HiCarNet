@@ -122,7 +122,7 @@ public class LoginFragment extends BaseFragment<LoginPresent> implements LoginCo
         tSetDefaultView(true, "登陆");
         setColorFilter();
         rotateLoading = new RotateLoadingViewHelp(mTopView);
-        rotateLoading.setLoadingBg(true,-1,null);
+        rotateLoading.setLoadingBg(true);
         setListener();
         username.setText(RestClientHelp.username);
         password.setText(RestClientHelp.password);

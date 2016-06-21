@@ -1,7 +1,8 @@
-package teamgodeater.hicarnet.Adapter;
+package teamgodeater.hicarnet.MVP.Ui.Car.Adapter;
 
 import java.util.List;
 
+import teamgodeater.hicarnet.Adapter.BaseItem2LineAdapter;
 import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.R;
 import teamgodeater.hicarnet.Utils.Utils;

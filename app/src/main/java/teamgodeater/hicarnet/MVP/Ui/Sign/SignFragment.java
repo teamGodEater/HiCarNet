@@ -126,7 +126,7 @@ public class SignFragment extends BaseFragment<SignPresent> implements SignConst
         tSetDefaultView(true, "注册");
         setColorFilter();
         rotateLoading = new RotateLoadingViewHelp(mTopView);
-        rotateLoading.setLoadingBg(true,-1,null);
+        rotateLoading.setLoadingBg(true);
         setListener();
         return rootView;
     }

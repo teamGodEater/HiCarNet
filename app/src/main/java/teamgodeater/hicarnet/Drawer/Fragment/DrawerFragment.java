@@ -1,4 +1,4 @@
-package teamgodeater.hicarnet.DrawerMoudle.Fragment;
+package teamgodeater.hicarnet.Drawer.Fragment;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -189,7 +189,7 @@ public class DrawerFragment extends Fragment {
                 } else if (position == 1) {
 //                    BaseFragmentManage.switchFragment(CarManageFragmentOld.getInstans());
                 } else if (position == 2) {
-//                    BaseFragmentManage.switchFragment(WeizhangFragmentOld.getInstans());
+//                    BaseFragmentManage.switchFragment(WeizhangFragment.getInstans());
                 } else if (position == 3) {
 //                    BaseFragmentManage.switchFragment(OrderFragmentOld.getInstans());
                 }
