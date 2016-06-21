@@ -5,6 +5,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.lapism.searchview.SearchItem;
 
+import java.util.List;
+
+import teamgodeater.hicarnet.Data.BaseItem2LineData;
 import teamgodeater.hicarnet.MVP.Base.BasePresenter;
 
 /**
@@ -14,6 +17,13 @@ import teamgodeater.hicarnet.MVP.Base.BasePresenter;
 
 public interface MainContractor {
     interface View {
+        void showOrderFab();
+
+        void hideOrderFab();
+
+        void showOrderTop();
+
+        void hideOrderTop();
         //---------------------------------search------------------------------------------
         /**
          * 打开搜索框
@@ -118,10 +128,9 @@ public interface MainContractor {
         /**
          * 添加到Viewpager第一页 通过调用setFirstViewPager(View v);
          */
-        abstract public void addToPager();
+        abstract protected void addToPager(List<BaseItem2LineData> item2LineDatas);
 
         abstract public boolean interceptZoomToFit();
-
 
         abstract public void showGasMarket();
 
@@ -130,11 +139,15 @@ public interface MainContractor {
         /**
          * 获取数据
          */
-        abstract public void getData();
+        abstract protected void getData();
 
         abstract public void showAllGasStation();
 
         abstract public void showShortGasStation();
+
+        abstract public void orderReturnClick();
+        abstract public void orderBuyClick();
+        abstract public void orderGoClick();
     }
 
     /**

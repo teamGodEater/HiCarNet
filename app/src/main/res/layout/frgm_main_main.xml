@@ -20,6 +20,40 @@
         app:layout_constraintVertical_bias="0.55" />
 
 
+    <com.rey.material.widget.FloatingActionButton
+        android:id="@+id/detail_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        app:fab_backgroundColor="@color/colorWhite"
+        app:fab_iconSrc="@drawable/ic_keyboard_arrow_left"
+        app:fab_radius="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/detail_buy"
+        app:layout_constraintRight_toLeftOf="@+id/detail_buy" />
+
+    <com.rey.material.widget.FloatingActionButton
+        android:id="@+id/detail_buy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:fab_backgroundColor="@color/colorWhite"
+        app:fab_iconSrc="@drawable/ic_monetization_on"
+        app:fab_radius="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout" />
+
+    <com.rey.material.widget.FloatingActionButton
+        android:id="@+id/detail_go"
+        android:layout_width="64dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="36dp"
+        app:fab_backgroundColor="@color/colorWhite"
+        app:fab_iconSrc="@drawable/ic_near_me"
+        app:fab_radius="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/detail_buy"
+        app:layout_constraintLeft_toRightOf="@+id/detail_buy" />
+
     <teamgodeater.hicarnet.Widget.RippleBackGroundView
         android:id="@+id/zoomLocButton"
         android:layout_width="40dp"
@@ -31,6 +65,7 @@
         android:src="@drawable/ic_my_location"
         app:layout_constraintBottom_toTopOf="@+id/viewPagerFramelayout"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout" />
+
 
     <FrameLayout
         android:id="@+id/viewPagerFramelayout"
@@ -77,21 +112,42 @@
 
         <View
             android:id="@+id/pagerSelect1"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
             android:background="@drawable/circle_black"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
 
         <View
             android:id="@+id/pagerSelect2"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
             android:layout_marginStart="16dp"
             android:background="@drawable/circle_black"
             app:layout_constraintLeft_toLeftOf="@+id/pagerSelect1"
             tools:layout_editor_absoluteY="0dp" />
 
     </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        app:layout_constraintLeft_toLeftOf="@id/constraintLayout"
+        app:layout_constraintRight_toRightOf="@id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@id/constraintLayout"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:id="@+id/detail_top"
+        android:layout_width="match_parent"
+        android:layout_height="189dp"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
 
 </android.support.constraint.ConstraintLayout>

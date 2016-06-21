@@ -8,6 +8,7 @@ public class MainPresent extends MainContractor.DispatchPresent {
     public MapPresent mapPresent;
     public MapSearchPresent mapSearchPresent;
     public SpeechPresent speechPresent;
+    public GasStationPresent gasStationPresent;
 
 
     @Override
@@ -15,10 +16,12 @@ public class MainPresent extends MainContractor.DispatchPresent {
         mapPresent = new MapPresent();
         mapSearchPresent = new MapSearchPresent();
         speechPresent = new SpeechPresent();
+        gasStationPresent = new GasStationPresent();
 
         mapSearchPresent.setView(mView);
         mapPresent.setView(mView);
         speechPresent.setView(mView);
+        gasStationPresent.setView(mView);
     }
 
     @Override

@@ -17,7 +17,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.route.DrivingRouteLine;
 import com.baidu.mapapi.search.route.DrivingRouteLine.DrivingStep;
-import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import java.util.List;
  */
 public class DrivingRouteOverlay extends OverlayManager {
 
-    private DrivingRouteResult mRouteResult = null;
+    private List<DrivingRouteLine> mRouteLines = null;
     private OnPolyLineChangeListener lineChangeListener;
     boolean isShowMarket = true;
     /**
@@ -46,15 +45,14 @@ public class DrivingRouteOverlay extends OverlayManager {
 
     @Override
     public final List<OverlayOptions> getOverlayOptions() {
-        List<DrivingRouteLine> routeLinesList = mRouteResult.getRouteLines();
         List<OverlayOptions> overlayOptions = new ArrayList<>();
 
         if (isShowMarket) {
             //起点
-            if (routeLinesList.get(0).getStarting() != null) {
+            if (mRouteLines.get(0).getStarting() != null) {
                 overlayOptions
                         .add((new MarkerOptions())
-                                .position(mRouteResult.getRouteLines().get(0).getStarting().getLocation())
+                                .position(mRouteLines.get(0).getStarting().getLocation())
                                 .icon(getStartMarker() != null ? getStartMarker() :
                                         BitmapDescriptorFactory
                                                 .fromAssetWithDpi("Icon_start.png"))
@@ -62,10 +60,10 @@ public class DrivingRouteOverlay extends OverlayManager {
             }
 
             //终点
-            if (mRouteResult.getRouteLines().get(0).getTerminal() != null) {
+            if (mRouteLines.get(0).getTerminal() != null) {
                 overlayOptions
                         .add((new MarkerOptions())
-                                .position(mRouteResult.getRouteLines().get(0).getTerminal().getLocation())
+                                .position(mRouteLines.get(0).getTerminal().getLocation())
                                 .icon(getTerminalMarker() != null ? getTerminalMarker() :
                                         BitmapDescriptorFactory
                                                 .fromAssetWithDpi("Icon_end.png"))
@@ -73,10 +71,10 @@ public class DrivingRouteOverlay extends OverlayManager {
             }
         }
 
-        for (int i = 0; i < routeLinesList.size(); i++) {
+        for (int i = 0; i < mRouteLines.size(); i++) {
             Bundle b = new Bundle();
             b.putInt("index", i);
-            overlayOptions.add(getPolyline(routeLinesList.get(i), b));
+            overlayOptions.add(getPolyline(mRouteLines.get(i), b));
         }
 
         return overlayOptions;
@@ -121,8 +119,8 @@ public class DrivingRouteOverlay extends OverlayManager {
      *
      * @param routeLine 路线数据
      */
-    public void setData(DrivingRouteResult routeLine) {
-        this.mRouteResult = routeLine;
+    public void setData(List<DrivingRouteLine> routeLine) {
+        this.mRouteLines = routeLine;
     }
 
 

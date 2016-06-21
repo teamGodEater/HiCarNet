@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamgodeater.hicarnet.R;
-import teamgodeater.hicarnet.Utils.Utils;
 
 /**
  * Created by G on 2016/6/20 0020.
@@ -28,7 +27,7 @@ public class BottomPagerAdapter extends PagerAdapter {
     public BottomPagerAdapter(Context context) {
         View pager1 = LayoutInflater.from(context).inflate(R.layout.item_main_bottom_pager1, null, false);
         rv1 = (RecyclerView) pager1.findViewById(R.id.recyclerView);
-        rv2 = new RecyclerView(Utils.getContext());
+        rv2 = new RecyclerView(context);
 
         rv1.setLayoutManager(new LinearLayoutManager(context));
         rv2.setLayoutManager(new LinearLayoutManager(context));

@@ -28,12 +28,12 @@
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\bundles\\debug\\res\\drawable\\seekbar_style.xml"
     },
     {
-        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_edit_text_material.xml",
-        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_edit_text_material.xml"
-    },
-    {
         "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_btn_colored_material.xml",
         "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_edit_text_material.xml",
+        "source": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_edit_text_material.xml"
     },
     {
         "merged": "C:\\Users\\G\\Desktop\\Project\\HiCarNet\\Scanner\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_btn_check_material.xml",

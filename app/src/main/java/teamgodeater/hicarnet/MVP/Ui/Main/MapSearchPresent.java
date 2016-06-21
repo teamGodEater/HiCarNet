@@ -39,7 +39,7 @@ public class MapSearchPresent extends MainContractor.MapSearchPresent {
 
     @Override
     public boolean interceptZoomToFit() {
-        return routeOverlay != null && routeOverlay.zoomToSpan();
+        return !hasCancel && routeOverlay != null && routeOverlay.zoomToSpan();
     }
 
     @Override
@@ -138,7 +138,7 @@ public class MapSearchPresent extends MainContractor.MapSearchPresent {
                     Toast.makeText(Utils.getContext(), "服务器错误: 获取结果无效", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                mDspPresenter.gasStationPresent.hideGasMarket();
                 mDspPresenter.mapPresent.setMyLocVisible(false);
 
                 List<BaseItem2LineData> list = new ArrayList<>();
@@ -189,7 +189,7 @@ public class MapSearchPresent extends MainContractor.MapSearchPresent {
                 mView.changeViewPagerIndex(1);
                 resetRouteOverlay();
                 routeOverlay.setShowMarket(true);
-                routeOverlay.setData(route);
+                routeOverlay.setData(route.getRouteLines());
                 routeOverlay.setOnPolyLineChangeListener(new DrivingRouteOverlay.OnPolyLineChangeListener() {
                     @Override
                     public void onChangePolyLine(int index) {

@@ -43,7 +43,8 @@ public class MapPresent extends MainContractor.MapPresent implements BaiduMap.On
 
     @Override
     public void zoomToFit() {
-        if (mDspPresenter.mapSearchPresent.interceptZoomToFit())
+        if (mDspPresenter.gasStationPresent.interceptZoomToFit() ||
+                mDspPresenter.mapSearchPresent.interceptZoomToFit())
             return;
         zoomToMyLoc();
     }
@@ -153,7 +154,8 @@ public class MapPresent extends MainContractor.MapPresent implements BaiduMap.On
     public Point getMapCenterPoint() {
         return new Point(mView.mRootContain.getWidth() / 2
                 , mView.searchView.getBottom() + (mView.viewPagerFramelayout.getTop()
-                - mView.searchView.getBottom()) / 2);
+                + (int) mView.viewPagerFramelayout.getTranslationY()
+                - mView.searchView.getBottom()) / 2 + Utils.dp2Px(8));
     }
 
 

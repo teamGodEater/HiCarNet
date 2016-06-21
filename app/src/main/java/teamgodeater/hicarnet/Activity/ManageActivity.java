@@ -266,7 +266,6 @@ public class ManageActivity extends AppCompatActivity implements BDLocationListe
      */
     public boolean onMapPause() {
         if (mainMapView != null) {
-            Logger.d("onMapPause");
             mainMapView.onPause();
             return true;
         }
